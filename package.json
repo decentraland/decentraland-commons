@@ -14,7 +14,8 @@
   "author": "Decentraland",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "mailchimp-api-v3": "^1.7.1"
   },
   "devDependencies": {
     "babel-preset-env": "^1.6.0",
