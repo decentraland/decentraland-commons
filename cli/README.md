@@ -1,6 +1,6 @@
 # Cli
 
-Simple helper functions for creating a cli interface
+Simple helper functions for creating a cli interface. It leverages [inquirer](https://github.com/SBoudrias/Inquirer.js/) and [commander](https://github.com/tj/commander.js/).
 
 ### `runProgram` Usage
 
