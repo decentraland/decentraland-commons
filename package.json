@@ -1,0 +1,18 @@
+{
+  "name": "decentraland-commons",
+  "version": "1.0.0",
+  "description": "Common functionality between the different Decentraland projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "common",
+    "modules",
+    "decentraland"
+  ],
+  "author": "Decentraland",
+  "license": "ISC",
+  "dependencies": {
+  }
+}
