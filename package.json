@@ -4,7 +4,7 @@
   "description": "Common functionality between the different Decentraland projects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers js:babel-register test/*"
   },
   "keywords": [
     "common",
@@ -14,5 +14,11 @@
   "author": "Decentraland",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2"
   }
 }
