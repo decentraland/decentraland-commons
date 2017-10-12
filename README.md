@@ -18,6 +18,10 @@ Builds an static page with the JSDoc documentation
 
 Run tests using mocha and chai
 
+### ENV
+
+To get a global overview of the ENV variables used, take a look at `.env.example`.
+
 **IMPORTANT**
 
 If you make a breaking change or fix a critial bug please alert the users of the lib so they can update their projects accordingly
