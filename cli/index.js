@@ -26,8 +26,8 @@ export function runProgram(clients) {
 
 /**
  * Query the user for a boolean result
- * @param {string=Are you sure?} text - The text to show to the user
- * @param {boolean=true} defaultAnswer - The value for the default answer
+ * @param {string} [text=Are you sure?]  - The text to show to the user
+ * @param {boolean} [defaultAnswer=true] - The value for the default answer
  */
 export default async function confirm(text = 'Are you sure?', defaultAnswer = false) {
   const res = await inquirer.prompt({

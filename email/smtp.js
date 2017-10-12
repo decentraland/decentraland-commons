@@ -41,7 +41,7 @@ function sendMailWithRetry(email, opts, callback) {
     if (error) {
       log.error(`Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN / 1000}seconds`)
       log.error(error, error.stack)
-      return setTimeout(() => sendMailWithRetry(email, contentTemplate), EMAIL_COOLDOWN)
+      return setTimeout(() => sendMailWithRetry(email, opts, callback), EMAIL_COOLDOWN)
     }
     log.info('Email %s sent: %s', info.messageId, info.response)
     callback(info.response)
