@@ -1,10 +1,10 @@
 module.exports = {
   env: require('./env'),
-  eth: require('./eth'),
+  eth: require('./ethereum'),
   log: require('./log'),
   cli: require('./cli'),
   contracts: {
-    MANA: require('./contracts/MANAToken.json')
+    MANAToken: require('./contracts/MANAToken.json')
   },
   email: require('./email'),
   utils: require('./utils')

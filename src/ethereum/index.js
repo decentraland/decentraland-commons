@@ -4,6 +4,8 @@ import { Log } from '../log'
 import * as env from '../env'
 
 import Contract from './Contract'
+import MANAToken from './MANAToken'
+import TerraformReserve from './TerraformReserve'
 
 
 const log = new Log('[Ethrereum]')
@@ -11,9 +13,23 @@ let web3 = null
 
 
 export default {
-  contracts: {},
+  contracts: {
+    MANAToken,
+    TerraformReserve
+  },
 
-  connect(contracts, defaultAccount) {
+  /**
+   * Link to web3's BigNumber reference
+   */
+  BigNumber: Web3.utils && Web3.utils.BN,
+
+  /**
+   * Connect to web3
+   * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
+   * @param  {object|Contract} [contracts] - An array of contracts (or objects defining contracts) to use. By default will use the available contracts
+   * @return {boolean} - True if the connection was successful
+   */
+  connect(defaultAccount, contracts) {
     if (web3 !== null) return
 
     const currentProvider = this.getWeb3Provider()
@@ -25,9 +41,9 @@ export default {
     log.info('Instantiating contracts')
     web3 = new Web3(currentProvider)
 
-    this.setContracts(contracts)
-
     this.setAddress(defaultAccount || web3.eth.accounts[0])
+
+    this.setContracts(contracts || this.contracts)
 
     if (! this.getAddress()) {
       log.warn('Could not get the default address from web3')

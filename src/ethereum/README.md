@@ -1,7 +1,11 @@
 
 # Ethereum
 
-Set of utility functions to work with the Ethereum blockchain
+Set of utility functions to work with the Ethereum blockchain.
+
+By default `eth.js` will load up all contracts on the `/contracts` folder and choose a default account for you. So calling `eth.connect()` should be enough.
+
+If you want to change this behaviour, you can check the breakdown below.
 
 ### index.js
 
@@ -76,7 +80,9 @@ _On the start of your app, maybe server.js_
 
 ```javascript
 import manaToken from './MANAToken'
-eth.connect([
+
+// The null here is to preserve the default account as is
+eth.connect(null, [
     manaToken,
     // ...etc
 ])
@@ -85,12 +91,4 @@ eth.getContract('MANAToken').lockMana()
 // or
 manaToken.lockMana()
 ```
-
-
-
-
-
-
-
-
 
