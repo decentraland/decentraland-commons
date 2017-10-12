@@ -100,4 +100,21 @@ export default class Contract {
   decodeLogs(logs) {
     return Contract.decodeLogs(logs)
   }
+
+
+  /**
+   * Tries to find the supplied parameter to a *decoded* method (@see decodeMethod). It returns the Wei value
+   * A method typicaly consist of { "name": "methodName", "params": [{ "name": "paramName", "value": "VALUE_IN_WEI", "type": "uint256" }] }
+   * @param  {object} decodedMethod
+   * @param  {string} paramName
+   * @return {string} - Found result or undefined
+   */
+  findParamValue(decodedMethod, paramName) {
+    const params = decodedMethod.params || []
+    const param = params.find(param => param.name === paramName)
+
+    if (param) {
+      return param.value
+    }
+  }
 }

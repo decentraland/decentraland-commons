@@ -82,11 +82,21 @@ export default {
     )
   },
 
+  /**
+   * Interface for the web3 `getTransaction` method
+   * @param  {string} txId - Transaction id/hash
+   * @return {object}      - An object describing the transaction (if it exists)
+   */
   fetchTxStatus(txId) {
     log.info(`Getting ${txId} status`)
     return Contract.transaction(web3.eth.getTransaction, txId)
   },
 
+  /**
+   * Interface for the web3 `getTransactionReceipt` method. It adds the decoded logs to the result (if any)
+   * @param  {string} txId - Transaction id/hash
+   * @return {object} - An object describing the transaction recepeit (if it exists) with it's logs
+   */
   async fetchTxReceipt(txId) {
     log.info(`Getting ${txId} recepeit`)
     const recepeit = await Contract.transaction(web3.eth.getTransactionReceipt, txId)
@@ -98,11 +108,23 @@ export default {
     return recepeit
   },
 
+  /**
+   * Converts a number of wei into the desired unit
+   * @param  {number|BigNumber} amount - Amount to parse
+   * @param  {string} [unit=ether]     - Which unit to use. @see https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei for more info
+   * @return {string} - Parsed result
+   */
   fromWei(amount, unit='ether') {
     amount = web3.toBigNumber(amount)
     return web3.fromWei(amount, unit).toNumber(10)
   },
 
+  /**
+   * Converts an ethereum unit into wei
+   * @param  {number|BigNumber} amount - Amount to convert
+   * @param  {string} [unit=ether]     - Which unit to use. @see https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei for more info
+   * @return {string} - Parsed result
+   */
   toWei(amount, unit='ether') {
     amount = web3.toBigNumber(amount)
     return web3.toWei(amount, unit).toNumber(10)
@@ -122,16 +144,5 @@ export default {
 
   getAddress() {
     return web3.eth.defaultAccount
-  },
-
-  findParamValue(decodedMethod, paramName) {
-    // { "name": "methodName",
-    //   "params": [{ "name": "paramName", "value": "3.6858e+22", "type": "uint256" }] }
-    const params = decodedMethod.params || []
-    const param = params.find(param => param.name === paramName)
-
-    if (param) {
-      return this.fromWei(param.value)
-    }
   }
 }
