@@ -10,6 +10,8 @@ let loaded = false
  * @param {boolean} [config.override] - Override the current ENV with the value found on the .env file. `config.path` is required if this is true
  */
 export function load({ path, override } = {}) {
+  if (loaded) return
+
   const dotenv = require('dotenv')
 
   if (override) {

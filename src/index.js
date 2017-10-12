@@ -1,3 +1,7 @@
+const env = require('./env')
+
+env.load()
+
 module.exports = {
   // Abi accessible using the `.abi` property
   contracts: {
@@ -6,9 +10,9 @@ module.exports = {
   },
   eth: require('./ethereum'),
   db: require('./db'),
-  env: require('./env'),
   log: require('./log'),
   cli: require('./cli'),
   email: require('./email'),
-  utils: require('./utils')
+  utils: require('./utils'),
+  env: env
 }
