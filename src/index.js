@@ -5,6 +5,7 @@ module.exports = {
     TerraformReserve: require('./ethereum/TerraformReserve')
   },
   eth: require('./ethereum'),
+  db: require('./db'),
   env: require('./env'),
   log: require('./log'),
   cli: require('./cli'),
