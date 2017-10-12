@@ -40,8 +40,6 @@ class Contract {
    * @return {Contract} instance
    */
   constructor(name, address, abi) {
-    if (! address) throw new Error('Tried to instantiate a Contract without `address`')
-
     this.name = name
     this.address = address
     this.setAbi(abi)

@@ -14,7 +14,7 @@ console.debug = console.log.bind(console)
 class Log {
   /**
    * @param  {string} [name=''] - A name prepended to each log
-   * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type
+   * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
    */
   constructor(name = '', shouldLog = {}) {
     const inDev  = env.isDevelopment()

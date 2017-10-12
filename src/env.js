@@ -1,3 +1,5 @@
+import { isEmptyObject } from './utils'
+
 
 let loaded = false
 
@@ -41,11 +43,13 @@ const cache = {}
 /**
  * Gets the queried ENV variable by `name`. It will throw if the application didn't call `config` first
  * @param  {string} name - ENV variable name
- * @param  {function|object} fallback - Value to use if `name` is not found. If it's a function, it'll execute it with `name` as argument
+ * @param  {function|object} [fallback] - Value to use if `name` is not found. If it's a function, it'll execute it with `name` as argument
  * @return {object} - Result of getting the `name` ENV or fallback
  */
 export function getEnv(name, fallback) {
-  if (! loaded) throw new Error(`It looks like you're trying to access an ENV variable (${name}) before calling the \`env.config()\` method. Please call it first so the environment can be properly loaded`)
+  if (! loaded && isEmptyObject(cache)) {
+    console.log(`It looks like you're trying to access an ENV variable (${name}) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`)
+  }
 
   if (! cache[name]) {
     const value = process.env[name]
@@ -56,7 +60,10 @@ export function getEnv(name, fallback) {
       } else {
         cache[name] = fallback
       }
-      console.log(`Warning: No ${name} environment variable set, defaulting to ${cache[name]}`)
+
+      if (! cache.hasOwnProperty(name)) {
+        console.log(`Warning: No ${name} environment variable set, defaulting to ${cache[name]}`)
+      }
 
     } else {
       cache[name] = value

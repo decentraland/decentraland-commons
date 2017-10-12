@@ -29,6 +29,14 @@ export function sleep(ms) {
 }
 
 /**
+ * Check if an object has keys
+ * @param {object} obj
+ */
+export function isEmptyObject(obj) {
+  return obj && Object.keys(obj).length === 0
+}
+
+/**
  * Object.values polyfill
  * @param {object} obj - Object to get the values from
  */

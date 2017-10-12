@@ -6,21 +6,27 @@ import { getEnv } from '../env'
 
 const log = new Log('[Mailchimp]')
 
-const MAILCHIMP_API_KEY = getEnv('MAILCHIMP_API_KEY')
-
-let client = null
-try {
-  client = new Mailchimp(MAILCHIMP_API_KEY)
-} catch(error) {
-  // Invalid API_KEY
-}
-
 
 /**
  * Mailchimp client, uses `mailchimp-api-v3` behind the scenes {@link https://developer.mailchimp.com/}
  * @namespace
  */
 const mailchimp = {
+  client: null, // defined on `.connect()`
+
+  /**
+   * Connect to the mailchimp client
+   * @return {object} the mailchimp object, to allow chaining
+   */
+  connect() {
+    if (this.client) {
+      const MAILCHIMP_API_KEY = getEnv('MAILCHIMP_API_KEY')
+      this.client = new Mailchimp(MAILCHIMP_API_KEY)
+    }
+
+    return this
+  },
+
   /**
    * Register a user to a Mailchimp list.
    * @param  {string} email  - User email
@@ -34,7 +40,7 @@ const mailchimp = {
       })
     }
 
-    return client.post(`/lists/${listId}/members`, {
+    return this.client.post(`/lists/${listId}/members`, {
       email_address: email,
       status: 'subscribed',
     }).then(function(response) {

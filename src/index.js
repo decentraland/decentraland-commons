@@ -1,7 +1,3 @@
-const env = require('./env')
-
-env.load()
-
 module.exports = {
   // Abi accessible using the `.abi` property
   contracts: {
@@ -14,5 +10,5 @@ module.exports = {
   cli: require('./cli'),
   email: require('./email'),
   utils: require('./utils'),
-  env: env
+  env: require('./env')
 }
