@@ -48,7 +48,12 @@ function sendMailWithRetry(email, opts, callback) {
   })
 }
 
-export default {
+
+/**
+ * STMP interface uses `nodemailer` behind the scenes {@link https://github.com/nodemailer/nodemailer}
+ * @namespace
+ */
+const stmp = {
   templates,
 
   /**
@@ -75,3 +80,5 @@ export default {
     return new Promise(resolve => sendMailWithRetry(email, content, resolve))
   }
 }
+
+export default stmp

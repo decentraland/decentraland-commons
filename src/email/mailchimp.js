@@ -17,10 +17,14 @@ const MAILCHIMP_API_KEY = getEnv('MAILCHIMP_API_KEY', () => {
   throw new Error(errorMsg)
 })
 
-const mailchimp = new Mailchimp(MAILCHIMP_API_KEY)
+const client = new Mailchimp(MAILCHIMP_API_KEY)
 
 
-export default {
+/**
+ * Mailchimp client, uses `mailchimp-api-v3` behind the scenes {@link https://developer.mailchimp.com/}
+ * @namespace
+ */
+const mailchimp = {
   /**
    * Register a user to a Mailchimp list.
    * @param  {string} email  - User email
@@ -34,7 +38,7 @@ export default {
       })
     }
 
-    return mailchimp.post(`/lists/${listId}/members`, {
+    return client.post(`/lists/${listId}/members`, {
       email_address: email,
       status: 'subscribed',
     }).then(function(response) {

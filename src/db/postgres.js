@@ -2,7 +2,11 @@ import pg from 'pg'
 import { getObjectValues } from '../utils'
 
 
-export default {
+/**
+ * Client to query Postgres. Uses `pg` behind the scenes, {@link https://node-postgres.com/}
+ * @namespace
+ */
+const postgres = {
   client: null, // defined in `.connect()`
 
   /**
@@ -21,7 +25,7 @@ export default {
 
   /**
    * Forward queries to the pg client
-   * @param  {...args} args - @see https://node-postgres.com/ for more info
+   * @param  {...args} args - {@link https://node-postgres.com/} for more info
    * @return {Promise<object>} - Object containing the matched rows
    */
   query(...args) {
@@ -51,9 +55,7 @@ export default {
     return rows[0]
   },
 
-  /**
-   * Internal
-   */
+  // Internal
   async _query(method, tableName, conditions=false, orderBy=false, extra) {
     let values = []
     let where = ''
@@ -231,3 +233,6 @@ export default {
     return Object.keys(order).map(column => `"${column}" ${order[column]}`)
   }
 }
+
+module.exports = postgres
+
