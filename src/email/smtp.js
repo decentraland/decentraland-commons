@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 
-import { Log } from './log'
-import { getEnv } from './env'
+import { Log } from '../log'
+import { getEnv } from '../env'
 
 
 const log = new Log('[SMTP]')

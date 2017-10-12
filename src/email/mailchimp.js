@@ -1,7 +1,7 @@
 import Mailchimp from 'mailchimp-api-v3'
 
-import { Log } from './log'
-import { getEnv, isDevelopment } from './env'
+import { Log } from '../log'
+import { getEnv, isDevelopment } from '../env'
 
 
 const log = new Log('[Mailchimp]')
