@@ -1,13 +1,17 @@
 import * as env from './env'
 
 
+// Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
+console.debug = console.log.bind(console)
+
+
 /**
  * Log singleton class. A single instance is exported by default from this module
  * Logs objects depending on the environment.
  * The public API consist on calling each log level with the desired log:
  *    log.info('something')
  */
-export class Log {
+class Log {
   /**
    * @param  {string} name - A name prepended to each log
    * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type
@@ -84,6 +88,7 @@ export class Log {
   }
 }
 
+export Log
 
 export function consoleOutput(priority, message, ...extras) {
   if (typeof message === 'function') {
@@ -92,10 +97,5 @@ export function consoleOutput(priority, message, ...extras) {
   }
   console[priority](message, ...extras)
 }
-
-
-// Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
-console.debug = console.log.bind(console)
-
 
 export default new Log()

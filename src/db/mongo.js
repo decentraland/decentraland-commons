@@ -7,7 +7,11 @@ import { promisify } from '../utils'
 const log = new Log('[MongoDB]')
 
 
-export default {
+/**
+ * Client to query MongoDB. Uses `mongodb` behind the scenes, {@link https://docs.mongodb.com/getting-started/node/client/}
+ * @namespace
+ */
+const mongo = {
   client: null, // Defined on `.connect()`
 
   /**
@@ -51,7 +55,7 @@ export default {
 
   /**
    * Forward to the MongoDB collection method
-   * @param  {string} collectionName - Collection name, @see https://docs.mongodb.com/getting-started/node/client/
+   * @param  {string} collectionName - Collection name, {@link https://docs.mongodb.com/getting-started/node/client/}
    * @return {object} - queriable collection
    */
   collection(collectionName) {
@@ -135,3 +139,6 @@ export default {
     }
   }
 }
+
+export default mongo
+

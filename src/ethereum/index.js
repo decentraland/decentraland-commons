@@ -12,7 +12,8 @@ const log = new Log('[Ethrereum]')
 let web3 = null
 
 
-export default {
+/** @namespace */
+const eth = {
   contracts: {
     MANAToken,
     TerraformReserve
@@ -111,7 +112,7 @@ export default {
   /**
    * Converts a number of wei into the desired unit
    * @param  {number|BigNumber} amount - Amount to parse
-   * @param  {string} [unit=ether]     - Which unit to use. @see https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei for more info
+   * @param  {string} [unit=ether]     - Which unit to use. {@link https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei} for more info
    * @return {string} - Parsed result
    */
   fromWei(amount, unit='ether') {
@@ -122,7 +123,7 @@ export default {
   /**
    * Converts an ethereum unit into wei
    * @param  {number|BigNumber} amount - Amount to convert
-   * @param  {string} [unit=ether]     - Which unit to use. @see https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei for more info
+   * @param  {string} [unit=ether]     - Which unit to use. {@link https://github.com/ethereum/wiki/wiki/JavaScript-API#web3towei} for more info
    * @return {string} - Parsed result
    */
   toWei(amount, unit='ether') {
@@ -146,3 +147,5 @@ export default {
     return web3.eth.defaultAccount
   }
 }
+
+export default eth

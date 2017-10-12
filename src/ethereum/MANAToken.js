@@ -6,6 +6,7 @@ import TerraformReserve from './TerraformReserve'
 import eth from './index'
 
 
+/** MANAToken contract class */
 class MANAToken extends Contract {
   async getAllowance(sender) {
     const assigned = await this.getAllowanceWei(sender)

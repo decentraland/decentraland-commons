@@ -9,6 +9,7 @@ import eth from './index'
 const log = new Log('[TerraformReserve]')
 
 
+/** TerraformReserve contract class */
 class TerraformReserve extends Contract {
   lockMana(sender, mana) {
     return this.lockManaWei(sender, eth.toWei(mana))

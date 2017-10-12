@@ -20,6 +20,10 @@ const MAILCHIMP_API_KEY = getEnv('MAILCHIMP_API_KEY', () => {
 const mailchimp = new Mailchimp(MAILCHIMP_API_KEY)
 
 
+/**
+ * Mailchimp client, uses `mailchimp-api-v3` behind the scenes {@link https://developer.mailchimp.com/}
+ * @namespace
+ */
 export default {
   /**
    * Register a user to a Mailchimp list.

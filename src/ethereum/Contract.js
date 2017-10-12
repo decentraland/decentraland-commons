@@ -3,7 +3,8 @@ import abiDecoder from 'abi-decoder'
 import { promisify } from '../utils'
 
 
-export default class Contract {
+/** Class to work with Ethereum contracts */
+class Contract {
   /**
    * @see transaction
    */
@@ -33,7 +34,6 @@ export default class Contract {
   }
 
   /**
-   * Interface to work with Ethereum contracts
    * @param  {string} name    - Name of the contract, just as a reference
    * @param  {string} address - Address of the contract
    * @param  {object} abi     - Object describing the contract (build result)
@@ -103,7 +103,7 @@ export default class Contract {
 
 
   /**
-   * Tries to find the supplied parameter to a *decoded* method (@see decodeMethod). It returns the Wei value
+   * Tries to find the supplied parameter to a *decoded* method @see decodeMethod. It returns the Wei value
    * A method typicaly consist of { "name": "methodName", "params": [{ "name": "paramName", "value": "VALUE_IN_WEI", "type": "uint256" }] }
    * @param  {object} decodedMethod
    * @param  {string} paramName
@@ -118,3 +118,5 @@ export default class Contract {
     }
   }
 }
+
+export default Contract
