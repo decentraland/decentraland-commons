@@ -55,9 +55,7 @@ const postgres = {
     return rows[0]
   },
 
-  /**
-   * Internal
-   */
+  // Internal
   async _query(method, tableName, conditions=false, orderBy=false, extra) {
     let values = []
     let where = ''
