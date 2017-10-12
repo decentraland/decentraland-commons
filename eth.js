@@ -18,6 +18,8 @@ export default {
    */
   MANA: null, // set in `connect`
 
+  manaArtifact,
+
   /**
    * Link to web3's BigNumber reference
    */
