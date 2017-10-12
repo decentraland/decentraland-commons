@@ -50,10 +50,10 @@ function sendMailWithRetry(email, opts, callback) {
 
 
 /**
- * STMP interface uses `nodemailer` behind the scenes {@link https://github.com/nodemailer/nodemailer}
+ * SMTP interface uses `nodemailer` behind the scenes {@link https://github.com/nodemailer/nodemailer}
  * @namespace
  */
-const stmp = {
+const smtp = {
   templates,
 
   /**
@@ -81,4 +81,4 @@ const stmp = {
   }
 }
 
-export default stmp
+export default smtp
