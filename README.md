@@ -6,7 +6,11 @@ Set of common functionality accross Decentraland projects.
 
 ### Scripts
 
-**buildDocs**
+**lint**
+
+Lint js files with `eslint`
+
+**docs**
 
 Builds an static page with the JSDoc documentation
 
