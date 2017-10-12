@@ -2,11 +2,18 @@
   "name": "decentraland-commons",
   "version": "1.0.0",
   "description": "Common functionality between the different Decentraland projects",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
+    "init": "mkdir dist",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean && npm run init",
+    "build": "babel ./src -d ./dist --ignore test.js",
     "buildDocs": "npx jsdoc *.js",
     "test": "mocha --compilers js:babel-register test/*"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "common",
     "modules",
