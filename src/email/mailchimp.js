@@ -1,23 +1,19 @@
 import Mailchimp from 'mailchimp-api-v3'
 
 import { Log } from '../log'
-import { getEnv, isDevelopment } from '../env'
+import { getEnv } from '../env'
 
 
 const log = new Log('[Mailchimp]')
 
-const MAILCHIMP_API_KEY = getEnv('MAILCHIMP_API_KEY', () => {
-  const errorMsg = 'Missing Mailchimp API Key: MAILCHIMP_API_KEY'
+const MAILCHIMP_API_KEY = getEnv('MAILCHIMP_API_KEY')
 
-  if (isDevelopment()) {
-    log.warn(errorMsg)
-    return ''
-  }
-
-  throw new Error(errorMsg)
-})
-
-const client = new Mailchimp(MAILCHIMP_API_KEY)
+let client = null
+try {
+  client = new Mailchimp(MAILCHIMP_API_KEY)
+} catch(error) {
+  // Invalid API_KEY
+}
 
 
 /**

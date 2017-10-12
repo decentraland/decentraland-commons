@@ -13,10 +13,10 @@ console.debug = console.log.bind(console)
  */
 class Log {
   /**
-   * @param  {string} name - A name prepended to each log
+   * @param  {string} [name=''] - A name prepended to each log
    * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type
    */
-  constructor(name, shouldLog = {}) {
+  constructor(name = '', shouldLog = {}) {
     const inDev  = env.isDevelopment()
     const inProd = env.isProduction()
 
@@ -74,13 +74,9 @@ class Log {
       extras.unshift(new Date().toISOString())
     }
 
-    if (this.name) {
-      extras.unshift(this.name)
-    }
-
     if (this.shouldLog[priority]) {
       for (let output of this.outputs) {
-        output(priority, message, ...extras)
+        output(priority, this.name, message, ...extras)
       }
     }
 
@@ -89,12 +85,12 @@ class Log {
 }
 
 
-function consoleOutput(priority, message, ...extras) {
+function consoleOutput(priority, prefix = '', message, ...extras) {
   if (typeof message === 'function') {
     message = message(...extras)
     extras = []
   }
-  console[priority](message, ...extras)
+  console[priority](prefix, message, ...extras)
 }
 
 export { Log }
