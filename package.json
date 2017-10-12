@@ -4,7 +4,7 @@
   "description": "Common functionality between the different Decentraland projects",
   "main": "./dist/index.js",
   "scripts": {
-    "docs": "npx jsdoc -c conf.json -r **/*.js",
+    "docs": "npx jsdoc -c conf.json -r src/**/*.js",
     "lint": "npx eslint .",
     "init": "mkdir dist",
     "clean": "rm -rf dist",
