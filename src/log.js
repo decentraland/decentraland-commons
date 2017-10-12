@@ -88,14 +88,15 @@ class Log {
   }
 }
 
-export Log
 
-export function consoleOutput(priority, message, ...extras) {
+function consoleOutput(priority, message, ...extras) {
   if (typeof message === 'function') {
     message = message(...extras)
     extras = []
   }
   console[priority](message, ...extras)
 }
+
+export { Log }
 
 export default new Log()

@@ -59,3 +59,6 @@ const mailchimp = {
     })
   }
 }
+
+export default mailchimp
+
