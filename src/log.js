@@ -17,19 +17,9 @@ class Log {
    * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
    */
   constructor(name = '', shouldLog = {}) {
-    const inDev  = env.isDevelopment()
-    const inProd = env.isProduction()
-
     this.name = name
-
-    this.shouldLog = Object.assign({
-      trace: inDev,
-      debug: inDev,
-      warn : inDev,
-      log  : inDev || inProd,
-      error: true
-    }, shouldLog)
-
+    this.shouldLog = shouldLog
+    this.logLevels = null
     this.outputs = [consoleOutput]
   }
 
@@ -66,7 +56,7 @@ class Log {
   }
 
   msg(priority, message, ...extras) {
-    if (! (priority in this.shouldLog)) {
+    if (! (priority in this.logLevels)) {
       throw new Error(`Invalid log message priority: ${priority}`)
     }
 
@@ -74,13 +64,29 @@ class Log {
       extras.unshift(new Date().toISOString())
     }
 
-    if (this.shouldLog[priority]) {
+    if (this.logLevels[priority]) {
       for (let output of this.outputs) {
         output(priority, this.name, message, ...extras)
       }
     }
 
     return message
+  }
+
+  getLogLevels() {
+    if (! this.logLevels) {
+      const inDev  = env.isDevelopment()
+
+      this.logLevels = Object.assign({
+        trace: inDev,
+        debug: inDev,
+        warn : inDev,
+        log  : true,
+        error: true
+      }, this.shouldLog)
+    }
+
+    return this.logLevels
   }
 }
 
