@@ -90,4 +90,4 @@ const smtp = {
   }
 }
 
-export default smtp
+module.exports = smtp

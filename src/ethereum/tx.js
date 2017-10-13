@@ -7,7 +7,7 @@ import eth from './index'
 const log = new Log('[tx]')
 
 
-export default {
+const tx = {
   DUMMY_TX_ID: '0xdeadbeef',
 
   async waitUntilComplete(hash) {
@@ -59,3 +59,5 @@ export default {
     return logs.every(log => names.includes(log.name))
   }
 }
+
+module.exports = tx

@@ -1,7 +1,7 @@
 import { Log } from '../log'
 
 
-const log = new Log('[server]')
+const log = new Log('[Server]')
 
 
 /**

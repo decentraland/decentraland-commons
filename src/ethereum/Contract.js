@@ -6,6 +6,14 @@ import { promisify } from '../utils'
 /** Class to work with Ethereum contracts */
 class Contract {
   /**
+   * Get a singleton instance of the current contract. Intended to be overriden
+   * @return {Contract<instance>} - instance
+   */
+  static getInstance() {
+    throw new Error('You should override this method on each Contract subclass')
+  }
+
+  /**
    * @see transaction
    */
   static async transaction(method, ...args) {
@@ -117,4 +125,4 @@ class Contract {
   }
 }
 
-export default Contract
+module.exports = Contract

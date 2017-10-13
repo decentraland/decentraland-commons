@@ -235,4 +235,3 @@ const postgres = {
 }
 
 module.exports = postgres
-

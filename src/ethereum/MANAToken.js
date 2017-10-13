@@ -6,8 +6,18 @@ import TerraformReserve from './TerraformReserve'
 import eth from './index'
 
 
+let instance = null
+
+
 /** MANAToken contract class */
 class MANAToken extends Contract {
+  static getInstance() {
+    if (! instance) {
+      instance = new MANAToken('MANAToken', env.getEnv('MANA_CONTRACT_ADDRESS', ''), abi)
+    }
+    return instance
+  }
+
   async getAllowance(sender) {
     const assigned = await this.getAllowanceWei(sender)
     return eth.fromWei(assigned)
@@ -27,4 +37,4 @@ class MANAToken extends Contract {
   }
 }
 
-export default new MANAToken('MANAToken', env.getEnv('MANA_CONTRACT_ADDRESS'), abi)
+module.exports = MANAToken

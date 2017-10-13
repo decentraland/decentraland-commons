@@ -1,8 +1,9 @@
 import fs from 'fs'
 import sshTunnel from 'tunnel-ssh'
 
-import { Log } from '../utils'
+import { Log } from '../log'
 import { sleep } from '../utils'
+
 
 const log = new Log('[SSH]')
 
@@ -73,4 +74,4 @@ const tunnel = {
   }
 }
 
-export default tunnel
+module.exports = tunnel

@@ -99,6 +99,7 @@ function consoleOutput(priority, prefix = '', message, ...extras) {
   console[priority](prefix, message, ...extras)
 }
 
-export { Log }
-
-export default new Log()
+module.exports = {
+  Log,
+  log: new Log()
+}

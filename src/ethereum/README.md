@@ -13,10 +13,17 @@ Main API to interface with web3. Acts as a global singleton and must be connecte
 
 ```javascript
 import eth from 'ethereum'
+import Contract from 'Contract'
+
+class SuperTokenContract extends Contract {
+  static getInstance() {
+    return new Contract({ name: 'LAND', address: '0xe2a10f', abi: {} })
+  }
+}
 
 eth.connect([
-    { name: 'MANAToken', address: '0x221100', abi: {} }
-    new Contract({ name: 'LAND', address: '0xe2a10f', abi: {} })
+    { name: 'MANAToken', address: '0x221100', abi: {} },
+    SuperTokenContract
 ])
 
 eth.fetchTxStatus('TX_HASH')
@@ -24,7 +31,7 @@ eth.fetchTxStatus('TX_HASH')
 
 ### Contract
 
-An interface to work with Ethereum contracts, takes care of decoding contract data and of calls/transactions
+An interface to work with Ethereum contracts, takes care of decoding contract data and of calls/transactions.
 
 ```javascript
 import Contract from 'Contract'
@@ -35,7 +42,6 @@ const contract = new Contract('MANAToken', '0xdeadbeef', abi)
 await contract.call('allowance', sender, receiver)
 await contract.transaction('lockMana', manaValue)
 ```
-
 
 ### tx.js
 
@@ -63,8 +69,16 @@ import eth from 'eth'
 
 import { abi } from '../contracts/MANAToken.json'
 
+let instance = null
 
 class MANAToken extends Contract {
+    static getInstance() {
+      if (! instance) {
+        instance = new MANAToken('MANAToken', '0xdeadbeef', abi)
+      }
+      return instance
+    }
+
     async lockMana(sender, mana) {
      return await this.transaction(
           'lockMana', sender, mana, { gas: 120000 }
@@ -72,18 +86,18 @@ class MANAToken extends Contract {
     }
 }
 
-export default new MANAToken('MANAToken', '0xdeadbeef', abi)
+export default MANAToken
 ```
 
 
 _On the start of your app, maybe server.js_
 
 ```javascript
-import manaToken from './MANAToken'
+import MANAToken from './MANAToken'
 
 // The null here is to preserve the default account as is
 eth.connect(null, [
-    manaToken,
+    MANAToken,
     // ...etc
 ])
 

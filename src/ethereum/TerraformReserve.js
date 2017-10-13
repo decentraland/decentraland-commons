@@ -7,10 +7,18 @@ import eth from './index'
 
 
 const log = new Log('[TerraformReserve]')
+let instance = null
 
 
 /** TerraformReserve contract class */
 class TerraformReserve extends Contract {
+  static getInstance() {
+    if (! instance) {
+      instance = new TerraformReserve('TerraformReserve', env.getEnv('RESERVE_CONTRACT_ADDRESS', ''), abi)
+    }
+    return instance
+  }
+
   lockMana(sender, mana) {
     return this.lockManaWei(sender, eth.toWei(mana))
   }
@@ -22,4 +30,4 @@ class TerraformReserve extends Contract {
   }
 }
 
-export default new TerraformReserve('TerraformReserve', env.getEnv('RESERVE_CONTRACT_ADDRESS'), abi)
+module.exports = TerraformReserve

@@ -140,5 +140,4 @@ const mongo = {
   }
 }
 
-export default mongo
-
+module.exports = mongo
