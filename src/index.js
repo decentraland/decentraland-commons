@@ -14,7 +14,8 @@ module.exports = {
 
   ssh: require('./ssh'),
 
-  log: require('./log'),
+  log: require('./log').log,
+  Log: require('./log').Log,
 
   cli: require('./cli'),
 
