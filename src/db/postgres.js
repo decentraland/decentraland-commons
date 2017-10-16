@@ -32,6 +32,17 @@ const postgres = {
   },
 
   /**
+   * Counts rows from a query result
+   * @param  {string} tableName
+   * @param  {object} [conditions] - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
+   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. @see getOrderValues
+   * @return {Promise<array>} - Rows
+   */
+  count(tableName, conditions, orderBy) {
+    return this._query('COUNT', tableName, conditions, orderBy)
+  },
+
+  /**
    * Select rows from a table
    * @param  {string} tableName
    * @param  {object} [conditions] - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
@@ -186,6 +197,15 @@ const postgres = {
 
   alterSequenceOwnership(name, owner, columnName = 'id') {
     return this.client.query(`ALTER SEQUENCE ${name} OWNED BY ${owner}.${columnName};`)
+  },
+
+  /**
+   * Truncates the table provided
+   * @param  {string} tableName
+   * @return {Promise} Query result
+   */
+  async truncate(tableName) {
+    return await this.client.query(`TRUNCATE ${tableName} RESTART IDENTITY;`)
   },
 
   /*
