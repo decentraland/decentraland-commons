@@ -18,7 +18,6 @@ const postgres = {
     this.client = new pg.Client(connectionString)
 
     await this.client.connect()
-    await this.createSchema()
 
     return this.client
   },
