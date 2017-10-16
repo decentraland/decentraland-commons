@@ -151,20 +151,23 @@ const postgres = {
    *     "name" varchar(42) NOT NULL
    *   `)
    * @param  {string} tableName
-   * @param  {string} rows      - Each desired row to create
+   * @param  {string} rows    - Each desired row to create
+   * @param  {object} options - Options controling the behaviour of createTable
+   * @param  {string} [options.sequenceName=`${tableName}_id_seq`] - Override the default sequence name. The sequenceName is a falsy value, the sequence will be skipped
+   * @param  {string} [options.primaryKey="id"]                    - Override the default primary key.
    * @return {Promise}
    */
-  async createTable(tableName, rows) {
-    await this.createSequence(`${tableName}_id_seq`)
+  async createTable(tableName, rows, { sequenceName = `${tableName}_id_seq`, primaryKey = 'id' } = {}) {
+    if (sequenceName) await this.createSequence(sequenceName)
 
     await this.client.query(`CREATE TABLE IF NOT EXISTS "${tableName}" (
       ${rows},
       "createdAt" timestamp NOT NULL,
       "updatedAt" timestamp,
-      PRIMARY KEY ("id")
+      PRIMARY KEY ("${primaryKey}")
     );`)
 
-    await this.alterSequenceOwnership(`${tableName}_id_seq`, tableName)
+    if (sequenceName) await this.alterSequenceOwnership(sequenceName, tableName)
   },
 
   /**
