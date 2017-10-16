@@ -1,7 +1,6 @@
-import { isEmptyObject } from './utils'
+import { isEmptyObject } from "./utils";
 
-
-let loaded = false
+let loaded = false;
 
 /**
  * Parses the .env file and adds all variables to the environment
@@ -12,33 +11,33 @@ let loaded = false
  * @param {boolean} [config.override] - Override the current ENV with the value found on the .env file. `config.path` is required if this is true
  */
 export function load({ path, override } = {}) {
-  if (loaded) return
+  if (loaded) return;
 
-  const dotenv = require('dotenv')
+  const dotenv = require("dotenv");
 
   if (override) {
-    const envConfig = dotenv.parse(require('fs').readFileSync(path))
-    Object.assign(process.env, envConfig)
+    const envConfig = dotenv.parse(require("fs").readFileSync(path));
+    Object.assign(process.env, envConfig);
   } else {
-    dotenv.config({ path })
+    dotenv.config({ path });
   }
 
-  loaded = true
+  loaded = true;
 }
 
 export function isDevelopment() {
-  return ! isProduction()
+  return !isProduction();
 }
 
 export function isProduction() {
-  return getName() === 'production'
+  return getName() === "production";
 }
 
 export function getName() {
-  return getEnv('NODE_ENV')
+  return getEnv("NODE_ENV");
 }
 
-const cache = {}
+const cache = {};
 
 /**
  * Gets the queried ENV variable by `name`. It will throw if the application didn't call `config` first
@@ -47,28 +46,33 @@ const cache = {}
  * @return {object} - Result of getting the `name` ENV or fallback
  */
 export function getEnv(name, fallback) {
-  if (! loaded && isEmptyObject(cache)) {
-    console.log(`It looks like you're trying to access an ENV variable (${name}) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`)
+  if (!loaded && isEmptyObject(cache)) {
+    console.log(
+      `It looks like you're trying to access an ENV variable (${name}) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`
+    );
   }
 
-  if (! cache[name]) {
-    const value = process.env[name]
+  if (!cache[name]) {
+    const value = process.env[name];
 
     if (value === undefined) {
-      if (typeof fallback === 'function') {
-        cache[name] = fallback(name)
+      if (typeof fallback === "function") {
+        cache[name] = fallback(name);
       } else {
-        cache[name] = fallback
+        cache[name] = fallback;
       }
 
-      if (! cache.hasOwnProperty(name)) {
-        console.log(`Warning: No ${name} environment variable set, defaulting to ${cache[name]}`)
+      if (!cache.hasOwnProperty(name)) {
+        console.log(
+          `Warning: No ${name} environment variable set, defaulting to ${cache[
+            name
+          ]}`
+        );
       }
-
     } else {
-      cache[name] = value
+      cache[name] = value;
     }
   }
 
-  return cache[name]
+  return cache[name];
 }

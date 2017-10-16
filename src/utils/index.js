@@ -5,18 +5,20 @@
  * @return {Promise}
  */
 export function promisify(fn, that) {
-  return (...args) => new Promise((resolve, reject) => {
-    if (that) {
-      fn = fn.bind(that)
-    }
-    fn(...args, (error, result) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve(result)
+  return (...args) =>
+    new Promise((resolve, reject) => {
+      if (that) {
+        fn = fn.bind(that);
       }
-    })
-  })
+
+      fn(...args, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
 }
 
 /**
@@ -25,7 +27,7 @@ export function promisify(fn, that) {
  * @return {Promise} - Promise that resolves when the sleeping is done
  */
 export function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -33,7 +35,7 @@ export function sleep(ms) {
  * @param {object} obj
  */
 export function isEmptyObject(obj) {
-  return obj && Object.keys(obj).length === 0
+  return obj && Object.keys(obj).length === 0;
 }
 
 /**
@@ -41,5 +43,5 @@ export function isEmptyObject(obj) {
  * @param {object} obj - Object to get the values from
  */
 export function getObjectValues(obj) {
-  return obj && Object.keys(obj).map(key => obj[key])
+  return obj && Object.keys(obj).map(key => obj[key]);
 }

@@ -1,23 +1,21 @@
-import nodemailer from 'nodemailer'
+import nodemailer from "nodemailer";
 
-import { Log } from '../log'
-import { getEnv } from '../env'
+import { Log } from "../log";
+import { getEnv } from "../env";
 
+const log = new Log("[SMTP]");
 
-const log = new Log('[SMTP]')
-
-const EMAIL_COOLDOWN = 60 * 1000 // 1 minute = 60 seconds = 60 * 1000 miliseconds
+const EMAIL_COOLDOWN = 60 * 1000; // 1 minute = 60 seconds = 60 * 1000 miliseconds
 
 const templates = {
   sample: opts => ({
-    from: `The Decentraland Team <${getEnv('MAIL_SENDER')}>`, // sender address
-    to  : opts.email,
-    subject: '[TEST]',
-    text: 'Thanks, The Decentraland Team',
-    html: '<p>Thanks,</p><p>The Decentraland Team</p>'
+    from: `The Decentraland Team <${getEnv("MAIL_SENDER")}>`, // sender address
+    to: opts.email,
+    subject: "[TEST]",
+    text: "Thanks, The Decentraland Team",
+    html: "<p>Thanks,</p><p>The Decentraland Team</p>"
   })
-}
-
+};
 
 /**
  * SMTP interface uses `nodemailer` behind the scenes {@link https://github.com/nodemailer/nodemailer}
@@ -33,7 +31,7 @@ const smtp = {
    * @param {Function} fn   - A function accepting `opts` as an argument, which will be forwarded by `sendEmail`
    */
   setTemplate(name, fn) {
-    this.templates[name] = fn
+    this.templates[name] = fn;
   },
 
   /**
@@ -44,24 +42,35 @@ const smtp = {
    * @return {Promise<string>} - A promise which resolved to the send response from the server (after retries, if any)
    */
   sendMail: (email, template, opts = {}) => {
-    if (! email) throw new Error('You need to supply an email to send to')
-    if (! templates[template]) throw new Error(`Invalid template ${template}`)
+    if (!email) throw new Error("You need to supply an email to send to");
+    if (!templates[template]) throw new Error(`Invalid template ${template}`);
 
-    let content = templates[template](opts)
-    return new Promise(resolve => this._sendMailWithRetry(email, content, resolve))
+    let content = templates[template](opts);
+
+    return new Promise(resolve =>
+      this._sendMailWithRetry(email, content, resolve)
+    );
   },
 
   // internal
   _sendMailWithRetry(email, opts, callback) {
     this.getTransport().sendMail(opts, (error, info) => {
       if (error) {
-        log.error(`Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN / 1000}seconds`)
-        log.error(error, error.stack)
-        return setTimeout(() => this.sendMailWithRetry(email, opts, callback), EMAIL_COOLDOWN)
+        log.error(
+          `Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN /
+            1000}seconds`
+        );
+        log.error(error, error.stack);
+
+        return setTimeout(
+          () => this.sendMailWithRetry(email, opts, callback),
+          EMAIL_COOLDOWN
+        );
       }
-      log.info('Email %s sent: %s', info.messageId, info.response)
-      callback(info.response)
-    })
+
+      log.info("Email %s sent: %s", info.messageId, info.response);
+      callback(info.response);
+    });
   },
 
   /**
@@ -70,24 +79,24 @@ const smtp = {
    */
   getTransport() {
     if (this.transport) {
-      const HOSTNAME = getEnv('MAIL_HOSTNAME')
-      const PORT     = getEnv('MAIL_PORT')
-      const USERNAME = getEnv('MAIL_USERNAME')
-      const PASSWORD = getEnv('MAIL_PASS')
+      const HOSTNAME = getEnv("MAIL_HOSTNAME");
+      const PORT = getEnv("MAIL_PORT");
+      const USERNAME = getEnv("MAIL_USERNAME");
+      const PASSWORD = getEnv("MAIL_PASS");
 
       this.transport = nodemailer.createTransport({
         host: HOSTNAME,
         port: parseInt(PORT, 10),
-        secure: PORT === '465',
+        secure: PORT === "465",
         auth: {
           user: USERNAME,
           pass: PASSWORD
         }
-      })
+      });
     }
 
-    return this.transport
+    return this.transport;
   }
-}
+};
 
-module.exports = smtp
+module.exports = smtp;

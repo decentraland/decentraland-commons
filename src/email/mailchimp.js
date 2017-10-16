@@ -1,11 +1,9 @@
-import Mailchimp from 'mailchimp-api-v3'
+import Mailchimp from "mailchimp-api-v3";
 
-import { Log } from '../log'
-import { getEnv } from '../env'
+import { Log } from "../log";
+import { getEnv } from "../env";
 
-
-const log = new Log('[Mailchimp]')
-
+const log = new Log("[Mailchimp]");
 
 /**
  * Mailchimp client, uses `mailchimp-api-v3` behind the scenes {@link https://developer.mailchimp.com/}
@@ -20,11 +18,11 @@ const mailchimp = {
    */
   connect() {
     if (this.client) {
-      const MAILCHIMP_API_KEY = getEnv('MAILCHIMP_API_KEY')
-      this.client = new Mailchimp(MAILCHIMP_API_KEY)
+      const MAILCHIMP_API_KEY = getEnv("MAILCHIMP_API_KEY");
+      this.client = new Mailchimp(MAILCHIMP_API_KEY);
     }
 
-    return this
+    return this;
   },
 
   /**
@@ -34,32 +32,37 @@ const mailchimp = {
    * @return {Promise<boolean>} - True if the operation was successfull
    */
   subscribe: (email, listId) => {
-    if (! listId) {
-      listId = getEnv('MAILCHIMP_LIST_ID', () => {
-        throw new Error('Missing Mailchimp List Id: MAILCHIMP_LIST_ID')
-      })
+    if (!listId) {
+      listId = getEnv("MAILCHIMP_LIST_ID", () => {
+        throw new Error("Missing Mailchimp List Id: MAILCHIMP_LIST_ID");
+      });
     }
 
-    return this.client.post(`/lists/${listId}/members`, {
-      email_address: email,
-      status: 'subscribed',
-    }).then(function(response) {
-      if (response.error) {
-        return false
-      }
+    return this.client
+      .post(`/lists/${listId}/members`, {
+        email_address: email,
+        status: "subscribed"
+      })
+      .then(function(response) {
+        if (response.error) {
+          return false;
+        }
 
-      log.info(`Subscribed ${email} to list ${listId}`)
-      return true
+        log.info(`Subscribed ${email} to list ${listId}`);
+        return true;
+      })
+      .catch(error => {
+        if (error.title === "Member Exists") {
+          return true;
+        }
 
-    }).catch(error => {
-      if (error.title === 'Member Exists') {
-        return true
-      }
-
-      log.error(`Error trying to subscribe ${email} to list ${listId}`, error)
-      return false
-    })
+        log.error(
+          `Error trying to subscribe ${email} to list ${listId}`,
+          error
+        );
+        return false;
+      });
   }
-}
+};
 
-module.exports = mailchimp
+module.exports = mailchimp;

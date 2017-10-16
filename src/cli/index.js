@@ -1,6 +1,5 @@
-import program from 'commander'
-import inquirer from 'inquirer'
-
+import program from "commander";
+import inquirer from "inquirer";
 
 /**
  * Runs a set of different clients. Useful to split functionalities and lower boilerplate code
@@ -8,34 +7,38 @@ import inquirer from 'inquirer'
  */
 export function runProgram(clients) {
   for (const client of clients) {
-    if (typeof client.addCommands !== 'function') {
-      throw new Error('Each client supplied to `runProgram` must implement the `addCommands` function')
+    if (typeof client.addCommands !== "function") {
+      throw new Error(
+        "Each client supplied to `runProgram` must implement the `addCommands` function"
+      );
     }
 
-    client.addCommands(program)
+    client.addCommands(program);
   }
 
-  if (! process.argv.slice(2).length) {
-    program.outputHelp()
-    process.exit()
+  if (!process.argv.slice(2).length) {
+    program.outputHelp();
+    process.exit();
   }
 
-  program.parse(process.argv)
+  program.parse(process.argv);
 }
-
 
 /**
  * Query the user for a boolean result
  * @param {string} [text=Are you sure?]  - The text to show to the user
  * @param {boolean} [defaultAnswer=true] - The value for the default answer
  */
-export default async function confirm(text = 'Are you sure?', defaultAnswer = false) {
+export default async function confirm(
+  text = "Are you sure?",
+  defaultAnswer = false
+) {
   const res = await inquirer.prompt({
-    type: 'confirm',
-    name: 'confirm',
+    type: "confirm",
+    name: "confirm",
     message: text,
     default: defaultAnswer
-  })
+  });
 
-  return res.confirm
+  return res.confirm;
 }

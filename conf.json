@@ -1,11 +1,11 @@
 {
-    "source": {
-        "includePattern": ".+\\.js(doc)?$",
-        "excludePattern": "(^|\\/|\\\\)_",
-        "exclude": [
-            "node_modules",
-            "dist",
-            "plugins"
-        ]
-    }
+  "source": {
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_",
+    "exclude": [
+      "node_modules",
+      "dist",
+      "plugins"
+    ]
+  }
 }

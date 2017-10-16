@@ -1,12 +1,10 @@
-import fs from 'fs'
-import sshTunnel from 'tunnel-ssh'
+import fs from "fs";
+import sshTunnel from "tunnel-ssh";
 
-import { Log } from '../log'
-import { sleep } from '../utils'
+import { Log } from "../log";
+import { sleep } from "../utils";
 
-
-const log = new Log('[SSH]')
-
+const log = new Log("[SSH]");
 
 /**
  * Connect via an SSH tunnel. It uses tunnel-ssh behind the scenes {@link https://github.com/agebrock/tunnel-ssh}
@@ -19,27 +17,34 @@ const tunnel = {
    * @return {Promise<number>} - Fires when the tunnel connection has been stablished. It receives the tunnel port as a parameter
    */
   connect: function(configOrPath) {
-    let tunnelConfig = this.readTunnelConfig(configOrPath)
+    let tunnelConfig = this.readTunnelConfig(configOrPath);
 
-    if (! tunnelConfig) throw new Error('Tried to connect to ssh tunnel without a valid configuration')
+    if (!tunnelConfig) {
+      throw new Error(
+        "Tried to connect to ssh tunnel without a valid configuration"
+      );
+    }
 
-    log.info('Connecting to SSH tunnel')
-    let currentTunnel = null
+    log.info("Connecting to SSH tunnel");
+    let currentTunnel = null;
 
     return new Promise((resolve, reject) =>
       sshTunnel(tunnelConfig, (error, _tunnel) => {
-        currentTunnel = _tunnel
-        resolve(tunnelConfig.localPort)
+        currentTunnel = _tunnel;
+        resolve(tunnelConfig.localPort);
+      }).on("error", async (error, tunnel) => {
+        log.info("Tunnel error", error.toString());
+        if (currentTunnel) currentTunnel.close();
 
-      }).on('error', async (error, tunnel) => {
-        log.info('Tunnel error', error.toString())
-        if (currentTunnel) currentTunnel.close()
-        this.close()
+        this.close();
+        await sleep(1000);
 
-        await sleep(1000)
-        tunnel.connect(configOrPath).then(resolve).catch(reject)
+        tunnel
+          .connect(configOrPath)
+          .then(resolve)
+          .catch(reject);
       })
-    )
+    );
   },
 
   /**
@@ -56,22 +61,21 @@ const tunnel = {
    * @return {[type]}            [description]
    */
   readTunnelConfig(configOrPath) {
-    let tunnelConfig = null
+    let tunnelConfig = null;
 
-    if (typeof configOrPath === 'string') {
-      tunnelConfig = fs.readFileSync(configOrPath)
-      tunnelConfig = JSON.parse(tunnelConfig)
-
+    if (typeof configOrPath === "string") {
+      tunnelConfig = fs.readFileSync(configOrPath);
+      tunnelConfig = JSON.parse(tunnelConfig);
     } else {
-      tunnelConfig = Object.assign({}, configOrPath)
+      tunnelConfig = Object.assign({}, configOrPath);
     }
 
     if (tunnelConfig && tunnelConfig.privateKey) {
-      tunnelConfig.privateKey = fs.readFileSync(tunnelConfig.privateKey)
+      tunnelConfig.privateKey = fs.readFileSync(tunnelConfig.privateKey);
     }
 
-    return tunnelConfig
+    return tunnelConfig;
   }
-}
+};
 
-module.exports = tunnel
+module.exports = tunnel;

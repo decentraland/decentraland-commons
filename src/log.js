@@ -1,9 +1,7 @@
-import * as env from './env'
-
+import * as env from "./env";
 
 // Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
-console.debug = console.log.bind(console)
-
+console.debug = console.log.bind(console);
 
 /**
  * Log singleton class. A single instance is exported by default from this module
@@ -16,90 +14,92 @@ class Log {
    * @param  {string} [name=''] - A name prepended to each log
    * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
    */
-  constructor(name = '', shouldLog = {}) {
-    this.name = name
-    this.shouldLog = shouldLog
-    this.logLevels = null
-    this.outputs = [consoleOutput]
+  constructor(name = "", shouldLog = {}) {
+    this.name = name;
+    this.shouldLog = shouldLog;
+    this.logLevels = null;
+    this.outputs = [consoleOutput];
   }
 
   addOutput(fn) {
     if (!this.outputs.includes(fn)) {
-      this.outputs.push(fn)
+      this.outputs.push(fn);
     }
   }
 
   removeOutput(fn) {
-    this.outputs = this.outputs.filter(e => e !== fn)
+    this.outputs = this.outputs.filter(e => e !== fn);
   }
 
   debug(...args) {
-    return this.msg('debug', ...args)
+    return this.msg("debug", ...args);
   }
 
   warn(...args) {
-    return this.msg('warn', ...args)
+    return this.msg("warn", ...args);
   }
 
   info(...args) {
-    return this.msg('log', ...args)
+    return this.msg("log", ...args);
   }
 
   error(...args) {
-    return this.msg('error', ...args)
+    return this.msg("error", ...args);
   }
 
   trace(...args) {
     if (this.shouldLog.trace) {
-      return console.trace(...args)
+      return console.trace(...args);
     }
   }
 
   msg(priority, message, ...extras) {
-    if (! (priority in this.logLevels)) {
-      throw new Error(`Invalid log message priority: ${priority}`)
+    if (!(priority in this.logLevels)) {
+      throw new Error(`Invalid log message priority: ${priority}`);
     }
 
     if (this.time) {
-      extras.unshift(new Date().toISOString())
+      extras.unshift(new Date().toISOString());
     }
 
     if (this.logLevels[priority]) {
       for (let output of this.outputs) {
-        output(priority, this.name, message, ...extras)
+        output(priority, this.name, message, ...extras);
       }
     }
 
-    return message
+    return message;
   }
 
   getLogLevels() {
-    if (! this.logLevels) {
-      const inDev  = env.isDevelopment()
+    if (!this.logLevels) {
+      const inDev = env.isDevelopment();
 
-      this.logLevels = Object.assign({
-        trace: inDev,
-        debug: inDev,
-        warn : inDev,
-        log  : true,
-        error: true
-      }, this.shouldLog)
+      this.logLevels = Object.assign(
+        {
+          trace: inDev,
+          debug: inDev,
+          warn: inDev,
+          log: true,
+          error: true
+        },
+        this.shouldLog
+      );
     }
 
-    return this.logLevels
+    return this.logLevels;
   }
 }
 
-
-function consoleOutput(priority, prefix = '', message, ...extras) {
-  if (typeof message === 'function') {
-    message = message(...extras)
-    extras = []
+function consoleOutput(priority, prefix = "", message, ...extras) {
+  if (typeof message === "function") {
+    message = message(...extras);
+    extras = [];
   }
-  console[priority](prefix, message, ...extras)
+  console[priority](prefix, message, ...extras);
 }
 
 module.exports = {
   Log,
   log: new Log()
-}
+};

@@ -1,36 +1,34 @@
-import { Log } from '../log'
-import { sleep } from '../utils'
+import { Log } from "../log";
+import { sleep } from "../utils";
 
-import eth from './index'
+import eth from "./index";
 
-
-const log = new Log('[tx]')
-
+const log = new Log("[tx]");
 
 const tx = {
-  DUMMY_TX_ID: '0xdeadbeef',
+  DUMMY_TX_ID: "0xdeadbeef",
 
   async waitUntilComplete(hash) {
     const retry = () => {
-      log.info(`Transaction ${hash} pending, retrying later`)
-      return sleep(1000 * 60).then(() => this.whenComplete(hash))
-    }
+      log.info(`Transaction ${hash} pending, retrying later`);
+      return sleep(1000 * 60).then(() => this.whenComplete(hash));
+    };
 
-    const { tx, recepeit } = await this.getFull(hash)
+    const { tx, recepeit } = await this.getFull(hash);
 
-    if (this.isPending(tx) || ! recepeit) return retry()
+    if (this.isPending(tx) || !recepeit) return retry();
 
-    log.info(`Transaction ${hash} completed`)
-    return { tx, recepeit }
+    log.info(`Transaction ${hash} completed`);
+    return { tx, recepeit };
   },
 
   async getFull(txId) {
     const [tx, recepeit] = await Promise.all([
       eth.fetchTxStatus(txId),
       eth.fetchTxReceipt(txId)
-    ])
+    ]);
 
-    return { tx, recepeit }
+    return { tx, recepeit };
   },
 
   /**
@@ -40,8 +38,8 @@ const tx = {
    * @return boolean
    */
   isPending(tx) {
-    if (! tx) return true
-    return tx.blockNumber === null || tx.status === 'pending' // `status` is added by us
+    if (!tx) return true;
+    return tx.blockNumber === null || tx.status === "pending"; // `status` is added by us
   },
 
   /**
@@ -51,13 +49,13 @@ const tx = {
    * @return boolean
    */
   hasLogEvents(logs, names) {
-    if (! names || names.length === 0) return false
-    if (! Array.isArray(names)) names = [names]
+    if (!names || names.length === 0) return false;
+    if (!Array.isArray(names)) names = [names];
 
-    logs = logs.filter(log => log && log.name)
+    logs = logs.filter(log => log && log.name);
 
-    return logs.every(log => names.includes(log.name))
+    return logs.every(log => names.includes(log.name));
   }
-}
+};
 
-module.exports = tx
+module.exports = tx;

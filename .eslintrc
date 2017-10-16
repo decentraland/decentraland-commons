@@ -1,6 +1,7 @@
 {
   "parser": "babel-eslint",
-  "extends": [ "eslint:recommended" ],
+  "extends": ["eslint:recommended", "prettier"],
+  "plugins": ["prettier"],
   "env": {
     "es6": true,
     "node": true,
@@ -9,15 +10,12 @@
   "parserOptions": {
     "ecmaVersion": 8,
     "ecmaFeatures": {
-      "jsx": true,
       "classes": true
     },
     "sourceType": "module"
   },
   "rules": {
-    "strict": 2,
-    "quotes": ["error", "single"],
-    "semi": ["error", "never"],
+    "prettier/prettier": "error",
     "no-console": 0,
     "no-unused-vars": ["error", {
       "vars": "all",

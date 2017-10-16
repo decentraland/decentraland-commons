@@ -1,27 +1,27 @@
 module.exports = {
   // Abi accessible using the `.abi` property
   contracts: {
-    MANAToken: require('./ethereum/MANAToken'),
-    TerraformReserve: require('./ethereum/TerraformReserve')
+    MANAToken: require("./ethereum/MANAToken"),
+    TerraformReserve: require("./ethereum/TerraformReserve")
   },
-  ethereum: require('./ethereum'),
+  ethereum: require("./ethereum"),
 
-  server: require('./server'),
+  server: require("./server"),
 
-  db: require('./db'),
+  db: require("./db"),
 
-  ssh: require('./ssh'),
+  ssh: require("./ssh"),
 
-  env: require('./env'),
+  env: require("./env"),
 
-  Model: require('./Model'),
+  Model: require("./Model"),
 
-  log: require('./log').log,
-  Log: require('./log').Log,
+  log: require("./log").log,
+  Log: require("./log").Log,
 
-  cli: require('./cli'),
+  cli: require("./cli"),
 
-  email: require('./email'),
+  email: require("./email"),
 
-  utils: require('./utils')
-}
+  utils: require("./utils")
+};

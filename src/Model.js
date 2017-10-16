@@ -8,7 +8,7 @@ class Model {
    * @return {Model<instance>}
    */
   constructor(attributes) {
-    this.attributes = attributes || {}
+    this.attributes = attributes || {};
   }
 
   /**
@@ -16,7 +16,7 @@ class Model {
    * @return {boolean}
    */
   isEmpty() {
-    return ! this.get()
+    return !this.get();
   }
 
   /**
@@ -25,7 +25,7 @@ class Model {
    * @return {[type]} Value found, if any
    */
   get(key) {
-    return key ? this.attributes[key] : this.attributes
+    return key ? this.attributes[key] : this.attributes;
   }
 
   /**
@@ -34,14 +34,14 @@ class Model {
    * @return {object} The value of the searched key or null if any key is missing along the way
    */
   getIn(keyPath) {
-    let value = this.attributes
+    let value = this.attributes;
 
     for (let prop of keyPath) {
-      if (! value) return null
-      value = value[prop]
+      if (!value) return null;
+      value = value[prop];
     }
 
-    return value
+    return value;
   }
 
   /**
@@ -51,8 +51,8 @@ class Model {
    * @return {Model<instace>} The instance of the model (chainable)
    */
   set(key, value) {
-    this.attributes[key] = value
-    return this
+    this.attributes[key] = value;
+    return this;
   }
 
   /**
@@ -62,23 +62,23 @@ class Model {
    * @return {Model<instace>} The instance of the model (chainable)
    */
   setIn(keyPath, value) {
-    let keyAmount = keyPath.length
-    let nested = this.attributes
+    let keyAmount = keyPath.length;
+    let nested = this.attributes;
 
     for (let i = 0; i < keyAmount; i++) {
-      if (! nested) return null
+      if (!nested) return null;
 
-      let key = keyPath[i]
+      let key = keyPath[i];
 
       if (i + 1 === keyAmount) {
-        nested[key] = value
+        nested[key] = value;
       } else {
-        nested = nested[key]
+        nested = nested[key];
       }
     }
 
-    return this
+    return this;
   }
 }
 
-module.exports = Model
+module.exports = Model;

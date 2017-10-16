@@ -1,11 +1,9 @@
-import { MongoClient } from 'mongodb'
+import { MongoClient } from "mongodb";
 
-import { Log } from '../log'
-import { promisify } from '../utils'
+import { Log } from "../log";
+import { promisify } from "../utils";
 
-
-const log = new Log('[MongoDB]')
-
+const log = new Log("[MongoDB]");
 
 /**
  * Client to query MongoDB. Uses `mongodb` behind the scenes, {@link https://docs.mongodb.com/getting-started/node/client/}
@@ -23,34 +21,34 @@ const mongo = {
    * @return {Promise} - Resolves on connection
    */
   connect: function(port, dbname, username, password) {
-    const url = `mongodb://localhost:${port}/${dbname}`
+    const url = `mongodb://localhost:${port}/${dbname}`;
 
-    log.info(`Connecting to ${url}`)
+    log.info(`Connecting to ${url}`);
 
     return MongoClient.connect(url)
-      .then(async (mongodb) => {
-        log.info(`Connected to MongoDB ${dbname}`)
+      .then(async mongodb => {
+        log.info(`Connected to MongoDB ${dbname}`);
 
         if (username) {
-          await promisify(mongodb.authenticate, mongodb)(username, password)
+          await promisify(mongodb.authenticate, mongodb)(username, password);
         }
 
-        this.client = mongodb
+        this.client = mongodb;
       })
       .catch(error => {
-        error.connectionTimedOut = this.isConnectionTimedOut(error)
+        error.connectionTimedOut = this.isConnectionTimedOut(error);
 
         if (error.connectionTimedOut) {
-          log.warn(`Connection to MongoDB ${dbname} TIMED OUT`)
+          log.warn(`Connection to MongoDB ${dbname} TIMED OUT`);
         }
 
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   isConnectionTimedOut: function(error) {
     // Sadly as of this writing, there's no other way to check if a mongo connection timed out
-    return error.message.search(/timed out$/) !== -1
+    return error.message.search(/timed out$/) !== -1;
   },
 
   /**
@@ -59,7 +57,7 @@ const mongo = {
    * @return {object} - queriable collection
    */
   collection(collectionName) {
-    return this.client.collection(collectionName)
+    return this.client.collection(collectionName);
   },
 
   /**
@@ -71,18 +69,17 @@ const mongo = {
    * @return {Promise<object>}
    */
   async save(collectionName, _id, row = null) {
-    const collection = this.client.collection(collectionName)
-    const exists = await this.exists(collectionName, { _id })
+    const collection = this.client.collection(collectionName);
+    const exists = await this.exists(collectionName, { _id });
 
-    if (exists && ! row) return // Nothing to do here
+    if (exists && !row) return; // Nothing to do here
 
     if (exists) {
-      row.updatedAt = new Date()
-      return await collection.update({ _id }, { $set: row })
-
+      row.updatedAt = new Date();
+      return await collection.update({ _id }, { $set: row });
     } else {
-      row = Object.assign({ _id, createdAt: new Date() }, row)
-      return await collection.insertOne(row)
+      row = Object.assign({ _id, createdAt: new Date() }, row);
+      return await collection.insertOne(row);
     }
   },
 
@@ -93,8 +90,12 @@ const mongo = {
    * @return {Promise<boolean>}
    */
   async exists(collectionName, query = {}) {
-    const count = await this.client.collection(collectionName).find(query).count()
-    return count > 0
+    const count = await this.client
+      .collection(collectionName)
+      .find(query)
+      .count();
+
+    return count > 0;
   },
 
   /**
@@ -104,8 +105,16 @@ const mongo = {
    * @return {Promise<array<object>>}
    */
   async find(collectionName, query) {
-    if (! this.client) throw new Error('Connection to database not found, have you called `.connect()` already?')
-    return await this.client.collection(collectionName).find(query).toArray()
+    if (!this.client) {
+      throw new Error(
+        "Connection to database not found, have you called `.connect()` already?"
+      );
+    }
+
+    return await this.client
+      .collection(collectionName)
+      .find(query)
+      .toArray();
   },
 
   /**
@@ -115,8 +124,13 @@ const mongo = {
    * @return {Promise<object>}
    */
   async findOne(collectionName, query) {
-    if (! this.client) throw new Error('Connection to database not found, have you called `.connect()` already?')
-    return await this.client.collection(collectionName).findOne(query)
+    if (!this.client) {
+      throw new Error(
+        "Connection to database not found, have you called `.connect()` already?"
+      );
+    }
+
+    return await this.client.collection(collectionName).findOne(query);
   },
 
   /**
@@ -126,8 +140,16 @@ const mongo = {
    * @return {Promise<object>}
    */
   async aggregate(collectionName, query) {
-    if (! this.client) throw new Error('Connection to database not found, have you called `.connect()` already?')
-    return await this.client.collection(collectionName).aggregate(query).toArray()
+    if (!this.client) {
+      throw new Error(
+        "Connection to database not found, have you called `.connect()` already?"
+      );
+    }
+
+    return await this.client
+      .collection(collectionName)
+      .aggregate(query)
+      .toArray();
   },
 
   /**
@@ -135,9 +157,9 @@ const mongo = {
    */
   close: function() {
     if (this.client) {
-      this.client.close()
+      this.client.close();
     }
   }
-}
+};
 
-module.exports = mongo
+module.exports = mongo;

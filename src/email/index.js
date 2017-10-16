@@ -1,4 +1,4 @@
 module.exports = {
-  mailchimp: require('./mailchimp.js'),
-  smtp: require('./smtp')
-}
+  mailchimp: require("./mailchimp.js"),
+  smtp: require("./smtp")
+};
