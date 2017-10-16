@@ -13,6 +13,10 @@
     "build": "babel ./src -d ./dist --ignore test.js",
     "test": "npx mocha --compilers js:babel-register test/*"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://decentraland.digital/decentraland/decentraland-commons.git"
+  },
   "files": [
     "dist"
   ],
