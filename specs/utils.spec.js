@@ -1,9 +1,28 @@
 import { expect } from "chai";
-import { pick } from "../src/utils";
+import { omit, pick } from "../src/utils";
 
 describe("Utils", function() {
+  describe("#omit", function() {
+    it("should return a new object without the supplied keys", function() {
+      const obj = {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: {
+          e: 4
+        }
+      };
+      const newObj = omit(obj, ["a", "d"]);
+
+      expect(newObj).to.deep.equal({
+        b: 2,
+        c: 3
+      });
+    });
+  });
+
   describe("#pick", function() {
-    it("should return a new object with only the asked values", function() {
+    it("should return a new object with only the asked keys", function() {
       const obj = {
         a: 1,
         b: 2,

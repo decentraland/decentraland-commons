@@ -47,6 +47,16 @@ export function getObjectValues(obj) {
 }
 
 /**
+ * Return a copy of the object, filtered to omit the blacklisted array of valid keys
+ * @param {object} obj
+ * @param {array} keys
+ */
+export function omit(obj, keys) {
+  const newKeys = Object.keys(obj).filter(key => !keys.includes(key));
+  return pick(obj, newKeys);
+}
+
+/**
  * Return a copy of the object, filtered to only have values for the whitelisted array of valid keys
  * @param {object} obj
  * @param {array} keys
