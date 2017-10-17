@@ -73,7 +73,7 @@ const postgres = {
   },
 
   // Internal
-  async _query(method, tableName, conditions = false, orderBy = false, extra) {
+  async _query(method, tableName, conditions, orderBy, extra = "") {
     let values = [];
     let where = "";
     let order = "";
