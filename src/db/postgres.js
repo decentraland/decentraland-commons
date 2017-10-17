@@ -22,12 +22,14 @@ const postgres = {
   },
 
   /**
-   * Forward queries to the pg client
-   * @param  {...args} args - {@link https://node-postgres.com/} for more info
+   * Forward queries to the pg client. {@link https://node-postgres.com/} for more info
+   * @param  {string} queryString
+   * @param  {array} [values]
    * @return {Promise<object>} - Object containing the matched rows
    */
-  query(...args) {
-    return this.client.query(...args);
+  async query(queryString, values) {
+    const result = await this.client.query(queryString, values);
+    return result.rows;
   },
 
   /**
@@ -92,15 +94,6 @@ const postgres = {
 
     return result.rows;
   },
-
-  /**
-   * upsert an object to the desired collection.
-   * It adds the `createdAt` and `updatedAt` properties by default
-   * @param  {string} collectionName - Collection name
-   * @param  {string} _id            - _id of the new object or of the one to update
-   * @param  {object} [row]          - properties to upsert
-   * @return {object}
-   */
 
   /**
    * Insert an object on the database. Ex:
