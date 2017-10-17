@@ -45,3 +45,13 @@ export function isEmptyObject(obj) {
 export function getObjectValues(obj) {
   return obj && Object.keys(obj).map(key => obj[key]);
 }
+
+/**
+ * Return a copy of the object, filtered to only have values for the whitelisted array of valid keys
+ * @param {object} obj
+ * @param {array} keys
+ */
+export function pick(obj, keys) {
+  const values = keys.map(prop => ({ [prop]: obj[prop] }));
+  return Object.assign({}, ...values);
+}
