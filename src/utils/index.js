@@ -62,6 +62,13 @@ export function omit(obj, keys) {
  * @param {array} keys
  */
 export function pick(obj, keys) {
-  const values = keys.map(prop => ({ [prop]: obj[prop] }));
-  return Object.assign({}, ...values);
+  const result = {};
+
+  for (const key of keys) {
+    if (obj.hasOwnProperty(key)) {
+      result[key] = obj[key];
+    }
+  }
+
+  return result;
 }
