@@ -69,6 +69,7 @@ const postgres = {
       orderBy,
       "LIMIT 1"
     );
+
     return rows[0];
   },
 
@@ -149,20 +150,28 @@ const postgres = {
     const changeValues = getObjectValues(changes);
     const conditionValues = getObjectValues(conditions);
 
+    const whereClauses = this.toAssignmentFields(
+      conditions,
+      changeValues.length
+    );
+
     const values = changeValues.concat(conditionValues);
 
     return await this.client.query(
       `UPDATE ${tableName}
-      SET ${this.toAssignmentFields(changes)}
-      WHERE ${this.toAssignmentFields(conditions, changeValues.length).join(
-        " AND "
-      )}
-    `,
+      SET   ${this.toAssignmentFields(changes)}
+      WHERE ${whereClauses.join(" AND ")}`,
       values
     );
   },
 
-  async deleteFrom(tableName, conditions) {
+  /**
+   * Delete rows from the database
+   * @param  {string} tableName
+   * @param  {object} conditions - An object describing the WHERE clause.
+   * @return {Promise<object>}
+   */
+  async delete(tableName, conditions) {
     if (!conditions) {
       throw new Error(
         `Tried to update ${tableName} without a WHERE clause. Supply a conditions object`
@@ -173,8 +182,7 @@ const postgres = {
 
     return await this.client.query(
       `DELETE FROM ${tableName}
-      WHERE ${this.toAssignmentFields(conditions).join(" AND ")}
-    `,
+      WHERE ${this.toAssignmentFields(conditions).join(" AND ")}`,
       values
     );
   },

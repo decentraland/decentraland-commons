@@ -7,6 +7,7 @@ const log = new Log("[MongoDB]");
 
 /**
  * Client to query MongoDB. Uses `mongodb` behind the scenes, {@link https://docs.mongodb.com/getting-started/node/client/}
+ * IMPORTANT: To use this client with the `Model` class, it should be updated to follow the common API found on `postgres.js`
  * @namespace
  */
 const mongo = {

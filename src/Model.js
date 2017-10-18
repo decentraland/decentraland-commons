@@ -1,7 +1,80 @@
+import dbClients from "./db";
+import * as utils from "./utils";
+
 /**
  * Basic Model class for accesing inner attributes easily
  */
 class Model {
+  static tableName = null;
+  static columnNames = [];
+
+  /**
+   * DB client to use. We use Postgres by default. Can be changed via Model.useDB('db client')
+   * It's the same for
+   * @type {object}
+   */
+  static db = dbClients["postgres"];
+
+  /**
+   * Change the current DB client
+   * @param  {string|object} dbClient - The name of an available db client (from /db) or an object with the same API
+   */
+  static useDB(dbClient = "postgres") {
+    if (typeof dbClient === "string" && !dbClients[dbClients]) {
+      throw new Error(`Undefined db client ${dbClients}`);
+    }
+
+    this.db = dbClients[dbClients];
+  }
+
+  /**
+   * Return all rows from the table
+   * @return {Promise<array>}
+   */
+  static async all() {
+    return await this.db.select(this.tableName);
+  }
+
+  /**
+   * Return the row for the supplied id
+   * @param  {string|number} id
+   * @return {Promise<object>}
+   */
+  static async findOne(id) {
+    return await this.db.selectOne(this.tableName, { id });
+  }
+
+  /**
+   * Insert the row filtering the Model.columnNames to the Model.tableName table
+   * @param  {object} row
+   * @return {Promise<object>}
+   */
+  static async insert(row) {
+    return await this.db.insert(
+      this.tableName,
+      utils.pick(row, this.columnNames)
+    );
+  }
+
+  /**
+   * Update the row on the Model.tableName table.
+   * @param  {object} changes    - An object describing the updates.
+   * @param  {object} conditions - An object describing the WHERE clause.
+   * @return {Promise<object>}
+   */
+  static async update(changes, conditions) {
+    return await this.db.update(this.tableName, changes, conditions);
+  }
+
+  /**
+   * Delete the row on the Model.tableName table.
+   * @param  {object} conditions - An object describing the WHERE clause.
+   * @return {Promise<object>}
+   */
+  static async delete(changes, conditions) {
+    return await this.db.delete(this.tableName, conditions);
+  }
+
   /**
    * Creates a new instance storing the attributes for later use
    * @param  {object} attributes
@@ -9,6 +82,38 @@ class Model {
    */
   constructor(attributes) {
     this.attributes = attributes || {};
+  }
+
+  /**
+   * Return the row for the this.attributes id property
+   * @return {Promise<object>}
+   */
+  async findOne() {
+    return await this.constructor.findOne(this.attributes.id);
+  }
+
+  /**
+   * Forwards to Mode.insert using this.attributes
+   */
+  async insert() {
+    return await this.constructor.insert(this.attributes);
+  }
+
+  /**
+   * Forwards to Mode.update using this.attributes. If no conditions are supplied, it uses this.attributes.id
+   * @params {object} changes
+   * @params {object} [conditions]
+   */
+  async update(changes, conditions = { id: this.attributes.id }) {
+    return await this.constructor.update(changes, conditions);
+  }
+
+  /**
+   * Forwards to Mode.delete using this.attributes. If no conditions are supplied, it uses this.attributes.id
+   * @params {object} [conditions]
+   */
+  async delete(conditions = { id: this.attributes.id }) {
+    return await this.constructor.delete(conditions);
   }
 
   /**
