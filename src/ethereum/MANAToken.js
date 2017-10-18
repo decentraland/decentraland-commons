@@ -3,7 +3,7 @@ import * as env from "../env";
 
 import Contract from "./Contract";
 import TerraformReserve from "./TerraformReserve";
-import eth from "./index";
+import eth from "./eth";
 
 let instance = null;
 

@@ -54,7 +54,9 @@ class Log {
   }
 
   msg(priority, message, ...extras) {
-    if (!(priority in this.logLevels)) {
+    const logLevels = this.getLogLevels();
+
+    if (!(priority in logLevels)) {
       throw new Error(`Invalid log message priority: ${priority}`);
     }
 
@@ -62,7 +64,7 @@ class Log {
       extras.unshift(new Date().toISOString());
     }
 
-    if (this.logLevels[priority]) {
+    if (logLevels[priority]) {
       for (let output of this.outputs) {
         output(priority, this.name, message, ...extras);
       }

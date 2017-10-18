@@ -4,18 +4,13 @@ import { Log } from "../log";
 import * as env from "../env";
 
 import Contract from "./Contract";
-import MANAToken from "./MANAToken";
-import TerraformReserve from "./TerraformReserve";
 
 const log = new Log("[Ethrereum]");
 let web3 = null;
 
 /** @namespace */
 const eth = {
-  contracts: {
-    MANAToken,
-    TerraformReserve
-  },
+  contracts: {}, // Filled on .connect()
 
   /**
    * Link to web3's BigNumber reference
@@ -25,7 +20,7 @@ const eth = {
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {object|Contract} [contracts] - An array of objects defining contracts or Contract subclasses to use. By default will use the available contracts.
+   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts.
    * @return {boolean} - True if the connection was successful
    */
   connect(defaultAccount, contracts) {
@@ -41,8 +36,7 @@ const eth = {
     web3 = new Web3(currentProvider);
 
     this.setAddress(defaultAccount || web3.eth.accounts[0]);
-
-    this.setContracts(contracts || this.contracts);
+    this.setContracts(contracts || this._getDefaultContracts());
 
     if (!this.getAddress()) {
       log.warn("Could not get the default address from web3");
@@ -51,6 +45,11 @@ const eth = {
 
     log.info(`Got ${this.getAddress()} as current user address`);
     return true;
+  },
+
+  // Internal. Dynamic require
+  _getDefaultContracts() {
+    return [require("./MANAToken"), require("./TerraformReserve")];
   },
 
   getContract(name) {
@@ -63,6 +62,12 @@ const eth = {
     return this.contracts[name];
   },
 
+  /**
+   * Set the Ethereum contracts to use on the `contracts` property. It builds a map of
+   *   { [Contract Name]: Contract instance }
+   * Usable later via `.getContract`
+   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use.
+   */
   setContracts(contracts) {
     for (let contract of contracts) {
       contract = Contract.isPrototypeOf(contract)

@@ -3,7 +3,7 @@ import { Log } from "../log";
 import * as env from "../env";
 
 import Contract from "./Contract";
-import eth from "./index";
+import eth from "./eth";
 
 const log = new Log("[TerraformReserve]");
 let instance = null;
