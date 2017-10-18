@@ -17,9 +17,9 @@ class Model {
 
   /**
    * Change the current DB client
-   * @param  {string|object} dbClient - The name of an available db client (from /db) or an object with the same API
+   * @param {string|object} dbClient - The name of an available db client (from /db) or an object with the same API
    */
-  static useDB(dbClient = "postgres") {
+  static setDb(dbClient = "postgres") {
     if (typeof dbClient === "string" && !dbClients[dbClients]) {
       throw new Error(`Undefined db client ${dbClients}`);
     }
@@ -63,7 +63,11 @@ class Model {
    * @return {Promise<object>}
    */
   static async update(changes, conditions) {
-    return await this.db.update(this.tableName, changes, conditions);
+    return await this.db.update(
+      this.tableName,
+      utils.pick(changes, this.columnNames),
+      conditions
+    );
   }
 
   /**
@@ -85,11 +89,12 @@ class Model {
   }
 
   /**
-   * Return the row for the this.attributes id property
+   * Return the row for the this.attributes id property, fordwards to Model.findOne
    * @return {Promise<object>}
    */
-  async findOne() {
-    return await this.constructor.findOne(this.attributes.id);
+  async retreive() {
+    this.attributes = await this.constructor.findOne(this.attributes.id);
+    return this.attributes;
   }
 
   /**
@@ -101,11 +106,10 @@ class Model {
 
   /**
    * Forwards to Mode.update using this.attributes. If no conditions are supplied, it uses this.attributes.id
-   * @params {object} changes
    * @params {object} [conditions]
    */
-  async update(changes, conditions = { id: this.attributes.id }) {
-    return await this.constructor.update(changes, conditions);
+  async update(conditions = { id: this.attributes.id }) {
+    return await this.constructor.update(this.attributes, conditions);
   }
 
   /**
