@@ -120,7 +120,7 @@ const postgres = {
       ${this.toColumnFields(changes)}
     ) VALUES(
       ${this.toValuePlaceholders(changes)}
-    )`,
+    ) RETURNING id`,
       values
     );
   },

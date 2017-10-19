@@ -47,13 +47,15 @@ class Model {
   /**
    * Insert the row filtering the Model.columnNames to the Model.tableName table
    * @param  {object} row
-   * @return {Promise<object>}
+   * @return {Promise<object>} the row argument with the inserted id
    */
   static async insert(row) {
-    return await this.db.insert(
+    const insertion = await this.db.insert(
       this.tableName,
       utils.pick(row, this.columnNames)
     );
+    row.id = insertion.rows[0].id;
+    return row;
   }
 
   /**

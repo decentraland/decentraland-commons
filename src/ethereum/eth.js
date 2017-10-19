@@ -91,7 +91,7 @@ const eth = {
 
   unlockAccount() {
     return web3.personal.unlockAccount(
-      web3.eth.defaultAccount,
+      this.getAddress(),
       env.getEnv("WEB3_ACCOUNT_PASSWORD", "")
     );
   },
@@ -147,12 +147,21 @@ const eth = {
     return web3.toWei(amount, unit).toNumber(10);
   },
 
-  hexToUtf8(hex) {
+  toHex(utf8) {
+    return web3.toHex(utf8);
+  },
+
+  fromHex(hex) {
     return web3.toUtf8(hex);
   },
 
-  recoverAddress(message, signature) {
-    return web3.personal.ecRecover(message, signature);
+  async sign(message, address) {
+    const sign = web3.personal.sign.bind(web3.personal);
+    return await Contract.transaction(sign, message, address);
+  },
+
+  async recover(message, signature) {
+    return await web3.personal.ecRecover(message, signature);
   },
 
   setAddress(address) {

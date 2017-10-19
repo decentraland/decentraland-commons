@@ -1,16 +1,11 @@
 /**
  * Promisifies a node callback style function. Takes a second argument that is bound as `this`
- * @param  {Function} fn     - Node style callback, accepting (error, result)
- * @param  {object}   [that] - Bound this
+ * @param  {Function} fn - Node style callback, accepting (error, result)
  * @return {Promise}
  */
-export function promisify(fn, that) {
+export function promisify(fn) {
   return (...args) =>
     new Promise((resolve, reject) => {
-      if (that) {
-        fn = fn.bind(that);
-      }
-
       fn(...args, (error, result) => {
         if (error) {
           reject(error);
