@@ -13,9 +13,9 @@ const eth = {
   contracts: {}, // Filled on .connect()
 
   /**
-   * Link to web3's BigNumber reference
+   * Link to web3's BigNumber
    */
-  BigNumber: Web3.utils && Web3.utils.BN,
+  toBigNumber: new Web3().toBigNumber,
 
   /**
    * Connect to web3
