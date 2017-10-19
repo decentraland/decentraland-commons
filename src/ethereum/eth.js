@@ -6,6 +6,7 @@ import * as env from "../env";
 import Contract from "./Contract";
 
 const log = new Log("[Ethrereum]");
+const web3utils = new Web3();
 let web3 = null;
 
 /** @namespace */
@@ -15,7 +16,7 @@ const eth = {
   /**
    * Link to web3's BigNumber
    */
-  toBigNumber: new Web3().toBigNumber,
+  toBigNumber: web3utils.toBigNumber,
 
   /**
    * Connect to web3
@@ -132,8 +133,8 @@ const eth = {
    * @return {string} - Parsed result
    */
   fromWei(amount, unit = "ether") {
-    amount = web3.toBigNumber(amount);
-    return web3.fromWei(amount, unit).toNumber(10);
+    amount = web3utils.toBigNumber(amount);
+    return web3utils.fromWei(amount, unit).toNumber(10);
   },
 
   /**
@@ -143,16 +144,16 @@ const eth = {
    * @return {string} - Parsed result
    */
   toWei(amount, unit = "ether") {
-    amount = web3.toBigNumber(amount);
-    return web3.toWei(amount, unit).toNumber(10);
+    amount = web3utils.toBigNumber(amount);
+    return web3utils.toWei(amount, unit).toNumber(10);
   },
 
   toHex(utf8) {
-    return web3.toHex(utf8);
+    return web3utils.toHex(utf8);
   },
 
   fromHex(hex) {
-    return web3.toUtf8(hex);
+    return web3utils.toUtf8(hex);
   },
 
   async sign(message, address) {
