@@ -82,6 +82,16 @@ class Model {
   }
 
   /**
+   * Checks to see if all column names exist on the attributes object.
+   * If you need a more complex approach (skipping NULLABLE columns for example) you can override it.
+   * @param  {object}  attributes - Model attributes to check
+   * @return {boolean} true if at least one of the properties don't exist on the object
+   */
+  static isIncomplete(attributes) {
+    return this.columnNames.some(column => !attributes.hasOwnProperty(column));
+  }
+
+  /**
    * Creates a new instance storing the attributes for later use
    * @param  {object} attributes
    * @return {Model<instance>}
@@ -128,6 +138,14 @@ class Model {
    */
   isEmpty() {
     return !this.get();
+  }
+
+  /**
+   * Forwards to Mode.isIncomplete using this.attributes.
+   * @return {boolean}
+   */
+  isIncomplete() {
+    return this.constructor.isIncomplete(this.attributes);
   }
 
   /**

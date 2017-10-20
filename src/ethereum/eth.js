@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import ethUtils from "ethereumjs-util";
 
 import { Log } from "../log";
 import * as env from "../env";
@@ -156,13 +157,59 @@ const eth = {
     return web3utils.toUtf8(hex);
   },
 
-  async sign(message, address) {
+  /**
+   * ECDSA sign some data
+   * @param  {Buffer|string} data    - Data to sign. If it's a string, it'll be converted to a Buffer using sha3
+   * @param  {Buffer|string} privKey - private key to sign with. If it's a string, it'll converted to an hex Buffer
+   * @return {string} vrs sign result concatenated as a string
+   */
+  localSign(data, privKey) {
+    if (typeof data === "string") data = ethUtils.sha3(data);
+    if (typeof privKey === "string") privKey = new Buffer(privKey, "hex");
+
+    const vrs = ethUtils.ecsign(data, privKey);
+
+    return `${vrs.r.toString("hex")}||${vrs.s.toString("hex")}||${vrs.v}`;
+  },
+
+  /**
+   * ECDSA public key recovery from signature
+   * @param  {Buffer|string} data  - Signed data. If it's a string, it'll be converted to a Buffer using sha3
+   * @param  {string} signature    - The result of calling `localSign`. Concatenated string of vrs sign
+   * @return {string} public key hex value
+   */
+  localRecover(data, signature) {
+    if (typeof data === "string") {
+      data = ethUtils.sha3(data);
+    }
+    let [r, s, v] = signature.split("||");
+
+    r = Buffer.from(r, "hex");
+    s = Buffer.from(s, "hex");
+    v = parseInt(v, 10);
+
+    const publicKey = ethUtils.ecrecover(data, v, r, s);
+
+    return publicKey.toString("hex");
+  },
+
+  async remoteSign(message, address) {
     const sign = web3.personal.sign.bind(web3.personal);
     return await Contract.transaction(sign, message, address);
   },
 
-  async recover(message, signature) {
+  async remoteRecover(message, signature) {
     return await web3.personal.ecRecover(message, signature);
+  },
+
+  /**
+   * Returns the ethereum public key of a given private key
+   * @param  {Buffer|string} privKey - private key from where to derive the public key
+   * @return {string} Hex public key
+   */
+  privateToPublic(privKey) {
+    if (typeof privKey === "string") privKey = new Buffer(privKey, "hex");
+    return ethUtils.privateToPublic(privKey).toString("hex");
   },
 
   setAddress(address) {

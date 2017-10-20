@@ -30,6 +30,7 @@
   "dependencies": {
     "abi-decoder": "^1.0.8",
     "dotenv": "^4.0.0",
+    "ethereumjs-util": "^5.1.2",
     "mailchimp-api-v3": "^1.7.1",
     "mongodb": "^2.2.31",
     "nodemailer": "^4.1.3",

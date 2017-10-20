@@ -296,6 +296,14 @@ const postgres = {
    */
   getOrderValues(order) {
     return Object.keys(order).map(column => `"${column}" ${order[column]}`);
+  },
+
+  /**
+   * Close db connection
+   * @return {Promise}
+   */
+  async close() {
+    return await this.client.end();
   }
 };
 
