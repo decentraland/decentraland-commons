@@ -39,14 +39,12 @@ export function handleRequest(callback) {
 export function extractFromReq(req, param) {
   let value = null;
 
-  if (req.params[param]) {
-    return req.params[param];
-  }
-
   if (req.query[param]) {
     value = req.query[param];
   } else if (req.body[param]) {
     value = req.body[param];
+  } else if (req.params[param]) {
+    value = req.params[param];
   }
 
   if (req.headers["content-type"] === "application/json") {
