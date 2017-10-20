@@ -31,7 +31,10 @@ db.connect()
 ```javascript
 export default {
     addCommands(program) {
-        program.addCommand(/* do something */)
+        program
+            .command(/* something */)
+            .description(/* something */)
+            .action(() => {})
     }
 }
 ```
