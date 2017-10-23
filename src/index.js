@@ -1,6 +1,7 @@
 module.exports = {
   ...require("./ethereum"),
   ...require("./log"),
+  ...require("./email"),
 
   // Abi accessible using the `.abi` property
   contracts: {
@@ -19,8 +20,6 @@ module.exports = {
   Model: require("./Model"),
 
   cli: require("./cli"),
-
-  email: require("./email"),
 
   utils: require("./utils")
 };
