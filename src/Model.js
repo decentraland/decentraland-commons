@@ -28,20 +28,25 @@ class Model {
   }
 
   /**
-   * Return all rows from the table
+   * Return the rows that match the conditions
+   * @param  {object} [conditions] - It returns all rows if empty
+   * @param  {object} [orderBy]
    * @return {Promise<array>}
    */
-  static async all() {
-    return await this.db.select(this.tableName);
+  static async find(conditions, orderBy) {
+    return await this.db.select(this.tableName, conditions, orderBy);
   }
 
   /**
-   * Return the row for the supplied id
-   * @param  {string|number} id
+   * Return the row for the supplied id or searches for the condition object
+   * @param  {string|number|object} idOrCond - If the argument is an object it uses it a s conditions. Otherwise it uses it as the searched id.
    * @return {Promise<object>}
    */
-  static async findOne(id) {
-    return await this.db.selectOne(this.tableName, { id });
+  static async findOne(idOrCond, orderBy) {
+    const conditions =
+      typeof idOrCond === "object" ? idOrCond : { id: idOrCond };
+
+    return await this.db.selectOne(this.tableName, conditions, orderBy);
   }
 
   /**

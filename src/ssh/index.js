@@ -48,7 +48,8 @@ const tunnel = {
   },
 
   /**
-   * Uses an object or reads one from the file system describing the connection. A minimal example contains:
+   * Uses an object or reads one from the file system describing the connection.
+   * @example <caption>A minimal example contains</caption>
    * {
    *   "username": "remote_username",
    *   "host": "remote_host",

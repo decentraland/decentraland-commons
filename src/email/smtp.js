@@ -1,60 +1,68 @@
 import nodemailer from "nodemailer";
 
 import { Log } from "../log";
-import { getEnv } from "../env";
 
 const log = new Log("[SMTP]");
 
 const EMAIL_COOLDOWN = 60 * 1000; // 1 minute = 60 seconds = 60 * 1000 miliseconds
 
-const templates = {
-  sample: opts => ({
-    from: `The Decentraland Team <${getEnv("MAIL_SENDER")}>`, // sender address
-    to: opts.email,
-    subject: "[TEST]",
-    text: "Thanks, The Decentraland Team",
-    html: "<p>Thanks,</p><p>The Decentraland Team</p>"
-  })
-};
-
-/**
- * SMTP interface uses `nodemailer` behind the scenes. Check {@link https://github.com/nodemailer/nodemailer} for more info.
- * @namespace
- */
-const smtp = {
-  templates,
-  transport: null, // defined upon first `.getTransport()``
+class SMTP {
+  /**
+   * SMTP interface uses `nodemailer` behind the scenes. Check {@link https://github.com/nodemailer/nodemailer} for more info.
+   * @param  {string} options.hostname    - Mailer host name
+   * @param  {string|number} options.port - String or number representing the port of the mailer
+   * @param  {string} [options.username]  - Username to perform auth.
+   * @param  {string} [options.password]  - Password to perform auth.
+   * @param  {object} [templates={}]      - A mapping of `name` => `func` describing the templates to use. {@link SMPT#setTemplate}
+   * @return {STMP}
+   */
+  constructor({ hostname, port, username, password }, templates = {}) {
+    this.transport = this.getTransport(hostname, port, username, password);
+    this.templates = templates;
+  }
 
   /**
    * Sets a new template to use later.
-   * @param {string}   name - Name of the template, to be referenced on `sendEmail`
-   * @param {Function} fn   - A function accepting `opts` as an argument, which will be forwarded by `sendEmail`
+   * @example <caption>A the template should look like this:</caption>
+   * opts => ({
+   *   from: `The Decentraland Team <${opts.sender}>`, // sender address
+   *   to: opts.email,
+   *   subject: "[TEST]",
+   *   text: "Thanks, The Decentraland Team",
+   *   html: "<p>Thanks,</p><p>The Decentraland Team</p>"
+   * })
+   * @param {string}   name - Name of the template, to be referenced on {@link SMTP#sendMail}
+   * @param {Function} fn   - A function accepting `opts` as an argument, which will be forwarded by {@link SMTP#sendMail}
    */
   setTemplate(name, fn) {
     this.templates[name] = fn;
-  },
+  }
 
   /**
    * Sends an email using one of the defined templates. If the sending fails, it will retry until it succeeds.
-   * @param  {string} email    - Receiver email
-   * @param  {string} template - Name of the template to use, the keys can be found on the `templates` property
-   * @param  {object} [opts]   - Object with properties forwarded to the template
-   * @return {Promise<string>} - A promise which resolved to the send response from the server (after retries, if any)
+   * @param  {string} email     - Receiver email
+   * @param  {string} template  - Name of the template to use, the keys can be found on the `templates` property
+   * @param  {object} [opts={}] - Object with properties forwarded to the template
+   * @return {Promise<string>}  - A promise which resolved to the send response from the server (after retries, if any)
    */
-  sendMail: (email, template, opts = {}) => {
-    if (!email) throw new Error("You need to supply an email to send to");
-    if (!templates[template]) throw new Error(`Invalid template ${template}`);
+  sendMail(email, template, opts = {}) {
+    if (!email) {
+      throw new Error("You need to supply an email to send to");
+    }
+    if (!this.templates[template]) {
+      throw new Error(`Invalid template ${template}`);
+    }
 
-    let content = templates[template](opts);
+    let content = this.templates[template](opts);
 
     return new Promise(resolve =>
       this._sendMailWithRetry(email, content, resolve)
     );
-  },
+  }
 
   // internal
   _sendMailWithRetry(email, opts, callback) {
-    this.getTransport().sendMail(opts, (error, info) => {
+    this.transport.sendMail(opts, (error, info) => {
       if (error) {
         log.error(
           `Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN /
@@ -71,32 +79,36 @@ const smtp = {
       log.info("Email %s sent: %s", info.messageId, info.response);
       callback(info.response);
     });
-  },
+  }
 
   /**
    * Creates a nodemailer transport. It uses ENV variables (prefixed with MAIL_) to configure the object
+   * @param  {string} hostname    - Mailer host name
+   * @param  {string|number} port - String or number representing the port of the mailer
+   * @param  {string} [username]  - Username to perform auth.
+   * @param  {string} [password]  - Password to perform auth.
    * @return {object} - transport, see @{link https://nodemailer.com/usage/}
    */
-  getTransport() {
-    if (this.transport) {
-      const HOSTNAME = getEnv("MAIL_HOSTNAME");
-      const PORT = getEnv("MAIL_PORT");
-      const USERNAME = getEnv("MAIL_USERNAME");
-      const PASSWORD = getEnv("MAIL_PASS");
+  getTransport(hostname, port, username, password) {
+    port = parseInt(port, 10);
 
-      this.transport = nodemailer.createTransport({
-        host: HOSTNAME,
-        port: parseInt(PORT, 10),
-        secure: PORT === "465",
-        auth: {
-          user: USERNAME,
-          pass: PASSWORD
-        }
-      });
+    const options = {
+      host: hostname,
+      port: port,
+      secure: port === 465
+    };
+
+    if (username || password) {
+      options.auth = {
+        user: username,
+        pass: password
+      };
     }
+
+    this.transport = nodemailer.createTransport(options);
 
     return this.transport;
   }
-};
+}
 
-module.exports = smtp;
+module.exports = SMTP;

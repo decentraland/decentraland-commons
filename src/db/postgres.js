@@ -97,8 +97,9 @@ const postgres = {
   },
 
   /**
-   * Insert an object on the database. Ex:
-   *   insert('users', { name: 'Name', avatar: 'image.png' }) => INSERT INTO users ("name", "avatar") VALUES ('Name', 'image.png')
+   * Insert an object on the database.
+   * @example
+   * insert('users', { name: 'Name', avatar: 'image.png' }) => INSERT INTO users ("name", "avatar") VALUES ('Name', 'image.png')
    * @param  {string} tableName
    * @param  {object} changes   - An object describing the insertion. The properties should be the column names and it's values the value to insert
    * @return {Promise<object>}
@@ -126,8 +127,9 @@ const postgres = {
   },
 
   /**
-   * Update an object on the database. Ex:
-   *   update('users', { name: 'New Name' }, { id: 22 }) => UPDATE users SET "name"='New Name' WHERE "id"=22
+   * Update an object on the database.
+   * @example
+   * update('users', { name: 'New Name' }, { id: 22 }) => UPDATE users SET "name"='New Name' WHERE "id"=22
    * @param  {string} tableName
    * @param  {object} changes    - An object describing the updates. The properties should be the column names and it's values the value to update.
    * @param  {object} conditions - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
@@ -192,11 +194,11 @@ const postgres = {
    * Adds:
    *   - `createdAt` and `updatedAt` columns by default
    *   - A secuence with the table name to use as autoincrement id
-   * Ex:
-   *   this.createTable('users', `
-   *     "id" int NOT NULL DEFAULT nextval('users_id_seq'),
-   *     "name" varchar(42) NOT NULL
-   *   `)
+   * @example
+   * this.createTable('users', `
+   *   "id" int NOT NULL DEFAULT nextval('users_id_seq'),
+   *   "name" varchar(42) NOT NULL
+   * `)
    * @param  {string} tableName
    * @param  {string} rows    - Each desired row to create
    * @param  {object} options - Options controling the behaviour of createTable
