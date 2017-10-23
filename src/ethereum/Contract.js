@@ -15,28 +15,28 @@ class Contract {
   }
 
   /**
-   * @see transaction
+   * See {@link Contract#transaction}
    */
   static async transaction(method, ...args) {
     return await promisify(method)(...args);
   }
 
   /**
-   * @see call
+   * See {@link Contract#call}
    */
   static async call(prop, ...args) {
     return await promisify(prop.call)(...args);
   }
 
   /**
-   * @see decodeMethod
+   * See {@link Contract#decodeMethod}
    */
   static decodeMethod(input) {
     return abiDecoder.decodeMethod(input);
   }
 
   /**
-   * @see decodeLogs
+   * See {@link Contract#decodeLogs}
    */
   static decodeLogs(logs) {
     return abiDecoder.decodeLogs(logs);
@@ -110,7 +110,7 @@ class Contract {
   }
 
   /**
-   * Tries to find the supplied parameter to a *decoded* method @see decodeMethod. It returns the Wei value
+   * Tries to find the supplied parameter to a *decoded* method [decodedMethod]{@link Contract#decodedMethod}. It returns the Wei value
    * A method typicaly consist of { "name": "methodName", "params": [{ "name": "paramName", "value": "VALUE_IN_WEI", "type": "uint256" }] }
    * @param  {object} decodedMethod
    * @param  {string} paramName

@@ -2,7 +2,7 @@ import pg from "pg";
 import { getObjectValues } from "../utils";
 
 /**
- * Client to query Postgres. Uses `pg` behind the scenes, {@link https://node-postgres.com/}
+ * Client to query Postgres. Uses `pg` behind the scenes. Check {@link https://node-postgres.com/} for more info.
  * @namespace
  */
 const postgres = {
@@ -22,7 +22,7 @@ const postgres = {
   },
 
   /**
-   * Forward queries to the pg client. {@link https://node-postgres.com/} for more info
+   * Forward queries to the pg client. Check {@link https://node-postgres.com/} for more info.
    * @param  {string} queryString
    * @param  {array} [values]
    * @return {Promise<object>} - Object containing the matched rows
@@ -36,7 +36,7 @@ const postgres = {
    * Counts rows from a query result
    * @param  {string} tableName
    * @param  {object} [conditions] - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
-   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. @see getOrderValues
+   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. See {@link postgres#getOrderValues}
    * @return {Promise<array>} - Rows
    */
   count(tableName, conditions, orderBy) {
@@ -47,7 +47,7 @@ const postgres = {
    * Select rows from a table
    * @param  {string} tableName
    * @param  {object} [conditions] - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
-   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. @see getOrderValues
+   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. See {@link postgres#getOrderValues}
    * @return {Promise<array>} - Rows
    */
   select(tableName, conditions, orderBy) {
@@ -58,7 +58,7 @@ const postgres = {
    * Select the first row that matches
    * @param  {string} tableName
    * @param  {object} [conditions] - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
-   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. @see getOrderValues
+   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. See {@link postgres#getOrderValues}
    * @return {Promise<object>} - Row
    */
   async selectOne(tableName, conditions, orderBy) {

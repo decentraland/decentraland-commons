@@ -6,7 +6,7 @@ import { promisify } from "../utils";
 const log = new Log("[MongoDB]");
 
 /**
- * Client to query MongoDB. Uses `mongodb` behind the scenes, {@link https://docs.mongodb.com/getting-started/node/client/}
+ * Client to query MongoDB. Uses `mongodb` behind the scenes. Check {@link https://docs.mongodb.com/getting-started/node/client/} for more info.
  * IMPORTANT: To use this client with the `Model` class, it should be updated to follow the common API found on `postgres.js`
  * @namespace
  */
@@ -54,7 +54,7 @@ const mongo = {
 
   /**
    * Forward to the MongoDB collection method
-   * @param  {string} collectionName - Collection name, {@link https://docs.mongodb.com/getting-started/node/client/}
+   * @param  {string} collectionName - Collection name, check the [mongodb docs]{@link https://docs.mongodb.com/getting-started/node/client/} for more info.
    * @return {object} - queriable collection
    */
   collection(collectionName) {

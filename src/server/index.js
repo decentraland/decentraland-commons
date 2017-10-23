@@ -32,7 +32,7 @@ export function handleRequest(callback) {
 
 /**
  * Get a named parameter from a request object. It leverages GET and POST requests and parses JSON objects
- * @param  {object} req   - Express js request object. {@link https://expressjs.com}
+ * @param  {object} req   - Express js request object. Check {@link https://expressjs.com} for more info.
  * @param  {string} param - Searched param
  * @return {object} - The param value, it throws if it's not present
  */

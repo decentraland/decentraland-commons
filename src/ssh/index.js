@@ -7,13 +7,13 @@ import { sleep } from "../utils";
 const log = new Log("[SSH]");
 
 /**
- * Connect via an SSH tunnel. It uses tunnel-ssh behind the scenes {@link https://github.com/agebrock/tunnel-ssh}
+ * Connect via an SSH tunnel. It uses tunnel-ssh behind the scenes. Check {@link https://github.com/agebrock/tunnel-ssh} for more info.
  * @namespace
  */
 const tunnel = {
   /**
    * Connect using an SSH tunnel
-   * @param  {object|string} configOrPath - Object or path to JSON file which describes the connection. @see readTunnelConfig
+   * @param  {object|string} configOrPath - Object or path to JSON file which describes the connection. See {@link tunnel#readTunnelConfig}
    * @return {Promise<number>} - Fires when the tunnel connection has been stablished. It receives the tunnel port as a parameter
    */
   connect: function(configOrPath) {
@@ -57,8 +57,8 @@ const tunnel = {
    *   "dstPort": 27017,
    *   "localPort": ""
    * }
-   * @param  {object|string} configOrPath [description]
-   * @return {[type]}            [description]
+   * @param  {object|string} configOrPath - The manifest for the tunnel configuration. It can be the filesystem path to the json file or the object itself.
+   * @return {object} - The parsed configuration
    */
   readTunnelConfig(configOrPath) {
     let tunnelConfig = null;

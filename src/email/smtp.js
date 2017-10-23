@@ -18,7 +18,7 @@ const templates = {
 };
 
 /**
- * SMTP interface uses `nodemailer` behind the scenes {@link https://github.com/nodemailer/nodemailer}
+ * SMTP interface uses `nodemailer` behind the scenes. Check {@link https://github.com/nodemailer/nodemailer} for more info.
  * @namespace
  */
 const smtp = {

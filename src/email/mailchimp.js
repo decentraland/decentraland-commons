@@ -6,7 +6,7 @@ import { getEnv } from "../env";
 const log = new Log("[Mailchimp]");
 
 /**
- * Mailchimp client, uses `mailchimp-api-v3` behind the scenes {@link https://developer.mailchimp.com/}
+ * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
  * @namespace
  */
 const mailchimp = {
