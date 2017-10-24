@@ -82,15 +82,11 @@ const eth = {
   },
 
   getWeb3Provider() {
-    let providerURL = null;
-
-    if (typeof window === "undefined") {
-      providerURL = env.getEnv("WEB3_HTTP_PROVIDER", "http://localhost:8545");
-    } else {
-      providerURL = window.web3 && window.web3.currentProvider;
-    }
-
-    return new Web3.providers.HttpProvider(providerURL);
+    return process.browser
+      ? window.web3 && window.web3.currentProvider
+      : new Web3.providers.HttpProvider(
+          env.getEnv("WEB3_HTTP_PROVIDER", "http://localhost:8545")
+        );
   },
 
   unlockAccount() {
