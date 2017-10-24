@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Common functionality between the different Decentraland projects",
   "main": "./dist/index.js",
+  "browser": {
+    "./src/index.js": "./src/browser.js"
+  },
   "scripts": {
     "docs": "npx jsdoc -c conf.json -r src/**/*.js",
     "lint": "npx eslint .",
