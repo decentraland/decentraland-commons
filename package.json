@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://decentraland.digital/decentraland/decentraland-commons.git"
+    "url": "https://github.com/decentraland/commons.git"
   },
   "files": [
     "dist"
