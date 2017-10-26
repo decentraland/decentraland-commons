@@ -1,10 +1,11 @@
 {
   "name": "decentraland-commons",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Common functionality between the different Decentraland projects",
   "main": "./dist/index.js",
   "browser": {
-    "./src/index.js": "./src/browser.js"
+    "./src/index.js": "./src/browser.js",
+    "./dist/index.js": "./dist/browser.js"
   },
   "scripts": {
     "docs": "npx jsdoc -c conf.json -r src/**/*.js",

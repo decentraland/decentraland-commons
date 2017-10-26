@@ -1,4 +1,4 @@
-import * as env from "./env";
+import env from "./env";
 
 // Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
 console.debug = console.log.bind(console);

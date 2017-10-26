@@ -1,6 +1,6 @@
 import { abi } from "../contracts/TerraformReserve.json";
 import { Log } from "../log";
-import * as env from "../env";
+import env from "../env";
 
 import Contract from "./Contract";
 import eth from "./eth";
@@ -12,11 +12,13 @@ let instance = null;
 class TerraformReserve extends Contract {
   static getInstance() {
     if (!instance) {
-      instance = new TerraformReserve(
-        "TerraformReserve",
-        env.getEnv("RESERVE_CONTRACT_ADDRESS", ""),
-        abi
+      // Support create-react-app imports
+      const address = env.get(
+        "RESERVE_CONTRACT_ADDRESS",
+        env.get("REACT_APP_RESERVE_CONTRACT_ADDRESS", "")
       );
+
+      instance = new TerraformReserve("TerraformReserve", address, abi);
     }
     return instance;
   }

@@ -1,7 +1,6 @@
 import Mailchimp from "mailchimp-api-v3";
 
 import { Log } from "../log";
-import { getEnv } from "../env";
 
 const log = new Log("[Mailchimp]");
 
@@ -13,13 +12,15 @@ const mailchimp = {
   client: null, // defined on `.connect()`
 
   /**
-   * Connect to the mailchimp client
-   * @return {object} the mailchimp object, to allow chaining
+   * Connect to the Mailchimp client
+   * @param {string} apiKey - Mailchimp api key
+   * @return {object} the Mailchimp object, to allow chaining
    */
-  connect() {
-    if (this.client) {
-      const MAILCHIMP_API_KEY = getEnv("MAILCHIMP_API_KEY");
-      this.client = new Mailchimp(MAILCHIMP_API_KEY);
+  connect(apiKey) {
+    if (!apiKey) throw new Error("Missing Mailchimp API key");
+
+    if (!this.client) {
+      this.client = new Mailchimp(apiKey);
     }
 
     return this;
@@ -28,14 +29,12 @@ const mailchimp = {
   /**
    * Register a user to a Mailchimp list.
    * @param  {string} email  - User email
-   * @param  {string} [listId] - The list you want to register the user to. It'll try to use MAILCHIMP_LIST_ID if it's not defined
+   * @param  {string} listId - The list you want to register the user to
    * @return {Promise<boolean>} - True if the operation was successfull
    */
   subscribe: (email, listId) => {
     if (!listId) {
-      listId = getEnv("MAILCHIMP_LIST_ID", () => {
-        throw new Error("Missing Mailchimp List Id: MAILCHIMP_LIST_ID");
-      });
+      throw new Error("Missing Mailchimp List Id");
     }
 
     return this.client

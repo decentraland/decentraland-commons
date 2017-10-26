@@ -1,7 +1,6 @@
 import Web3 from "web3";
 
 import { Log } from "../log";
-import * as env from "../env";
 
 import Contract from "./Contract";
 
@@ -81,19 +80,24 @@ const eth = {
     }
   },
 
+  /**
+   * Gets the appropiate Web3 provider for the given environment.
+   * It'll fetch it from the `window` on the browser or use a new HttpProvider instance on nodejs
+   * @return {object} The web3 provider
+   */
   getWeb3Provider() {
     return process.browser
       ? window.web3 && window.web3.currentProvider
-      : new Web3.providers.HttpProvider(
-          env.getEnv("WEB3_HTTP_PROVIDER", "http://localhost:8545")
-        );
+      : new Web3.providers.HttpProvider("http://localhost:8545");
   },
 
-  unlockAccount() {
-    return web3.personal.unlockAccount(
-      this.getAddress(),
-      env.getEnv("WEB3_ACCOUNT_PASSWORD", "")
-    );
+  /**
+   * Unlocks the current account with the given password
+   * @param  {string} password - Account password
+   * @return {boolean} Whether the operation was successfull or not
+   */
+  unlockAccount(password) {
+    return web3.personal.unlockAccount(this.getAddress(), password);
   },
 
   /**

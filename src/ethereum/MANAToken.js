@@ -1,5 +1,5 @@
 import { abi } from "../contracts/MANAToken.json";
-import * as env from "../env";
+import env from "../env";
 
 import Contract from "./Contract";
 import TerraformReserve from "./TerraformReserve";
@@ -11,11 +11,13 @@ let instance = null;
 class MANAToken extends Contract {
   static getInstance() {
     if (!instance) {
-      instance = new MANAToken(
-        "MANAToken",
-        env.getEnv("MANA_CONTRACT_ADDRESS", ""),
-        abi
+      // Support create-react-app imports
+      const address = env.get(
+        "MANA_CONTRACT_ADDRESS",
+        env.get("REACT_APP_MANA_CONTRACT_ADDRESS", "")
       );
+
+      instance = new MANAToken("MANAToken", address, abi);
     }
     return instance;
   }
