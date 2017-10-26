@@ -6,15 +6,9 @@ var _web2 = _interopRequireDefault(_web);
 
 var _log = require("../log");
 
-var _env = require("../env");
-
-var env = _interopRequireWildcard(_env);
-
 var _Contract = require("./Contract");
 
 var _Contract2 = _interopRequireDefault(_Contract);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -113,11 +107,25 @@ var eth = {
       }
     }
   },
+
+
+  /**
+   * Gets the appropiate Web3 provider for the given environment.
+   * It'll fetch it from the `window` on the browser or use a new HttpProvider instance on nodejs
+   * @return {object} The web3 provider
+   */
   getWeb3Provider: function getWeb3Provider() {
-    return process.browser ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider(env.getEnv("WEB3_HTTP_PROVIDER", "http://localhost:8545"));
+    return process.browser ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider("http://localhost:8545");
   },
-  unlockAccount: function unlockAccount() {
-    return web3.personal.unlockAccount(this.getAddress(), env.getEnv("WEB3_ACCOUNT_PASSWORD", ""));
+
+
+  /**
+   * Unlocks the current account with the given password
+   * @param  {string} password - Account password
+   * @return {boolean} Whether the operation was successfull or not
+   */
+  unlockAccount: function unlockAccount(password) {
+    return web3.personal.unlockAccount(this.getAddress(), password);
   },
 
 

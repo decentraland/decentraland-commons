@@ -8,7 +8,7 @@ var _log = require("../log");
 
 var _env = require("../env");
 
-var env = _interopRequireWildcard(_env);
+var _env2 = _interopRequireDefault(_env);
 
 var _Contract2 = require("./Contract");
 
@@ -19,8 +19,6 @@ var _eth = require("./eth");
 var _eth2 = _interopRequireDefault(_eth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -58,7 +56,10 @@ var TerraformReserve = function (_Contract) {
     key: "getInstance",
     value: function getInstance() {
       if (!instance) {
-        instance = new TerraformReserve("TerraformReserve", env.getEnv("RESERVE_CONTRACT_ADDRESS", ""), _TerraformReserve.abi);
+        // Support create-react-app imports
+        var address = _env2.default.get("RESERVE_CONTRACT_ADDRESS", _env2.default.get("REACT_APP_RESERVE_CONTRACT_ADDRESS", ""));
+
+        instance = new TerraformReserve("TerraformReserve", address, _TerraformReserve.abi);
       }
       return instance;
     }
