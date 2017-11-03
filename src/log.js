@@ -66,7 +66,7 @@ class Log {
 
     if (logLevels[priority]) {
       for (let output of this.outputs) {
-        output(priority, this.name, message, ...extras);
+        output(priority, this.name ? `[${this.name}]` : '', message, ...extras);
       }
     }
 
