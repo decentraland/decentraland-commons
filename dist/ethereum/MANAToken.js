@@ -57,7 +57,7 @@ var MANAToken = function (_Contract) {
 
               case 2:
                 assigned = _context.sent;
-                return _context.abrupt("return", _eth2.default.fromWei(assigned));
+                return _context.abrupt("return", _eth2.default.utils.fromWei(assigned));
 
               case 4:
               case "end":
@@ -92,7 +92,7 @@ var MANAToken = function (_Contract) {
 
               case 2:
                 manaBalance = _context2.sent;
-                return _context2.abrupt("return", _eth2.default.fromWei(manaBalance));
+                return _context2.abrupt("return", _eth2.default.utils.fromWei(manaBalance));
 
               case 4:
               case "end":

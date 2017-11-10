@@ -43,7 +43,7 @@ var TerraformReserve = function (_Contract) {
   _createClass(TerraformReserve, [{
     key: "lockMana",
     value: function lockMana(sender, mana) {
-      return this.lockManaWei(sender, _eth2.default.toWei(mana));
+      return this.lockManaWei(sender, _eth2.default.utils.toWei(mana));
     }
   }, {
     key: "lockManaWei",
