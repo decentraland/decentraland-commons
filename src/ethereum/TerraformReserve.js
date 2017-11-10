@@ -24,7 +24,7 @@ class TerraformReserve extends Contract {
   }
 
   lockMana(sender, mana) {
-    return this.lockManaWei(sender, eth.toWei(mana));
+    return this.lockManaWei(sender, eth.utils.toWei(mana));
   }
 
   lockManaWei(sender, mana) {

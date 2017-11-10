@@ -24,7 +24,7 @@ class MANAToken extends Contract {
 
   async getAllowance(sender) {
     const assigned = await this.getAllowanceWei(sender);
-    return eth.fromWei(assigned);
+    return eth.utils.fromWei(assigned);
   }
 
   getAllowanceWei(sender) {
@@ -33,7 +33,7 @@ class MANAToken extends Contract {
 
   async getBalance(sender) {
     const manaBalance = await this.getBalanceWei(sender);
-    return eth.fromWei(manaBalance);
+    return eth.utils.fromWei(manaBalance);
   }
 
   getBalanceWei(sender) {
