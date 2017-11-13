@@ -107,7 +107,9 @@ const postgres = {
   async insert(tableName, changes) {
     if (!changes) {
       throw new Error(
-        `Tried to perform an insert on ${tableName} without any values. Supply a changes object`
+        `Tried to perform an insert on ${
+          tableName
+        } without any values. Supply a changes object`
       );
     }
 
@@ -138,12 +140,16 @@ const postgres = {
   async update(tableName, changes, conditions) {
     if (!changes) {
       throw new Error(
-        `Tried to update ${tableName} without any values. Supply a changes object`
+        `Tried to update ${
+          tableName
+        } without any values. Supply a changes object`
       );
     }
     if (!conditions) {
       throw new Error(
-        `Tried to update ${tableName} without a WHERE clause. Supply a conditions object`
+        `Tried to update ${
+          tableName
+        } without a WHERE clause. Supply a conditions object`
       );
     }
 
@@ -176,7 +182,9 @@ const postgres = {
   async delete(tableName, conditions) {
     if (!conditions) {
       throw new Error(
-        `Tried to update ${tableName} without a WHERE clause. Supply a conditions object`
+        `Tried to update ${
+          tableName
+        } without a WHERE clause. Supply a conditions object`
       );
     }
 
@@ -220,6 +228,25 @@ const postgres = {
 
     if (sequenceName)
       await this.alterSequenceOwnership(sequenceName, tableName);
+  },
+
+  /**
+   * Creates an index if it doesn't exist
+   * @param  {string} tableName
+   * @param  {string} name of the index
+   * @param  {object} extra conditions for the index
+   * @return {Promise}
+   */
+  createIndex(tableName, name, fields, conditions = {}) {
+    let { unique } = conditions;
+
+    unique = unique === true ? "UNIQUE" : "";
+
+    return this.client.query(
+      `CREATE ${unique} INDEX IF NOT EXISTS ${name} ON ${
+        tableName
+      } (${fields.join(",")})`
+    );
   },
 
   /**
