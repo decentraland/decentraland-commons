@@ -4,12 +4,16 @@ import { Log } from "../log";
 
 import Contract from "./Contract";
 
-const log = new Log("[Ethrereum]");
+const log = new Log("[Ethereum]");
 let web3 = null;
 
 /** @namespace */
 const eth = {
-  contracts: {}, // Filled on .connect()
+  /**
+   * Filled on .connect()
+   */
+  contracts: {},
+  web3: null,
 
   /**
    * Reference to the utilities object {@link ethUtils}
@@ -33,6 +37,7 @@ const eth = {
 
     log.info("Instantiating contracts");
     web3 = new Web3(currentProvider);
+    this.web3 = web3;
 
     this.setAddress(defaultAccount || web3.eth.accounts[0]);
     this.setContracts(contracts || this._getDefaultContracts());
@@ -48,13 +53,19 @@ const eth = {
 
   // Internal. Dynamic require
   _getDefaultContracts() {
-    return [require("./MANAToken"), require("./TerraformReserve")];
+    return [
+      require("./MANAToken"),
+      require("./TerraformReserve"),
+      require("./LANDTerraformSale")
+    ];
   },
 
   getContract(name) {
     if (!this.contracts[name]) {
       throw new Error(
-        `The contract ${name} not found. Did you add it to the '.connect()' call?`
+        `The contract ${
+          name
+        } not found. Did you add it to the '.connect()' call?`
       );
     }
 
@@ -144,6 +155,10 @@ const eth = {
 
   getAddress() {
     return web3.eth.defaultAccount;
+  },
+
+  setupFilter(type) {
+    return web3.eth.filter(type);
   }
 };
 
