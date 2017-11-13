@@ -22,8 +22,15 @@ class LANDTerraformSale extends Contract {
   }
 
   buyMany(buyer, xList, yList, totalCost) {
-    log.info(`BuyMany LAND for ${buyer}`);
+    log.info(`(buyMany) LAND for ${buyer}`);
     return this.transaction("buyMany", buyer, xList, yList, totalCost, {
+      gas: 120000
+    });
+  }
+
+  transferBackMANA(address, amount) {
+    log.info(`(transferBackMANA) ${amount} to ${address}`);
+    return this.transaction("transferBackMANA", address, amount, {
       gas: 120000
     });
   }
