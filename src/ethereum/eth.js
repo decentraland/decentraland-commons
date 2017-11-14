@@ -23,7 +23,7 @@ const eth = {
    * @param  {object} [options] - Extra options for the ETH connection
    * @return {boolean} - True if the connection was successful
    */
-  connect(defaultAccount, contracts, options) {
+  connect(defaultAccount, contracts, options={}) {
     if (web3 !== null) return;
 
     const { httpProviderUrl } = options;
