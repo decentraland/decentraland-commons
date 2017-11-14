@@ -19,13 +19,18 @@ const eth = {
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts.
+   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts
+   * @param  {object} [options] - Extra options for the ETH connection
    * @return {boolean} - True if the connection was successful
    */
-  connect(defaultAccount, contracts) {
+  connect(defaultAccount, contracts, options) {
     if (web3 !== null) return;
 
-    const currentProvider = this.getWeb3Provider();
+    const { httpProviderUrl } = options;
+
+    const currentProvider = this.getWeb3Provider(
+      httpProviderUrl || "http://localhost:8545"
+    );
     if (!currentProvider) {
       log.info("Could not get a valid provider for web3");
       return false;
@@ -83,12 +88,13 @@ const eth = {
   /**
    * Gets the appropiate Web3 provider for the given environment.
    * It'll fetch it from the `window` on the browser or use a new HttpProvider instance on nodejs
+   * @param  {string} httpProviderURL - URL for an HTTP provider in case the browser provider is not present
    * @return {object} The web3 provider
    */
-  getWeb3Provider() {
+  getWeb3Provider(httpProviderUrl) {
     return process.browser
       ? window.web3 && window.web3.currentProvider
-      : new Web3.providers.HttpProvider("http://localhost:8545");
+      : new Web3.providers.HttpProvider(httpProviderUrl);
   },
 
   /**
