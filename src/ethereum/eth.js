@@ -38,7 +38,10 @@ const eth = {
     this.setContracts(contracts || this._getDefaultContracts());
 
     if (!this.getAddress()) {
-      log.warn("Could not get the default address from web3");
+      log.warn(
+        "Could not get the default address from web3, please re-connect"
+      );
+      web3 = null;
       return false;
     }
 
