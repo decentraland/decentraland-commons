@@ -124,7 +124,7 @@ var Log = function () {
           for (var _iterator = this.outputs[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var output = _step.value;
 
-            output.apply(undefined, [priority, this.name, message].concat(extras));
+            output.apply(undefined, [priority, this.name ? "[" + this.name + "]" : "", message].concat(extras));
           }
         } catch (err) {
           _didIteratorError = true;

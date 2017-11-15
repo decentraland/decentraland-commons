@@ -417,6 +417,24 @@ var postgres = {
 
 
   /**
+   * Creates an index if it doesn't exist
+   * @param  {string} tableName
+   * @param  {string} name of the index
+   * @param  {object} extra conditions for the index
+   * @return {Promise}
+   */
+  createIndex: function createIndex(tableName, name, fields) {
+    var conditions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    var unique = conditions.unique;
+
+
+    unique = unique === true ? "UNIQUE" : "";
+
+    return this.client.query("CREATE " + unique + " INDEX IF NOT EXISTS " + name + " ON " + tableName + " (" + fields.join(",") + ")");
+  },
+
+
+  /**
    * Creates a sequence if it doesn't exist
    * @param  {string} name
    * @return {Promise}
@@ -446,7 +464,7 @@ var postgres = {
       }, _callee9, this, [[0, 6]]);
     }));
 
-    function createSequence(_x22) {
+    function createSequence(_x23) {
       return _ref9.apply(this, arguments);
     }
 
@@ -484,7 +502,7 @@ var postgres = {
       }, _callee10, this);
     }));
 
-    function truncate(_x24) {
+    function truncate(_x25) {
       return _ref10.apply(this, arguments);
     }
 

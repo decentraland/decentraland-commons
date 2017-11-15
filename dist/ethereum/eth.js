@@ -14,12 +14,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var log = new _log.Log("[Ethrereum]");
+var log = new _log.Log("[Ethereum]");
 var web3 = null;
 
 /** @namespace */
 var eth = {
-  contracts: {}, // Filled on .connect()
+  /**
+   * Filled on .connect()
+   */
+  contracts: {},
+  web3: null,
 
   /**
    * Reference to the utilities object {@link ethUtils}
@@ -29,13 +33,19 @@ var eth = {
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts.
+   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts
+   * @param  {object} [options] - Extra options for the ETH connection
    * @return {boolean} - True if the connection was successful
    */
   connect: function connect(defaultAccount, contracts) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     if (web3 !== null) return;
 
-    var currentProvider = this.getWeb3Provider();
+    var httpProviderUrl = options.httpProviderUrl;
+
+
+    var currentProvider = this.getWeb3Provider(httpProviderUrl || "http://localhost:8545");
     if (!currentProvider) {
       log.info("Could not get a valid provider for web3");
       return false;
@@ -43,6 +53,7 @@ var eth = {
 
     log.info("Instantiating contracts");
     web3 = new _web2.default(currentProvider);
+    this.web3 = web3;
 
     this.setAddress(defaultAccount || web3.eth.accounts[0]);
     this.setContracts(contracts || this._getDefaultContracts());
@@ -60,7 +71,7 @@ var eth = {
 
   // Internal. Dynamic require
   _getDefaultContracts: function _getDefaultContracts() {
-    return [require("./MANAToken"), require("./TerraformReserve")];
+    return [require("./MANAToken"), require("./TerraformReserve"), require("./LANDTerraformSale")];
   },
   getContract: function getContract(name) {
     if (!this.contracts[name]) {
@@ -113,10 +124,11 @@ var eth = {
   /**
    * Gets the appropiate Web3 provider for the given environment.
    * It'll fetch it from the `window` on the browser or use a new HttpProvider instance on nodejs
+   * @param  {string} httpProviderURL - URL for an HTTP provider in case the browser provider is not present
    * @return {object} The web3 provider
    */
-  getWeb3Provider: function getWeb3Provider() {
-    return process.browser ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider("http://localhost:8545");
+  getWeb3Provider: function getWeb3Provider(httpProviderUrl) {
+    return process.browser ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider(httpProviderUrl);
   },
 
 
@@ -175,7 +187,7 @@ var eth = {
       }, _callee, this);
     }));
 
-    function fetchTxReceipt(_x) {
+    function fetchTxReceipt(_x2) {
       return _ref.apply(this, arguments);
     }
 
@@ -203,7 +215,7 @@ var eth = {
       }, _callee2, this);
     }));
 
-    function remoteSign(_x2, _x3) {
+    function remoteSign(_x3, _x4) {
       return _ref2.apply(this, arguments);
     }
 
@@ -229,7 +241,7 @@ var eth = {
       }, _callee3, this);
     }));
 
-    function remoteRecover(_x4, _x5) {
+    function remoteRecover(_x5, _x6) {
       return _ref3.apply(this, arguments);
     }
 
@@ -240,6 +252,9 @@ var eth = {
   },
   getAddress: function getAddress() {
     return web3.eth.defaultAccount;
+  },
+  setupFilter: function setupFilter(type) {
+    return web3.eth.filter(type);
   }
 };
 

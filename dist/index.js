@@ -7,7 +7,8 @@ module.exports = _extends({}, require("./ethereum"), require("./log"), require("
   // Abi accessible using the `.abi` property
   contracts: {
     MANAToken: require("./ethereum/MANAToken"),
-    TerraformReserve: require("./ethereum/TerraformReserve")
+    TerraformReserve: require("./ethereum/TerraformReserve"),
+    LANDTerraformSale: require("./ethereum/LANDTerraformSale")
   },
 
   server: require("./server"),

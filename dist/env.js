@@ -68,7 +68,7 @@ var env = {
     if (!cache[name]) {
       var value = process.env[name];
 
-      if (value === undefined) {
+      if (value === undefined || value === "") {
         if (typeof fallback === "function") {
           cache[name] = fallback(name);
         } else {
