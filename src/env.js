@@ -59,14 +59,16 @@ const env = {
   get(name, fallback) {
     if (!loaded && isEmptyObject(cache)) {
       console.log(
-        `It looks like you're trying to access an ENV variable (${name}) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`
+        `It looks like you're trying to access an ENV variable (${
+          name
+        }) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`
       );
     }
 
     if (!cache[name]) {
       const value = process.env[name];
 
-      if (value === undefined) {
+      if (value === undefined || value === "") {
         if (typeof fallback === "function") {
           cache[name] = fallback(name);
         } else {
@@ -75,9 +77,9 @@ const env = {
 
         if (!cache.hasOwnProperty(name)) {
           console.log(
-            `Warning: No ${name} environment variable set, defaulting to ${cache[
-              name
-            ]}`
+            `Warning: No ${name} environment variable set, defaulting to ${
+              cache[name]
+            }`
           );
         }
       } else {
