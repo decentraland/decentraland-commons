@@ -20,6 +20,7 @@
   "rules": {
     "prettier/prettier": "error",
     "no-console": 0,
+    "quotes": ["error", "double"],
     "no-unused-vars": ["error", {
       "vars": "all",
       "args": "none",

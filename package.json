@@ -1,6 +1,6 @@
 {
   "name": "decentraland-commons",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Common functionality between the different Decentraland projects",
   "main": "./dist/index.js",
   "browser": {
@@ -10,6 +10,7 @@
   "scripts": {
     "docs": "npx jsdoc -c conf.json -r src/**/*.js",
     "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
     "init": "mkdir dist",
     "clean": "rm -rf dist",
     "contracts": "cp -r src/contracts dist",
@@ -48,14 +49,14 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
-    "eslint": "^4.8.0",
-    "eslint-config-prettier": "^2.6.0",
+    "eslint": "^4.11.0",
+    "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-prettier": "^2.3.1",
     "jsdoc": "^3.5.5",
     "mocha": "^4.0.1",
-    "prettier": "^1.7.4"
+    "prettier": "^1.8.2"
   }
 }
