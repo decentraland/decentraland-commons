@@ -6,7 +6,8 @@ module.exports = {
   // Abi accessible using the `.abi` property
   contracts: {
     MANAToken: require("./ethereum/MANAToken"),
-    TerraformReserve: require("./ethereum/TerraformReserve")
+    TerraformReserve: require("./ethereum/TerraformReserve"),
+    LANDTerraformSale: require("./ethereum/LANDTerraformSale")
   },
 
   server: require("./server"),
