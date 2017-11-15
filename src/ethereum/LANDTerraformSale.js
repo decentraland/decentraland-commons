@@ -14,7 +14,9 @@ class LANDTerraformSale extends Contract {
     if (!instance) {
       instance = new LANDTerraformSale(
         "LANDTerraformSale",
-        env.get("TERRAFORM_CONTRACT_ADDRESS", ""),
+        env.get("TERRAFORM_CONTRACT_ADDRESS", name => {
+          throw new Error(`Missing env: ${name}`);
+        }),
         abi
       );
     }
