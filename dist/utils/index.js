@@ -9,6 +9,7 @@ exports.isEmptyObject = isEmptyObject;
 exports.getObjectValues = getObjectValues;
 exports.omit = omit;
 exports.pick = pick;
+exports.arrayToObject = arrayToObject;
 /**
  * Promisifies a node callback style function. Takes a second argument that is bound as `this`
  * @param  {Function} fn - Node style callback, accepting (error, result)
@@ -109,4 +110,17 @@ function pick(obj, keys) {
   }
 
   return result;
+}
+
+/**
+ * Return a an object using a field as key out of an array of objects
+ * @param {array} arr
+ * @param {string} key
+ * @param {string} (optional) value - use only one field of object as value
+ */
+function arrayToObject(arr, key, value) {
+  return arr.reduce(function (map, obj) {
+    map[obj[key]] = value != null ? obj[value] : obj;
+    return map;
+  }, {});
 }

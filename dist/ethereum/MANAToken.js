@@ -118,7 +118,12 @@ var MANAToken = function (_Contract) {
     value: function getInstance() {
       if (!instance) {
         // Support create-react-app imports
-        var address = _env2.default.get("MANA_CONTRACT_ADDRESS", _env2.default.get("REACT_APP_MANA_CONTRACT_ADDRESS", ""));
+        var address = _env2.default.get("MANA_CONTRACT_ADDRESS", _env2.default.get("REACT_APP_MANA_CONTRACT_ADDRESS", function () {
+          if (_env2.default.isProduction()) {
+            throw new Error("Missing MANA_CONTRACT_ADDRESS or REACT_APP_MANA_CONTRACT_ADDRESS");
+          }
+          return "0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb";
+        }));
 
         instance = new MANAToken("MANAToken", address, _MANAToken.abi);
       }
