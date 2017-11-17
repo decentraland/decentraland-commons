@@ -47,7 +47,7 @@ var LANDToken = function (_Contract) {
       var y = coordinates.map(function (coor) {
         return coor.y;
       });
-      return this.call("updateManyLandMetadata", x, y, metadata);
+      return this.transaction("updateManyLandMetadata", x, y, metadata);
     }
   }, {
     key: "getOwner",
@@ -62,7 +62,7 @@ var LANDToken = function (_Contract) {
   }, {
     key: "ping",
     value: function ping(x, y) {
-      return this.call("ping", x, y);
+      return this.transaction("ping", x, y);
     }
   }, {
     key: "exists",
@@ -72,7 +72,7 @@ var LANDToken = function (_Contract) {
   }, {
     key: "transferTo",
     value: function transferTo(x, y, newOwner) {
-      return this.call("transferLand", newOwner, x, y);
+      return this.transaction("transferLand", newOwner, x, y);
     }
   }], [{
     key: "getInstance",
