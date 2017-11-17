@@ -1,10 +1,8 @@
 import * as env from "../env";
-import { Log } from "../log";
 
 import Contract from "./Contract";
 import { abi } from "../contracts/LANDTestSale.json";
 
-const log = new Log("LANDTestSale");
 let instance = null;
 
 /** LANDTestSale contract class */
@@ -17,7 +15,7 @@ class LANDTestSale extends Contract {
           if (env.isProduction()) {
             throw new Error(`Missing env: ${name}`);
           }
-          return '0x32345987770c17796bdb0a8d9492d468f53054c1';
+          return "0x32345987770c17796bdb0a8d9492d468f53054c1";
         }),
         abi
       );

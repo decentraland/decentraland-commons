@@ -17,10 +17,10 @@ class MANAToken extends Contract {
         env.get("REACT_APP_MANA_CONTRACT_ADDRESS", () => {
           if (env.isProduction()) {
             throw new Error(
-              'Missing MANA_CONTRACT_ADDRESS or REACT_APP_MANA_CONTRACT_ADDRESS'
-            )
+              "Missing MANA_CONTRACT_ADDRESS or REACT_APP_MANA_CONTRACT_ADDRESS"
+            );
           }
-          return '0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb'
+          return "0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb";
         })
       );
 
