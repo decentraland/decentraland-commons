@@ -34,7 +34,7 @@ class LANDToken extends Contract {
   updateMetadata(coordinates, metadata) {
     const x = coordinates.map(coor => coor.x);
     const y = coordinates.map(coor => coor.y);
-    return this.call("updateManyLandMetadata", x, y, metadata);
+    return this.transaction("updateManyLandMetadata", x, y, metadata);
   }
 
   getOwner(x, y) {
@@ -46,7 +46,7 @@ class LANDToken extends Contract {
   }
 
   ping(x, y) {
-    return this.call("ping", x, y);
+    return this.transaction("ping", x, y);
   }
 
   exists(x, y) {
@@ -54,7 +54,7 @@ class LANDToken extends Contract {
   }
 
   transferTo(x, y, newOwner) {
-    return this.call("transferLand", newOwner, x, y);
+    return this.transaction("transferLand", newOwner, x, y);
   }
 }
 
