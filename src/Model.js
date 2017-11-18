@@ -82,8 +82,8 @@ class Model {
    * @param  {object} conditions - An object describing the WHERE clause.
    * @return {Promise<object>}
    */
-  static async delete(conditions) {
-    return await this.db.delete(this.tableName, conditions);
+  static delete(conditions) {
+    return this.db.delete(this.tableName, conditions);
   }
 
   /**
