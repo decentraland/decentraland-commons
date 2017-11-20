@@ -28,7 +28,7 @@ const eth = {
    * @return {boolean} - True if the connection was successful
    */
   connect(defaultAccount, contracts, options = {}) {
-    if (web3 !== null) return;
+    if (web3 !== null) return true;
 
     const { httpProviderUrl } = options;
 
@@ -71,9 +71,7 @@ const eth = {
   getContract(name) {
     if (!this.contracts[name]) {
       throw new Error(
-        `The contract ${
-          name
-        } not found. Did you add it to the '.connect()' call?`
+        `The contract ${name} not found. Did you add it to the '.connect()' call?`
       );
     }
 
