@@ -1,4 +1,4 @@
-import abiDecoder from 'abi-decoder'
+import abiDecoder from './abi-decoder'
 
 import { promisify } from '../utils'
 
