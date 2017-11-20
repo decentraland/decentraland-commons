@@ -18,9 +18,11 @@
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", {"singleQuote": true, "semi": false}],
     "no-console": 0,
-    "quotes": ["error", "double"],
+    "quotes": ["error", "single"],
+    "no-extra-semi": ["error"],
+    "semi": 0,
     "no-unused-vars": ["error", {
       "vars": "all",
       "args": "none",

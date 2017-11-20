@@ -1,6 +1,6 @@
-import abiDecoder from "abi-decoder";
+import abiDecoder from 'abi-decoder'
 
-import { promisify } from "../utils";
+import { promisify } from '../utils'
 
 /** Class to work with Ethereum contracts */
 class Contract {
@@ -9,37 +9,35 @@ class Contract {
    * @return {Contract<instance>} - instance
    */
   static getInstance() {
-    throw new Error(
-      "You should override this method on each Contract subclass"
-    );
+    throw new Error('You should override this method on each Contract subclass')
   }
 
   /**
    * See {@link Contract#transaction}
    */
   static async transaction(method, ...args) {
-    return await promisify(method)(...args);
+    return await promisify(method)(...args)
   }
 
   /**
    * See {@link Contract#call}
    */
   static async call(prop, ...args) {
-    return await promisify(prop.call)(...args);
+    return await promisify(prop.call)(...args)
   }
 
   /**
    * See {@link Contract#decodeMethod}
    */
   static decodeMethod(input) {
-    return abiDecoder.decodeMethod(input);
+    return abiDecoder.decodeMethod(input)
   }
 
   /**
    * See {@link Contract#decodeLogs}
    */
   static decodeLogs(logs) {
-    return abiDecoder.decodeLogs(logs);
+    return abiDecoder.decodeLogs(logs)
   }
 
   /**
@@ -49,24 +47,24 @@ class Contract {
    * @return {Contract} instance
    */
   constructor(name, address, abi) {
-    this.name = name;
-    this.address = address;
-    this.setAbi(abi);
+    this.name = name
+    this.address = address
+    this.setAbi(abi)
 
-    this.instance = null;
+    this.instance = null
   }
 
   setAbi(abi) {
     if (!abi) {
-      throw new Error("Tried to instantiate a Contract without an `abi`");
+      throw new Error('Tried to instantiate a Contract without an `abi`')
     }
 
-    this.abi = abi;
-    abiDecoder.addABI(abi);
+    this.abi = abi
+    abiDecoder.addABI(abi)
   }
 
   setInstance(instance) {
-    this.instance = instance;
+    this.instance = instance
   }
 
   /**
@@ -76,7 +74,7 @@ class Contract {
    * @return {Promise} - promise that resolves when the transaction does
    */
   transaction(method, ...args) {
-    return Contract.transaction(this.instance[method], ...args);
+    return Contract.transaction(this.instance[method], ...args)
   }
 
   /**
@@ -86,7 +84,7 @@ class Contract {
    * @return {Promise} - promise that resolves when the call does
    */
   call(prop, ...args) {
-    return Contract.call(this.instance[prop], ...args);
+    return Contract.call(this.instance[prop], ...args)
   }
 
   /**
@@ -96,7 +94,7 @@ class Contract {
    * @return {object} - Object representing the method execution
    */
   decodeMethod(input) {
-    return Contract.decodeMethod(input);
+    return Contract.decodeMethod(input)
   }
 
   /**
@@ -106,7 +104,7 @@ class Contract {
    * @return {array<object>} - An array of logs triggered by the transaction
    */
   decodeLogs(logs) {
-    return Contract.decodeLogs(logs);
+    return Contract.decodeLogs(logs)
   }
 
   /**
@@ -117,13 +115,13 @@ class Contract {
    * @return {string} - Found result or undefined
    */
   findParamValue(decodedMethod, paramName) {
-    const params = decodedMethod.params || [];
-    const param = params.find(param => param.name === paramName);
+    const params = decodedMethod.params || []
+    const param = params.find(param => param.name === paramName)
 
     if (param) {
-      return param.value;
+      return param.value
     }
   }
 }
 
-module.exports = Contract;
+module.exports = Contract

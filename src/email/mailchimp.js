@@ -1,8 +1,8 @@
-import Mailchimp from "mailchimp-api-v3";
+import Mailchimp from 'mailchimp-api-v3'
 
-import { Log } from "../log";
+import { Log } from '../log'
 
-const log = new Log("[Mailchimp]");
+const log = new Log('[Mailchimp]')
 
 /**
  * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
@@ -17,13 +17,13 @@ const mailchimp = {
    * @return {object} the Mailchimp object, to allow chaining
    */
   connect(apiKey) {
-    if (!apiKey) throw new Error("Missing Mailchimp API key");
+    if (!apiKey) throw new Error('Missing Mailchimp API key')
 
     if (!this.client) {
-      this.client = new Mailchimp(apiKey);
+      this.client = new Mailchimp(apiKey)
     }
 
-    return this;
+    return this
   },
 
   /**
@@ -34,34 +34,31 @@ const mailchimp = {
    */
   subscribe: (email, listId) => {
     if (!listId) {
-      throw new Error("Missing Mailchimp List Id");
+      throw new Error('Missing Mailchimp List Id')
     }
 
     return this.client
       .post(`/lists/${listId}/members`, {
         email_address: email,
-        status: "subscribed"
+        status: 'subscribed'
       })
       .then(function(response) {
         if (response.error) {
-          return false;
+          return false
         }
 
-        log.info(`Subscribed ${email} to list ${listId}`);
-        return true;
+        log.info(`Subscribed ${email} to list ${listId}`)
+        return true
       })
       .catch(error => {
-        if (error.title === "Member Exists") {
-          return true;
+        if (error.title === 'Member Exists') {
+          return true
         }
 
-        log.error(
-          `Error trying to subscribe ${email} to list ${listId}`,
-          error
-        );
-        return false;
-      });
+        log.error(`Error trying to subscribe ${email} to list ${listId}`, error)
+        return false
+      })
   }
-};
+}
 
-module.exports = mailchimp;
+module.exports = mailchimp

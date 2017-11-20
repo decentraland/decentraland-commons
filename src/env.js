@@ -1,4 +1,4 @@
-import { isEmptyObject } from "./utils";
+import { isEmptyObject } from './utils'
 
 /**
  * Flag which determines if the ENV variables are already loaded
@@ -6,9 +6,9 @@ import { isEmptyObject } from "./utils";
  * You can use a pre-build plugin to load your variables, like {@link https://www.npmjs.com/package/webpack-dotenv-plugin}
  * @type {boolean}
  */
-let loaded = process.browser;
+let loaded = process.browser
 
-const cache = {};
+const cache = {}
 
 /**
  * ENV management
@@ -24,30 +24,30 @@ const env = {
    * @param {boolean} [config.override] - Override the current ENV with the value found on the .env file. `config.path` is required if this is true
    */
   load({ path, override } = {}) {
-    if (loaded) return;
+    if (loaded) return
 
-    const dotenv = require("dotenv");
+    const dotenv = require('dotenv')
 
     if (override) {
-      const envConfig = dotenv.parse(require("fs").readFileSync(path));
-      Object.assign(process.env, envConfig);
+      const envConfig = dotenv.parse(require('fs').readFileSync(path))
+      Object.assign(process.env, envConfig)
     } else {
-      dotenv.config({ path });
+      dotenv.config({ path })
     }
 
-    loaded = true;
+    loaded = true
   },
 
   isDevelopment() {
-    return !this.isProduction();
+    return !this.isProduction()
   },
 
   isProduction() {
-    return this.getName() === "production";
+    return this.getName() === 'production'
   },
 
   getName() {
-    return this.get("NODE_ENV");
+    return this.get('NODE_ENV')
   },
 
   /**
@@ -62,17 +62,17 @@ const env = {
         `It looks like you're trying to access an ENV variable (${
           name
         }) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`
-      );
+      )
     }
 
     if (!cache[name]) {
-      const value = process.env[name];
+      const value = process.env[name]
 
-      if (value === undefined || value === "") {
-        if (typeof fallback === "function") {
-          cache[name] = fallback(name);
+      if (value === undefined || value === '') {
+        if (typeof fallback === 'function') {
+          cache[name] = fallback(name)
         } else {
-          cache[name] = fallback;
+          cache[name] = fallback
         }
 
         if (!cache.hasOwnProperty(name)) {
@@ -80,15 +80,15 @@ const env = {
             `Warning: No ${name} environment variable set, defaulting to ${
               cache[name]
             }`
-          );
+          )
         }
       } else {
-        cache[name] = value;
+        cache[name] = value
       }
     }
 
-    return cache[name];
+    return cache[name]
   }
-};
+}
 
-module.exports = env;
+module.exports = env

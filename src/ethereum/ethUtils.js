@@ -1,7 +1,7 @@
-import Web3 from "web3";
-import ethereumJsUtils from "ethereumjs-util";
+import Web3 from 'web3'
+import ethereumJsUtils from 'ethereumjs-util'
 
-const web3utils = new Web3();
+const web3utils = new Web3()
 
 /**
  * Some utility functions to work with Ethereum dapps.
@@ -25,9 +25,9 @@ const ethUtils = {
    * @param  {string} [unit=ether]     - Which unit to use. {@link https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei} for more info
    * @return {string} - Parsed result
    */
-  fromWei(amount, unit = "ether") {
-    amount = web3utils.toBigNumber(amount);
-    return web3utils.fromWei(amount, unit).toNumber(10);
+  fromWei(amount, unit = 'ether') {
+    amount = web3utils.toBigNumber(amount)
+    return web3utils.fromWei(amount, unit).toNumber(10)
   },
 
   /**
@@ -36,17 +36,17 @@ const ethUtils = {
    * @param  {string} [unit=ether]     - Which unit to use. {@link https://github.com/ethereum/wiki/wiki/JavaScript-API#web3towei} for more info
    * @return {string} - Parsed result
    */
-  toWei(amount, unit = "ether") {
-    amount = web3utils.toBigNumber(amount);
-    return web3utils.toWei(amount, unit).toNumber(10);
+  toWei(amount, unit = 'ether') {
+    amount = web3utils.toBigNumber(amount)
+    return web3utils.toWei(amount, unit).toNumber(10)
   },
 
   toHex(utf8) {
-    return web3utils.toHex(utf8);
+    return web3utils.toHex(utf8)
   },
 
   fromHex(hex) {
-    return web3utils.toUtf8(hex);
+    return web3utils.toUtf8(hex)
   },
 
   /**
@@ -56,12 +56,12 @@ const ethUtils = {
    * @return {string} vrs sign result concatenated as a string
    */
   localSign(data, privKey) {
-    if (typeof data === "string") data = ethereumJsUtils.sha3(data);
-    if (typeof privKey === "string") privKey = new Buffer(privKey, "hex");
+    if (typeof data === 'string') data = ethereumJsUtils.sha3(data)
+    if (typeof privKey === 'string') privKey = new Buffer(privKey, 'hex')
 
-    const vrs = ethereumJsUtils.ecsign(data, privKey);
+    const vrs = ethereumJsUtils.ecsign(data, privKey)
 
-    return `${vrs.r.toString("hex")}||${vrs.s.toString("hex")}||${vrs.v}`;
+    return `${vrs.r.toString('hex')}||${vrs.s.toString('hex')}||${vrs.v}`
   },
 
   /**
@@ -71,18 +71,18 @@ const ethUtils = {
    * @return {string} public key hex value
    */
   localRecover(data, signature) {
-    if (typeof data === "string") {
-      data = ethereumJsUtils.sha3(data);
+    if (typeof data === 'string') {
+      data = ethereumJsUtils.sha3(data)
     }
-    let [r, s, v] = signature.split("||");
+    let [r, s, v] = signature.split('||')
 
-    r = Buffer.from(r, "hex");
-    s = Buffer.from(s, "hex");
-    v = parseInt(v, 10);
+    r = Buffer.from(r, 'hex')
+    s = Buffer.from(s, 'hex')
+    v = parseInt(v, 10)
 
-    const publicKey = ethereumJsUtils.ecrecover(data, v, r, s);
+    const publicKey = ethereumJsUtils.ecrecover(data, v, r, s)
 
-    return publicKey.toString("hex");
+    return publicKey.toString('hex')
   },
 
   /**
@@ -91,9 +91,9 @@ const ethUtils = {
    * @return {string} Hex public key
    */
   privateToPublic(privKey) {
-    if (typeof privKey === "string") privKey = new Buffer(privKey, "hex");
-    return ethereumJsUtils.privateToPublic(privKey).toString("hex");
+    if (typeof privKey === 'string') privKey = new Buffer(privKey, 'hex')
+    return ethereumJsUtils.privateToPublic(privKey).toString('hex')
   }
-};
+}
 
-module.exports = ethUtils;
+module.exports = ethUtils
