@@ -4,7 +4,7 @@ import { Log } from '../log'
 
 import Contract from './Contract'
 
-const log = new Log('[Ethereum]')
+const log = new Log('Ethereum')
 let web3 = null
 
 /** @namespace */

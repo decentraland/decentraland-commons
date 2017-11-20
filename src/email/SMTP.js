@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 
 import { Log } from '../log'
 
-const log = new Log('[SMTP]')
+const log = new Log('SMTP')
 
 const EMAIL_COOLDOWN = 60 * 1000 // 1 minute = 60 seconds = 60 * 1000 miliseconds
 

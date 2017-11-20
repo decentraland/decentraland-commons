@@ -3,7 +3,7 @@ import { sleep } from '../utils'
 
 import eth from './index'
 
-const log = new Log('[tx]')
+const log = new Log('tx')
 
 const tx = {
   DUMMY_TX_ID: '0xdeadbeef',

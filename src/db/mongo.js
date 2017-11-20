@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb'
 import { Log } from '../log'
 import { promisify } from '../utils'
 
-const log = new Log('[MongoDB]')
+const log = new Log('MongoDB')
 
 /**
  * Client to query MongoDB. Uses `mongodb` behind the scenes. Check {@link https://docs.mongodb.com/getting-started/node/client/} for more info.

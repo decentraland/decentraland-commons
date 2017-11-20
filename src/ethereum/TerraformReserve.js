@@ -5,7 +5,7 @@ import env from '../env'
 import Contract from './Contract'
 import eth from './eth'
 
-const log = new Log('[TerraformReserve]')
+const log = new Log('TerraformReserve')
 let instance = null
 
 /** TerraformReserve contract class */
