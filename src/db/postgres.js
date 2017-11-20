@@ -229,7 +229,17 @@ const postgres = {
    * @param  {object} extra conditions for the index
    * @return {Promise}
    */
-  createIndex(tableName, name, fields, conditions = {}) {},
+  createIndex(tableName, name, fields, conditions = {}) {
+    let { unique } = conditions;
+
+    unique = unique === true ? "UNIQUE" : "";
+
+    return this.client.query(
+      `CREATE ${unique} INDEX IF NOT EXISTS ${name} ON ${tableName} (${fields.join(
+        ","
+      )})`
+    );
+  },
 
   /**
    * Creates a sequence if it doesn't exist
