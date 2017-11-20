@@ -1,22 +1,22 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _MANAToken = require("../contracts/MANAToken.json");
+var _MANAToken = require('../contracts/MANAToken.json');
 
-var _env = require("../env");
+var _env = require('../env');
 
 var _env2 = _interopRequireDefault(_env);
 
-var _Contract2 = require("./Contract");
+var _Contract2 = require('./Contract');
 
 var _Contract3 = _interopRequireDefault(_Contract2);
 
-var _TerraformReserve = require("./TerraformReserve");
+var _TerraformReserve = require('./TerraformReserve');
 
 var _TerraformReserve2 = _interopRequireDefault(_TerraformReserve);
 
-var _eth = require("./eth");
+var _eth = require('./eth');
 
 var _eth2 = _interopRequireDefault(_eth);
 
@@ -44,7 +44,7 @@ var MANAToken = function (_Contract) {
   }
 
   _createClass(MANAToken, [{
-    key: "getAllowance",
+    key: 'getAllowance',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(sender) {
         var assigned;
@@ -57,10 +57,10 @@ var MANAToken = function (_Contract) {
 
               case 2:
                 assigned = _context.sent;
-                return _context.abrupt("return", _eth2.default.utils.fromWei(assigned));
+                return _context.abrupt('return', _eth2.default.utils.fromWei(assigned));
 
               case 4:
-              case "end":
+              case 'end':
                 return _context.stop();
             }
           }
@@ -74,12 +74,12 @@ var MANAToken = function (_Contract) {
       return getAllowance;
     }()
   }, {
-    key: "getAllowanceWei",
+    key: 'getAllowanceWei',
     value: function getAllowanceWei(sender) {
-      return this.call("allowance", sender, _TerraformReserve2.default.address);
+      return this.call('allowance', sender, _TerraformReserve2.default.address);
     }
   }, {
-    key: "getBalance",
+    key: 'getBalance',
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(sender) {
         var manaBalance;
@@ -92,10 +92,10 @@ var MANAToken = function (_Contract) {
 
               case 2:
                 manaBalance = _context2.sent;
-                return _context2.abrupt("return", _eth2.default.utils.fromWei(manaBalance));
+                return _context2.abrupt('return', _eth2.default.utils.fromWei(manaBalance));
 
               case 4:
-              case "end":
+              case 'end':
                 return _context2.stop();
             }
           }
@@ -109,23 +109,23 @@ var MANAToken = function (_Contract) {
       return getBalance;
     }()
   }, {
-    key: "getBalanceWei",
+    key: 'getBalanceWei',
     value: function getBalanceWei(sender) {
-      return this.call("balanceOf", sender);
+      return this.call('balanceOf', sender);
     }
   }], [{
-    key: "getInstance",
+    key: 'getInstance',
     value: function getInstance() {
       if (!instance) {
         // Support create-react-app imports
-        var address = _env2.default.get("MANA_CONTRACT_ADDRESS", _env2.default.get("REACT_APP_MANA_CONTRACT_ADDRESS", function () {
+        var address = _env2.default.get('MANA_CONTRACT_ADDRESS', _env2.default.get('REACT_APP_MANA_CONTRACT_ADDRESS', function () {
           if (_env2.default.isProduction()) {
-            throw new Error("Missing MANA_CONTRACT_ADDRESS or REACT_APP_MANA_CONTRACT_ADDRESS");
+            throw new Error('Missing MANA_CONTRACT_ADDRESS or REACT_APP_MANA_CONTRACT_ADDRESS');
           }
-          return "0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb";
+          return '0x2a8fd99c19271f4f04b1b7b9c4f7cf264b626edb';
         }));
 
-        instance = new MANAToken("MANAToken", address, _MANAToken.abi);
+        instance = new MANAToken('MANAToken', address, _MANAToken.abi);
       }
       return instance;
     }

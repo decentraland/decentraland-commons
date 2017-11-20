@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _abiDecoder = require("abi-decoder");
+var _abiDecoder = require('abi-decoder');
 
 var _abiDecoder2 = _interopRequireDefault(_abiDecoder);
 
-var _utils = require("../utils");
+var _utils = require('../utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19,14 +19,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /** Class to work with Ethereum contracts */
 var Contract = function () {
   _createClass(Contract, null, [{
-    key: "getInstance",
+    key: 'getInstance',
 
     /**
      * Get a singleton instance of the current contract. Intended to be overriden
      * @return {Contract<instance>} - instance
      */
     value: function getInstance() {
-      throw new Error("You should override this method on each Contract subclass");
+      throw new Error('You should override this method on each Contract subclass');
     }
 
     /**
@@ -34,7 +34,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "transaction",
+    key: 'transaction',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(method) {
         for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -49,10 +49,10 @@ var Contract = function () {
                 return (0, _utils.promisify)(method).apply(undefined, _toConsumableArray(args));
 
               case 2:
-                return _context.abrupt("return", _context.sent);
+                return _context.abrupt('return', _context.sent);
 
               case 3:
-              case "end":
+              case 'end':
                 return _context.stop();
             }
           }
@@ -71,7 +71,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "call",
+    key: 'call',
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(prop) {
         for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
@@ -86,10 +86,10 @@ var Contract = function () {
                 return (0, _utils.promisify)(prop.call).apply(undefined, _toConsumableArray(args));
 
               case 2:
-                return _context2.abrupt("return", _context2.sent);
+                return _context2.abrupt('return', _context2.sent);
 
               case 3:
-              case "end":
+              case 'end':
                 return _context2.stop();
             }
           }
@@ -108,7 +108,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "decodeMethod",
+    key: 'decodeMethod',
     value: function decodeMethod(input) {
       return _abiDecoder2.default.decodeMethod(input);
     }
@@ -118,7 +118,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "decodeLogs",
+    key: 'decodeLogs',
     value: function decodeLogs(logs) {
       return _abiDecoder2.default.decodeLogs(logs);
     }
@@ -143,17 +143,17 @@ var Contract = function () {
   }
 
   _createClass(Contract, [{
-    key: "setAbi",
+    key: 'setAbi',
     value: function setAbi(abi) {
       if (!abi) {
-        throw new Error("Tried to instantiate a Contract without an `abi`");
+        throw new Error('Tried to instantiate a Contract without an `abi`');
       }
 
       this.abi = abi;
       _abiDecoder2.default.addABI(abi);
     }
   }, {
-    key: "setInstance",
+    key: 'setInstance',
     value: function setInstance(instance) {
       this.instance = instance;
     }
@@ -166,7 +166,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "transaction",
+    key: 'transaction',
     value: function transaction(method) {
       for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
         args[_key3 - 1] = arguments[_key3];
@@ -183,7 +183,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "call",
+    key: 'call',
     value: function call(prop) {
       for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
         args[_key4 - 1] = arguments[_key4];
@@ -200,7 +200,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "decodeMethod",
+    key: 'decodeMethod',
     value: function decodeMethod(input) {
       return Contract.decodeMethod(input);
     }
@@ -213,7 +213,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "decodeLogs",
+    key: 'decodeLogs',
     value: function decodeLogs(logs) {
       return Contract.decodeLogs(logs);
     }
@@ -227,7 +227,7 @@ var Contract = function () {
      */
 
   }, {
-    key: "findParamValue",
+    key: 'findParamValue',
     value: function findParamValue(decodedMethod, paramName) {
       var params = decodedMethod.params || [];
       var param = params.find(function (param) {

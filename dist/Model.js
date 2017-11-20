@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _db = require("./db");
+var _db = require('./db');
 
 var _db2 = _interopRequireDefault(_db);
 
-var _utils = require("./utils");
+var _utils = require('./utils');
 
 var utils = _interopRequireWildcard(_utils);
 
@@ -25,7 +25,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var Model = function () {
   _createClass(Model, null, [{
-    key: "setDb",
+    key: 'setDb',
 
 
     /**
@@ -33,10 +33,10 @@ var Model = function () {
      * @param {string|object} dbClient - The name of an available db client (from /db) or an object with the same API
      */
     value: function setDb() {
-      var dbClient = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "postgres";
+      var dbClient = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'postgres';
 
-      if (typeof dbClient === "string" && !_db2.default[_db2.default]) {
-        throw new Error("Undefined db client " + _db2.default);
+      if (typeof dbClient === 'string' && !_db2.default[_db2.default]) {
+        throw new Error('Undefined db client ' + _db2.default);
       }
 
       this.db = _db2.default[_db2.default];
@@ -57,7 +57,7 @@ var Model = function () {
      */
 
   }, {
-    key: "find",
+    key: 'find',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(conditions, orderBy) {
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -68,10 +68,10 @@ var Model = function () {
                 return this.db.select(this.tableName, conditions, orderBy);
 
               case 2:
-                return _context.abrupt("return", _context.sent);
+                return _context.abrupt('return', _context.sent);
 
               case 3:
-              case "end":
+              case 'end':
                 return _context.stop();
             }
           }
@@ -92,7 +92,7 @@ var Model = function () {
      */
 
   }, {
-    key: "findOne",
+    key: 'findOne',
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(idOrCond, orderBy) {
         var conditions;
@@ -100,15 +100,15 @@ var Model = function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                conditions = (typeof idOrCond === "undefined" ? "undefined" : _typeof(idOrCond)) === "object" ? idOrCond : { id: idOrCond };
+                conditions = (typeof idOrCond === 'undefined' ? 'undefined' : _typeof(idOrCond)) === 'object' ? idOrCond : { id: idOrCond };
                 _context2.next = 3;
                 return this.db.selectOne(this.tableName, conditions, orderBy);
 
               case 3:
-                return _context2.abrupt("return", _context2.sent);
+                return _context2.abrupt('return', _context2.sent);
 
               case 4:
-              case "end":
+              case 'end':
                 return _context2.stop();
             }
           }
@@ -129,7 +129,7 @@ var Model = function () {
      */
 
   }, {
-    key: "insert",
+    key: 'insert',
     value: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(row) {
         var insertion;
@@ -144,10 +144,10 @@ var Model = function () {
                 insertion = _context3.sent;
 
                 row.id = insertion.rows[0].id;
-                return _context3.abrupt("return", row);
+                return _context3.abrupt('return', row);
 
               case 5:
-              case "end":
+              case 'end':
                 return _context3.stop();
             }
           }
@@ -169,7 +169,7 @@ var Model = function () {
      */
 
   }, {
-    key: "update",
+    key: 'update',
     value: function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(changes, conditions) {
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
@@ -180,10 +180,10 @@ var Model = function () {
                 return this.db.update(this.tableName, utils.pick(changes, this.columnNames), conditions);
 
               case 2:
-                return _context4.abrupt("return", _context4.sent);
+                return _context4.abrupt('return', _context4.sent);
 
               case 3:
-              case "end":
+              case 'end':
                 return _context4.stop();
             }
           }
@@ -204,7 +204,7 @@ var Model = function () {
      */
 
   }, {
-    key: "delete",
+    key: 'delete',
     value: function _delete(conditions) {
       return this.db.delete(this.tableName, conditions);
     }
@@ -217,7 +217,7 @@ var Model = function () {
      */
 
   }, {
-    key: "isIncomplete",
+    key: 'isIncomplete',
     value: function isIncomplete(attributes) {
       return this.columnNames.some(function (column) {
         return !attributes.hasOwnProperty(column);
@@ -245,7 +245,7 @@ var Model = function () {
 
 
   _createClass(Model, [{
-    key: "retreive",
+    key: 'retreive',
     value: function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
@@ -257,10 +257,10 @@ var Model = function () {
 
               case 2:
                 this.attributes = _context5.sent;
-                return _context5.abrupt("return", this.attributes);
+                return _context5.abrupt('return', this.attributes);
 
               case 4:
-              case "end":
+              case 'end':
                 return _context5.stop();
             }
           }
@@ -279,7 +279,7 @@ var Model = function () {
      */
 
   }, {
-    key: "insert",
+    key: 'insert',
     value: function () {
       var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
         return regeneratorRuntime.wrap(function _callee6$(_context6) {
@@ -290,10 +290,10 @@ var Model = function () {
                 return this.constructor.insert(this.attributes);
 
               case 2:
-                return _context6.abrupt("return", _context6.sent);
+                return _context6.abrupt('return', _context6.sent);
 
               case 3:
-              case "end":
+              case 'end':
                 return _context6.stop();
             }
           }
@@ -313,7 +313,7 @@ var Model = function () {
      */
 
   }, {
-    key: "update",
+    key: 'update',
     value: function () {
       var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
         var conditions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { id: this.attributes.id };
@@ -325,10 +325,10 @@ var Model = function () {
                 return this.constructor.update(this.attributes, conditions);
 
               case 2:
-                return _context7.abrupt("return", _context7.sent);
+                return _context7.abrupt('return', _context7.sent);
 
               case 3:
-              case "end":
+              case 'end':
                 return _context7.stop();
             }
           }
@@ -348,7 +348,7 @@ var Model = function () {
      */
 
   }, {
-    key: "delete",
+    key: 'delete',
     value: function () {
       var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
         var conditions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { id: this.attributes.id };
@@ -360,10 +360,10 @@ var Model = function () {
                 return this.constructor.delete(conditions);
 
               case 2:
-                return _context8.abrupt("return", _context8.sent);
+                return _context8.abrupt('return', _context8.sent);
 
               case 3:
-              case "end":
+              case 'end':
                 return _context8.stop();
             }
           }
@@ -383,7 +383,7 @@ var Model = function () {
      */
 
   }, {
-    key: "isEmpty",
+    key: 'isEmpty',
     value: function isEmpty() {
       return !this.get();
     }
@@ -394,7 +394,7 @@ var Model = function () {
      */
 
   }, {
-    key: "isIncomplete",
+    key: 'isIncomplete',
     value: function isIncomplete() {
       return this.constructor.isIncomplete(this.attributes);
     }
@@ -406,7 +406,7 @@ var Model = function () {
      */
 
   }, {
-    key: "get",
+    key: 'get',
     value: function get(key) {
       return key ? this.attributes[key] : this.attributes;
     }
@@ -418,7 +418,7 @@ var Model = function () {
      */
 
   }, {
-    key: "getIn",
+    key: 'getIn',
     value: function getIn(keyPath) {
       var value = this.attributes;
 
@@ -459,7 +459,7 @@ var Model = function () {
      */
 
   }, {
-    key: "set",
+    key: 'set',
     value: function set(key, value) {
       this.attributes[key] = value;
       return this;
@@ -473,7 +473,7 @@ var Model = function () {
      */
 
   }, {
-    key: "setIn",
+    key: 'setIn',
     value: function setIn(keyPath, value) {
       var keyAmount = keyPath.length;
       var nested = this.attributes;
@@ -499,7 +499,7 @@ var Model = function () {
 
 Model.tableName = null;
 Model.columnNames = [];
-Model.db = _db2.default["postgres"];
+Model.db = _db2.default['postgres'];
 
 
 module.exports = Model;

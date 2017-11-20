@@ -1,22 +1,22 @@
-"use strict";
+'use strict';
 
-var _fs = require("fs");
+var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _tunnelSsh = require("tunnel-ssh");
+var _tunnelSsh = require('tunnel-ssh');
 
 var _tunnelSsh2 = _interopRequireDefault(_tunnelSsh);
 
-var _log = require("../log");
+var _log = require('../log');
 
-var _utils = require("../utils");
+var _utils = require('../utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var log = new _log.Log("[SSH]");
+var log = new _log.Log('SSH');
 
 /**
  * Connect via an SSH tunnel. It uses tunnel-ssh behind the scenes. Check {@link https://github.com/agebrock/tunnel-ssh} for more info.
@@ -34,23 +34,23 @@ var tunnel = {
     var tunnelConfig = this.readTunnelConfig(configOrPath);
 
     if (!tunnelConfig) {
-      throw new Error("Tried to connect to ssh tunnel without a valid configuration");
+      throw new Error('Tried to connect to ssh tunnel without a valid configuration');
     }
 
-    log.info("Connecting to SSH tunnel");
+    log.info('Connecting to SSH tunnel');
     var currentTunnel = null;
 
     return new Promise(function (resolve, reject) {
       return (0, _tunnelSsh2.default)(tunnelConfig, function (error, _tunnel) {
         currentTunnel = _tunnel;
         resolve(tunnelConfig.localPort);
-      }).on("error", function () {
+      }).on('error', function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(error, tunnel) {
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  log.info("Tunnel error", error.toString());
+                  log.info('Tunnel error', error.toString());
                   if (currentTunnel) currentTunnel.close();
 
                   _this.close();
@@ -62,7 +62,7 @@ var tunnel = {
                   tunnel.connect(configOrPath).then(resolve).catch(reject);
 
                 case 6:
-                case "end":
+                case 'end':
                   return _context.stop();
               }
             }
@@ -80,12 +80,12 @@ var tunnel = {
    * Uses an object or reads one from the file system describing the connection.
    * @example <caption>A minimal example contains</caption>
    * {
-   *   "username": "remote_username",
-   *   "host": "remote_host",
-   *   "privateKey": "path_to_private_key",
-   *   "port": 22024,
-   *   "dstPort": 27017,
-   *   "localPort": ""
+   *   'username': 'remote_username',
+   *   'host': 'remote_host',
+   *   'privateKey': 'path_to_private_key',
+   *   'port': 22024,
+   *   'dstPort': 27017,
+   *   'localPort': ''
    * }
    * @param  {object|string} configOrPath - The manifest for the tunnel configuration. It can be the filesystem path to the json file or the object itself.
    * @return {object} - The parsed configuration
@@ -93,7 +93,7 @@ var tunnel = {
   readTunnelConfig: function readTunnelConfig(configOrPath) {
     var tunnelConfig = null;
 
-    if (typeof configOrPath === "string") {
+    if (typeof configOrPath === 'string') {
       tunnelConfig = _fs2.default.readFileSync(configOrPath);
       tunnelConfig = JSON.parse(tunnelConfig);
     } else {

@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _LANDToken = require("../contracts/LANDToken.json");
+var _LANDToken = require('../contracts/LANDToken.json');
 
-var _env = require("../env");
+var _env = require('../env');
 
 var _env2 = _interopRequireDefault(_env);
 
-var _Contract2 = require("./Contract");
+var _Contract2 = require('./Contract');
 
 var _Contract3 = _interopRequireDefault(_Contract2);
 
@@ -34,12 +34,12 @@ var LANDToken = function (_Contract) {
   }
 
   _createClass(LANDToken, [{
-    key: "getMetadata",
+    key: 'getMetadata',
     value: function getMetadata(x, y) {
-      return this.call("landMetadata", x, y);
+      return this.call('landMetadata', x, y);
     }
   }, {
-    key: "updateMetadata",
+    key: 'updateMetadata',
     value: function updateMetadata(coordinates, metadata) {
       var x = coordinates.map(function (coor) {
         return coor.x;
@@ -47,46 +47,46 @@ var LANDToken = function (_Contract) {
       var y = coordinates.map(function (coor) {
         return coor.y;
       });
-      return this.transaction("updateManyLandMetadata", x, y, metadata);
+      return this.transaction('updateManyLandMetadata', x, y, metadata);
     }
   }, {
-    key: "getOwner",
+    key: 'getOwner',
     value: function getOwner(x, y) {
-      return this.call("ownerOfLand", x, y);
+      return this.call('ownerOfLand', x, y);
     }
   }, {
-    key: "buildTokenId",
+    key: 'buildTokenId',
     value: function buildTokenId(x, y) {
-      return this.call("buildTokenId", x, y);
+      return this.call('buildTokenId', x, y);
     }
   }, {
-    key: "ping",
+    key: 'ping',
     value: function ping(x, y) {
-      return this.transaction("ping", x, y);
+      return this.transaction('ping', x, y);
     }
   }, {
-    key: "exists",
+    key: 'exists',
     value: function exists(x, y) {
-      return this.call("exists", x, y);
+      return this.call('exists', x, y);
     }
   }, {
-    key: "transferTo",
+    key: 'transferTo',
     value: function transferTo(x, y, newOwner) {
-      return this.transaction("transferLand", newOwner, x, y);
+      return this.transaction('transferLand', newOwner, x, y);
     }
   }], [{
-    key: "getInstance",
+    key: 'getInstance',
     value: function getInstance() {
       if (!instance) {
         // Support create-react-app imports
-        var address = _env2.default.get("LAND_CONTRACT_ADDRESS", _env2.default.get("REACT_APP_LAND_CONTRACT_ADDRESS", function () {
+        var address = _env2.default.get('LAND_CONTRACT_ADDRESS', _env2.default.get('REACT_APP_LAND_CONTRACT_ADDRESS', function () {
           if (_env2.default.isProduction()) {
-            throw new Error("Missing LAND_CONTRACT_ADDRESS or REACT_APP_LAND_CONTRACT_ADDRESS");
+            throw new Error('Missing LAND_CONTRACT_ADDRESS or REACT_APP_LAND_CONTRACT_ADDRESS');
           }
-          return "0x89021CCAF582aC748A7F21cAeF68cC7b9FE17FC5";
+          return '0x89021CCAF582aC748A7F21cAeF68cC7b9FE17FC5';
         }));
 
-        instance = new LANDToken("LANDToken", address, _LANDToken.abi);
+        instance = new LANDToken('LANDToken', address, _LANDToken.abi);
       }
       return instance;
     }

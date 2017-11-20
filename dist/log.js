@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _env = require("./env");
+var _env = require('./env');
 
 var _env2 = _interopRequireDefault(_env);
 
@@ -28,7 +28,7 @@ var Log = function () {
    * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
    */
   function Log() {
-    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     var shouldLog = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _classCallCheck(this, Log);
@@ -40,57 +40,57 @@ var Log = function () {
   }
 
   _createClass(Log, [{
-    key: "addOutput",
+    key: 'addOutput',
     value: function addOutput(fn) {
       if (!this.outputs.includes(fn)) {
         this.outputs.push(fn);
       }
     }
   }, {
-    key: "removeOutput",
+    key: 'removeOutput',
     value: function removeOutput(fn) {
       this.outputs = this.outputs.filter(function (e) {
         return e !== fn;
       });
     }
   }, {
-    key: "debug",
+    key: 'debug',
     value: function debug() {
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
 
-      return this.msg.apply(this, ["debug"].concat(args));
+      return this.msg.apply(this, ['debug'].concat(args));
     }
   }, {
-    key: "warn",
+    key: 'warn',
     value: function warn() {
       for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
       }
 
-      return this.msg.apply(this, ["warn"].concat(args));
+      return this.msg.apply(this, ['warn'].concat(args));
     }
   }, {
-    key: "info",
+    key: 'info',
     value: function info() {
       for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
       }
 
-      return this.msg.apply(this, ["log"].concat(args));
+      return this.msg.apply(this, ['log'].concat(args));
     }
   }, {
-    key: "error",
+    key: 'error',
     value: function error() {
       for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
         args[_key4] = arguments[_key4];
       }
 
-      return this.msg.apply(this, ["error"].concat(args));
+      return this.msg.apply(this, ['error'].concat(args));
     }
   }, {
-    key: "trace",
+    key: 'trace',
     value: function trace() {
       if (this.shouldLog.trace) {
         var _console;
@@ -99,12 +99,12 @@ var Log = function () {
       }
     }
   }, {
-    key: "msg",
+    key: 'msg',
     value: function msg(priority, message) {
       var logLevels = this.getLogLevels();
 
       if (!(priority in logLevels)) {
-        throw new Error("Invalid log message priority: " + priority);
+        throw new Error('Invalid log message priority: ' + priority);
       }
 
       for (var _len5 = arguments.length, extras = Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
@@ -124,7 +124,7 @@ var Log = function () {
           for (var _iterator = this.outputs[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var output = _step.value;
 
-            output.apply(undefined, [priority, this.name ? "[" + this.name + "]" : "", message].concat(extras));
+            output.apply(undefined, [priority, this.name ? '[' + this.name + ']' : '', message].concat(extras));
           }
         } catch (err) {
           _didIteratorError = true;
@@ -145,7 +145,7 @@ var Log = function () {
       return message;
     }
   }, {
-    key: "getLogLevels",
+    key: 'getLogLevels',
     value: function getLogLevels() {
       if (!this.logLevels) {
         var inDev = _env2.default.isDevelopment();
@@ -173,10 +173,10 @@ function consoleOutput(priority) {
 
   var _console2;
 
-  var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+  var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
   var message = arguments[2];
 
-  if (typeof message === "function") {
+  if (typeof message === 'function') {
     message = message.apply(undefined, _toConsumableArray(extras));
     extras = [];
   }

@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-var _web = require("web3");
+var _web = require('web3');
 
 var _web2 = _interopRequireDefault(_web);
 
-var _log = require("../log");
+var _log = require('../log');
 
-var _Contract = require("./Contract");
+var _Contract = require('./Contract');
 
 var _Contract2 = _interopRequireDefault(_Contract);
 
@@ -14,7 +14,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var log = new _log.Log("[Ethereum]");
+var log = new _log.Log('[Ethereum]');
 var web3 = null;
 
 /** @namespace */
@@ -28,58 +28,169 @@ var eth = {
   /**
    * Reference to the utilities object {@link ethUtils}
    */
-  utils: require("./ethUtils"),
+  utils: require('./ethUtils'),
 
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts
    * @param  {object} [options] - Extra options for the ETH connection
+   * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
-  connect: function connect(defaultAccount, contracts) {
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  connect: function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(defaultAccount, contracts) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var httpProviderUrl, currentProvider, accounts;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!(web3 !== null)) {
+                _context.next = 2;
+                break;
+              }
 
-    if (web3 !== null) return;
+              return _context.abrupt('return', true);
 
-    var httpProviderUrl = options.httpProviderUrl;
+            case 2:
+              httpProviderUrl = options.httpProviderUrl;
+              currentProvider = this.getWeb3Provider(httpProviderUrl);
 
+              if (currentProvider) {
+                _context.next = 7;
+                break;
+              }
 
-    var currentProvider = this.getWeb3Provider(httpProviderUrl || "http://localhost:8545");
-    if (!currentProvider) {
-      log.info("Could not get a valid provider for web3");
-      return false;
+              log.info('Could not get a valid provider for web3');
+              return _context.abrupt('return', false);
+
+            case 7:
+
+              log.info('Instantiating contracts');
+              web3 = new _web2.default(currentProvider);
+
+              _context.t0 = defaultAccount;
+
+              if (_context.t0) {
+                _context.next = 14;
+                break;
+              }
+
+              _context.next = 13;
+              return this.getAccounts();
+
+            case 13:
+              _context.t0 = _context.sent;
+
+            case 14:
+              accounts = _context.t0;
+
+              if (!(accounts.length === 0)) {
+                _context.next = 19;
+                break;
+              }
+
+              log.warn('Could not get the default address from web3, please try again');
+              this.disconnect();
+              return _context.abrupt('return', false);
+
+            case 19:
+
+              this.setAddress(accounts[0]);
+              this.setContracts(contracts || this._getDefaultContracts());
+
+              log.info('Got ' + this.getAddress() + ' as current user address');
+              return _context.abrupt('return', true);
+
+            case 23:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+
+    function connect(_x2, _x3) {
+      return _ref.apply(this, arguments);
     }
 
-    log.info("Instantiating contracts");
-    web3 = new _web2.default(currentProvider);
-    this.web3 = web3;
-
-    this.setAddress(defaultAccount || web3.eth.accounts[0]);
-    this.setContracts(contracts || this._getDefaultContracts());
-
-    if (!this.getAddress()) {
-      log.warn("Could not get the default address from web3, please re-connect");
-      web3 = null;
-      return false;
+    return connect;
+  }(),
+  disconnect: function disconnect() {
+    if (web3) {
+      this.setAddress(null);
     }
-
-    log.info("Got " + this.getAddress() + " as current user address");
-    return true;
+    web3 = null;
   },
+  reconnect: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var _args2 = arguments;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              this.disconnect();
+              _context2.next = 3;
+              return this.connect.apply(this, _args2);
+
+            case 3:
+              return _context2.abrupt('return', _context2.sent);
+
+            case 4:
+            case 'end':
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+
+    function reconnect() {
+      return _ref2.apply(this, arguments);
+    }
+
+    return reconnect;
+  }(),
 
 
   // Internal. Dynamic require
   _getDefaultContracts: function _getDefaultContracts() {
-    return [require("./MANAToken"), require("./TerraformReserve"), require("./LANDTerraformSale")];
+    return [require('./MANAToken'), require('./TerraformReserve'), require('./LANDTerraformSale')];
   },
   getContract: function getContract(name) {
     if (!this.contracts[name]) {
-      throw new Error("The contract " + name + " not found. Did you add it to the '.connect()' call?");
+      throw new Error('The contract ' + name + ' not found. Did you add it to the \'.connect()\' call?');
     }
 
     return this.contracts[name];
   },
+  getAccounts: function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              log.info('Getting web3 accounts');
+              _context3.next = 3;
+              return _Contract2.default.transaction(web3.eth.getAccounts);
+
+            case 3:
+              return _context3.abrupt('return', _context3.sent);
+
+            case 4:
+            case 'end':
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function getAccounts() {
+      return _ref3.apply(this, arguments);
+    }
+
+    return getAccounts;
+  }(),
 
 
   /**
@@ -124,10 +235,12 @@ var eth = {
   /**
    * Gets the appropiate Web3 provider for the given environment.
    * It'll fetch it from the `window` on the browser or use a new HttpProvider instance on nodejs
-   * @param  {string} httpProviderURL - URL for an HTTP provider in case the browser provider is not present
+   * @param  {string} [httpProviderURL="http://localhost:8545"] - URL for an HTTP provider in case the browser provider is not present
    * @return {object} The web3 provider
    */
-  getWeb3Provider: function getWeb3Provider(httpProviderUrl) {
+  getWeb3Provider: function getWeb3Provider() {
+    var httpProviderUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'http://localhost:8545';
+
     return process.browser ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider(httpProviderUrl);
   },
 
@@ -148,7 +261,7 @@ var eth = {
    * @return {object}      - An object describing the transaction (if it exists)
    */
   fetchTxStatus: function fetchTxStatus(txId) {
-    log.info("Getting " + txId + " status");
+    log.info('Getting ' + txId + ' status');
     return _Contract2.default.transaction(web3.eth.getTransaction, txId);
   },
 
@@ -159,90 +272,90 @@ var eth = {
    * @return {object} - An object describing the transaction recepeit (if it exists) with it's logs
    */
   fetchTxReceipt: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(txId) {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(txId) {
       var recepeit;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
-              log.info("Getting " + txId + " recepeit");
-              _context.next = 3;
+              log.info('Getting ' + txId + ' recepeit');
+              _context4.next = 3;
               return _Contract2.default.transaction(web3.eth.getTransactionReceipt, txId);
 
             case 3:
-              recepeit = _context.sent;
+              recepeit = _context4.sent;
 
 
               if (recepeit) {
                 recepeit.logs = _Contract2.default.decodeLogs(recepeit.logs);
               }
 
-              return _context.abrupt("return", recepeit);
+              return _context4.abrupt('return', recepeit);
 
             case 6:
-            case "end":
-              return _context.stop();
+            case 'end':
+              return _context4.stop();
           }
         }
-      }, _callee, this);
+      }, _callee4, this);
     }));
 
-    function fetchTxReceipt(_x2) {
-      return _ref.apply(this, arguments);
+    function fetchTxReceipt(_x5) {
+      return _ref4.apply(this, arguments);
     }
 
     return fetchTxReceipt;
   }(),
   remoteSign: function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(message, address) {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(message, address) {
       var sign;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context5.prev = _context5.next) {
             case 0:
               sign = web3.personal.sign.bind(web3.personal);
-              _context2.next = 3;
+              _context5.next = 3;
               return _Contract2.default.transaction(sign, message, address);
 
             case 3:
-              return _context2.abrupt("return", _context2.sent);
+              return _context5.abrupt('return', _context5.sent);
 
             case 4:
-            case "end":
-              return _context2.stop();
+            case 'end':
+              return _context5.stop();
           }
         }
-      }, _callee2, this);
+      }, _callee5, this);
     }));
 
-    function remoteSign(_x3, _x4) {
-      return _ref2.apply(this, arguments);
+    function remoteSign(_x6, _x7) {
+      return _ref5.apply(this, arguments);
     }
 
     return remoteSign;
   }(),
   remoteRecover: function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(message, signature) {
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(message, signature) {
+      return regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context6.prev = _context6.next) {
             case 0:
-              _context3.next = 2;
+              _context6.next = 2;
               return web3.personal.ecRecover(message, signature);
 
             case 2:
-              return _context3.abrupt("return", _context3.sent);
+              return _context6.abrupt('return', _context6.sent);
 
             case 3:
-            case "end":
-              return _context3.stop();
+            case 'end':
+              return _context6.stop();
           }
         }
-      }, _callee3, this);
+      }, _callee6, this);
     }));
 
-    function remoteRecover(_x5, _x6) {
-      return _ref3.apply(this, arguments);
+    function remoteRecover(_x8, _x9) {
+      return _ref6.apply(this, arguments);
     }
 
     return remoteRecover;

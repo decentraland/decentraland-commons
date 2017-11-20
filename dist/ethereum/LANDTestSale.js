@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _env = require("../env");
+var _env = require('../env');
 
 var env = _interopRequireWildcard(_env);
 
-var _Contract2 = require("./Contract");
+var _Contract2 = require('./Contract');
 
 var _Contract3 = _interopRequireDefault(_Contract2);
 
-var _LANDTestSale = require("../contracts/LANDTestSale.json");
+var _LANDTestSale = require('../contracts/LANDTestSale.json');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,19 +36,19 @@ var LANDTestSale = function (_Contract) {
   }
 
   _createClass(LANDTestSale, [{
-    key: "buy",
+    key: 'buy',
     value: function buy(x, y) {
-      return this.transaction("buy", x, y, { gas: 120000 });
+      return this.transaction('buy', x, y, { gas: 120000 });
     }
   }], [{
-    key: "getInstance",
+    key: 'getInstance',
     value: function getInstance() {
       if (!instance) {
-        instance = new LANDTestSale("LANDTestSale", env.get("LAND_TEST_SALE_CONTRACT_ADDRESS", function (name) {
+        instance = new LANDTestSale('LANDTestSale', env.get('LAND_TEST_SALE_CONTRACT_ADDRESS', function (name) {
           if (env.isProduction()) {
-            throw new Error("Missing env: " + name);
+            throw new Error('Missing env: ' + name);
           }
-          return "0x32345987770c17796bdb0a8d9492d468f53054c1";
+          return '0x32345987770c17796bdb0a8d9492d468f53054c1';
         }), _LANDTestSale.abi);
       }
       return instance;

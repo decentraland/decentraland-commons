@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-var _pg = require("pg");
+var _pg = require('pg');
 
 var _pg2 = _interopRequireDefault(_pg);
 
-var _utils = require("../utils");
+var _utils = require('../utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34,10 +34,10 @@ var postgres = {
               return this.client.connect();
 
             case 3:
-              return _context.abrupt("return", this.client);
+              return _context.abrupt('return', this.client);
 
             case 4:
-            case "end":
+            case 'end':
               return _context.stop();
           }
         }
@@ -70,10 +70,10 @@ var postgres = {
 
             case 2:
               result = _context2.sent;
-              return _context2.abrupt("return", result.rows);
+              return _context2.abrupt('return', result.rows);
 
             case 4:
-            case "end":
+            case 'end':
               return _context2.stop();
           }
         }
@@ -96,7 +96,7 @@ var postgres = {
    * @return {Promise<array>} - Rows
    */
   count: function count(tableName, conditions, orderBy) {
-    return this._query("COUNT", tableName, conditions, orderBy);
+    return this._query('COUNT', tableName, conditions, orderBy);
   },
 
 
@@ -108,7 +108,7 @@ var postgres = {
    * @return {Promise<array>} - Rows
    */
   select: function select(tableName, conditions, orderBy) {
-    return this._query("SELECT", tableName, conditions, orderBy);
+    return this._query('SELECT', tableName, conditions, orderBy);
   },
 
 
@@ -127,14 +127,14 @@ var postgres = {
           switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return this._query("SELECT", tableName, conditions, orderBy, "LIMIT 1");
+              return this._query('SELECT', tableName, conditions, orderBy, 'LIMIT 1');
 
             case 2:
               rows = _context3.sent;
-              return _context3.abrupt("return", rows[0]);
+              return _context3.abrupt('return', rows[0]);
 
             case 4:
-            case "end":
+            case 'end':
               return _context3.stop();
           }
         }
@@ -152,35 +152,35 @@ var postgres = {
   // Internal
   _query: function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(method, tableName, conditions, orderBy) {
-      var extra = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "";
+      var extra = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
       var values, where, order, result;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
               values = [];
-              where = "";
-              order = "";
+              where = '';
+              order = '';
 
 
               if (conditions) {
                 values = (0, _utils.getObjectValues)(conditions);
-                where = "WHERE " + this.toAssignmentFields(conditions).join(" AND ");
+                where = 'WHERE ' + this.toAssignmentFields(conditions).join(' AND ');
               }
 
               if (order) {
-                order = "ORDER BY " + this.getOrderValues(order);
+                order = 'ORDER BY ' + this.getOrderValues(order);
               }
 
               _context4.next = 7;
-              return this.client.query(method + " * FROM " + tableName + " " + where + " " + order + " " + extra, values);
+              return this.client.query(method + ' * FROM ' + tableName + ' ' + where + ' ' + order + ' ' + extra, values);
 
             case 7:
               result = _context4.sent;
-              return _context4.abrupt("return", result.rows);
+              return _context4.abrupt('return', result.rows);
 
             case 9:
-            case "end":
+            case 'end':
               return _context4.stop();
           }
         }
@@ -215,7 +215,7 @@ var postgres = {
                 break;
               }
 
-              throw new Error("Tried to perform an insert on " + tableName + " without any values. Supply a changes object");
+              throw new Error('Tried to perform an insert on ' + tableName + ' without any values. Supply a changes object');
 
             case 2:
 
@@ -224,13 +224,13 @@ var postgres = {
 
               values = (0, _utils.getObjectValues)(changes);
               _context5.next = 7;
-              return this.client.query("INSERT INTO " + tableName + "(\n      " + this.toColumnFields(changes) + "\n    ) VALUES(\n      " + this.toValuePlaceholders(changes) + "\n    ) RETURNING id", values);
+              return this.client.query('INSERT INTO ' + tableName + '(\n      ' + this.toColumnFields(changes) + '\n    ) VALUES(\n      ' + this.toValuePlaceholders(changes) + '\n    ) RETURNING id', values);
 
             case 7:
-              return _context5.abrupt("return", _context5.sent);
+              return _context5.abrupt('return', _context5.sent);
 
             case 8:
-            case "end":
+            case 'end':
               return _context5.stop();
           }
         }
@@ -266,7 +266,7 @@ var postgres = {
                 break;
               }
 
-              throw new Error("Tried to update " + tableName + " without any values. Supply a changes object");
+              throw new Error('Tried to update ' + tableName + ' without any values. Supply a changes object');
 
             case 2:
               if (conditions) {
@@ -274,7 +274,7 @@ var postgres = {
                 break;
               }
 
-              throw new Error("Tried to update " + tableName + " without a WHERE clause. Supply a conditions object");
+              throw new Error('Tried to update ' + tableName + ' without a WHERE clause. Supply a conditions object');
 
             case 4:
 
@@ -285,13 +285,13 @@ var postgres = {
               whereClauses = this.toAssignmentFields(conditions, changeValues.length);
               values = changeValues.concat(conditionValues);
               _context6.next = 11;
-              return this.client.query("UPDATE " + tableName + "\n      SET   " + this.toAssignmentFields(changes) + "\n      WHERE " + whereClauses.join(" AND "), values);
+              return this.client.query('UPDATE ' + tableName + '\n      SET   ' + this.toAssignmentFields(changes) + '\n      WHERE ' + whereClauses.join(' AND '), values);
 
             case 11:
-              return _context6.abrupt("return", _context6.sent);
+              return _context6.abrupt('return', _context6.sent);
 
             case 12:
-            case "end":
+            case 'end':
               return _context6.stop();
           }
         }
@@ -314,12 +314,12 @@ var postgres = {
    */
   delete: function _delete(tableName, conditions) {
     if (!conditions) {
-      throw new Error("Tried to update " + tableName + " without a WHERE clause. Supply a conditions object");
+      throw new Error('Tried to update ' + tableName + ' without a WHERE clause. Supply a conditions object');
     }
 
     var values = (0, _utils.getObjectValues)(conditions);
 
-    return this.client.query("DELETE FROM " + tableName + "\n      WHERE " + this.toAssignmentFields(conditions).join(" AND "), values);
+    return this.client.query('DELETE FROM ' + tableName + '\n      WHERE ' + this.toAssignmentFields(conditions).join(' AND '), values);
   },
 
 
@@ -350,7 +350,7 @@ var postgres = {
         while (1) {
           switch (_context7.prev = _context7.next) {
             case 0:
-              _options$sequenceName = options.sequenceName, sequenceName = _options$sequenceName === undefined ? tableName + "_id_seq" : _options$sequenceName, _options$primaryKey = options.primaryKey, primaryKey = _options$primaryKey === undefined ? "id" : _options$primaryKey;
+              _options$sequenceName = options.sequenceName, sequenceName = _options$sequenceName === undefined ? tableName + '_id_seq' : _options$sequenceName, _options$primaryKey = options.primaryKey, primaryKey = _options$primaryKey === undefined ? 'id' : _options$primaryKey;
 
               if (!sequenceName) {
                 _context7.next = 4;
@@ -362,7 +362,7 @@ var postgres = {
 
             case 4:
               _context7.next = 6;
-              return this.client.query("CREATE TABLE IF NOT EXISTS \"" + tableName + "\" (\n      " + rows + ",\n      \"createdAt\" timestamp NOT NULL,\n      \"updatedAt\" timestamp,\n      PRIMARY KEY (\"" + primaryKey + "\")\n    );");
+              return this.client.query('CREATE TABLE IF NOT EXISTS "' + tableName + '" (\n      ' + rows + ',\n      "createdAt" timestamp NOT NULL,\n      "updatedAt" timestamp,\n      PRIMARY KEY ("' + primaryKey + '")\n    );');
 
             case 6:
               if (!sequenceName) {
@@ -374,7 +374,7 @@ var postgres = {
               return this.alterSequenceOwnership(sequenceName, tableName);
 
             case 9:
-            case "end":
+            case 'end':
               return _context7.stop();
           }
         }
@@ -401,9 +401,9 @@ var postgres = {
     var unique = conditions.unique;
 
 
-    unique = unique === true ? "UNIQUE" : "";
+    unique = unique === true ? 'UNIQUE' : '';
 
-    return this.client.query("CREATE " + unique + " INDEX IF NOT EXISTS " + name + " ON " + tableName + " (" + fields.join(",") + ")");
+    return this.client.query('CREATE ' + unique + ' INDEX IF NOT EXISTS ' + name + ' ON ' + tableName + ' (' + fields.join(',') + ')');
   },
 
 
@@ -420,17 +420,17 @@ var postgres = {
             case 0:
               _context8.prev = 0;
               _context8.next = 3;
-              return this.client.query("CREATE SEQUENCE " + name + ";");
+              return this.client.query('CREATE SEQUENCE ' + name + ';');
 
             case 3:
-              return _context8.abrupt("return", _context8.sent);
+              return _context8.abrupt('return', _context8.sent);
 
             case 6:
               _context8.prev = 6;
-              _context8.t0 = _context8["catch"](0);
+              _context8.t0 = _context8['catch'](0);
 
             case 8:
-            case "end":
+            case 'end':
               return _context8.stop();
           }
         }
@@ -444,9 +444,9 @@ var postgres = {
     return createSequence;
   }(),
   alterSequenceOwnership: function alterSequenceOwnership(name, owner) {
-    var columnName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "id";
+    var columnName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'id';
 
-    return this.client.query("ALTER SEQUENCE " + name + " OWNED BY " + owner + "." + columnName + ";");
+    return this.client.query('ALTER SEQUENCE ' + name + ' OWNED BY ' + owner + '.' + columnName + ';');
   },
 
 
@@ -462,13 +462,13 @@ var postgres = {
           switch (_context9.prev = _context9.next) {
             case 0:
               _context9.next = 2;
-              return this.client.query("TRUNCATE " + tableName + " RESTART IDENTITY;");
+              return this.client.query('TRUNCATE ' + tableName + ' RESTART IDENTITY;');
 
             case 2:
-              return _context9.abrupt("return", _context9.sent);
+              return _context9.abrupt('return', _context9.sent);
 
             case 3:
-            case "end":
+            case 'end':
               return _context9.stop();
           }
         }
@@ -491,7 +491,7 @@ var postgres = {
    */
   toColumnFields: function toColumnFields(columns) {
     var columnNames = Object.keys(columns);
-    return columnNames.map(JSON.stringify).join(", ");
+    return columnNames.map(JSON.stringify).join(', ');
   },
 
 
@@ -508,7 +508,7 @@ var postgres = {
 
     var columnNames = Object.keys(columns);
     return columnNames.map(function (column, index) {
-      return "\"" + column + "\" = $" + (index + start + 1);
+      return '"' + column + '" = $' + (index + start + 1);
     });
   },
 
@@ -526,7 +526,7 @@ var postgres = {
 
     var columnNames = Object.keys(columns);
     return columnNames.map(function (_, index) {
-      return "$" + (index + start + 1);
+      return '$' + (index + start + 1);
     });
   },
 
@@ -539,7 +539,7 @@ var postgres = {
    */
   getOrderValues: function getOrderValues(order) {
     return Object.keys(order).map(function (column) {
-      return "\"" + column + "\" " + order[column];
+      return '"' + column + '" ' + order[column];
     });
   },
 
@@ -558,10 +558,10 @@ var postgres = {
               return this.client.end();
 
             case 2:
-              return _context10.abrupt("return", _context10.sent);
+              return _context10.abrupt('return', _context10.sent);
 
             case 3:
-            case "end":
+            case 'end':
               return _context10.stop();
           }
         }

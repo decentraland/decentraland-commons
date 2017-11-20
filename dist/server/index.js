@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.handleRequest = handleRequest;
 exports.extractFromReq = extractFromReq;
 
-var _log = require("../log");
+var _log = require('../log');
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var log = new _log.Log("[Server]");
+var log = new _log.Log('[Server]');
 
 /**
  * Wrapper for the request handler. It creates the appropiate response object and catches errors. For example:
@@ -32,7 +32,7 @@ function handleRequest(callback) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              log.info("Handling request to", req.path);
+              log.info('Handling request to', req.path);
 
               _context.prev = 1;
               _context.next = 4;
@@ -40,20 +40,20 @@ function handleRequest(callback) {
 
             case 4:
               data = _context.sent;
-              return _context.abrupt("return", res.json(sendOk(data)));
+              return _context.abrupt('return', res.json(sendOk(data)));
 
             case 8:
               _context.prev = 8;
-              _context.t0 = _context["catch"](1);
+              _context.t0 = _context['catch'](1);
 
-              log.error("Error handling request", req.path, _context.t0);
+              log.error('Error handling request', req.path, _context.t0);
 
               _data = _context.t0.data || {};
               message = _context.t0.message;
-              return _context.abrupt("return", res.json(sendError(_data, message)));
+              return _context.abrupt('return', res.json(sendError(_data, message)));
 
             case 14:
-            case "end":
+            case 'end':
               return _context.stop();
           }
         }
@@ -83,12 +83,12 @@ function extractFromReq(req, param) {
     value = req.params[param];
   }
 
-  if (req.headers["content-type"] === "application/json") {
+  if (req.headers['content-type'] === 'application/json') {
     value = JSON.parse(value);
   }
 
   if (!value) {
-    throw new Error("Could not get " + param + " from request");
+    throw new Error('Could not get ' + param + ' from request');
   }
 
   return value;

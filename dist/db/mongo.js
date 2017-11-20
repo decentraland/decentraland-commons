@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
-var _mongodb = require("mongodb");
+var _mongodb = require('mongodb');
 
-var _log = require("../log");
+var _log = require('../log');
 
-var _utils = require("../utils");
+var _utils = require('../utils');
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var log = new _log.Log("[MongoDB]");
+var log = new _log.Log('[MongoDB]');
 
 /**
  * Client to query MongoDB. Uses `mongodb` behind the scenes. Check {@link https://docs.mongodb.com/getting-started/node/client/} for more info.
@@ -29,9 +29,9 @@ var mongo = {
   connect: function connect(port, dbname, username, password) {
     var _this = this;
 
-    var url = "mongodb://localhost:" + port + "/" + dbname;
+    var url = 'mongodb://localhost:' + port + '/' + dbname;
 
-    log.info("Connecting to " + url);
+    log.info('Connecting to ' + url);
 
     return _mongodb.MongoClient.connect(url).then(function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(mongodb) {
@@ -39,7 +39,7 @@ var mongo = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                log.info("Connected to MongoDB " + dbname);
+                log.info('Connected to MongoDB ' + dbname);
 
                 if (!username) {
                   _context.next = 4;
@@ -54,7 +54,7 @@ var mongo = {
                 _this.client = mongodb;
 
               case 5:
-              case "end":
+              case 'end':
                 return _context.stop();
             }
           }
@@ -68,7 +68,7 @@ var mongo = {
       error.connectionTimedOut = _this.isConnectionTimedOut(error);
 
       if (error.connectionTimedOut) {
-        log.warn("Connection to MongoDB " + dbname + " TIMED OUT");
+        log.warn('Connection to MongoDB ' + dbname + ' TIMED OUT');
       }
 
       return Promise.reject(error);
@@ -118,7 +118,7 @@ var mongo = {
                 break;
               }
 
-              return _context2.abrupt("return");
+              return _context2.abrupt('return');
 
             case 6:
               if (!exists) {
@@ -131,7 +131,7 @@ var mongo = {
               return collection.update({ _id: _id }, { $set: row });
 
             case 10:
-              return _context2.abrupt("return", _context2.sent);
+              return _context2.abrupt('return', _context2.sent);
 
             case 13:
               row = Object.assign({ _id: _id, createdAt: new Date() }, row);
@@ -139,10 +139,10 @@ var mongo = {
               return collection.insertOne(row);
 
             case 16:
-              return _context2.abrupt("return", _context2.sent);
+              return _context2.abrupt('return', _context2.sent);
 
             case 17:
-            case "end":
+            case 'end':
               return _context2.stop();
           }
         }
@@ -176,10 +176,10 @@ var mongo = {
 
             case 2:
               count = _context3.sent;
-              return _context3.abrupt("return", count > 0);
+              return _context3.abrupt('return', count > 0);
 
             case 4:
-            case "end":
+            case 'end':
               return _context3.stop();
           }
         }
@@ -211,17 +211,17 @@ var mongo = {
                 break;
               }
 
-              throw new Error("Connection to database not found, have you called `.connect()` already?");
+              throw new Error('Connection to database not found, have you called `.connect()` already?');
 
             case 2:
               _context4.next = 4;
               return this.client.collection(collectionName).find(query).toArray();
 
             case 4:
-              return _context4.abrupt("return", _context4.sent);
+              return _context4.abrupt('return', _context4.sent);
 
             case 5:
-            case "end":
+            case 'end':
               return _context4.stop();
           }
         }
@@ -253,17 +253,17 @@ var mongo = {
                 break;
               }
 
-              throw new Error("Connection to database not found, have you called `.connect()` already?");
+              throw new Error('Connection to database not found, have you called `.connect()` already?');
 
             case 2:
               _context5.next = 4;
               return this.client.collection(collectionName).findOne(query);
 
             case 4:
-              return _context5.abrupt("return", _context5.sent);
+              return _context5.abrupt('return', _context5.sent);
 
             case 5:
-            case "end":
+            case 'end':
               return _context5.stop();
           }
         }
@@ -295,17 +295,17 @@ var mongo = {
                 break;
               }
 
-              throw new Error("Connection to database not found, have you called `.connect()` already?");
+              throw new Error('Connection to database not found, have you called `.connect()` already?');
 
             case 2:
               _context6.next = 4;
               return this.client.collection(collectionName).aggregate(query).toArray();
 
             case 4:
-              return _context6.abrupt("return", _context6.sent);
+              return _context6.abrupt('return', _context6.sent);
 
             case 5:
-            case "end":
+            case 'end':
               return _context6.stop();
           }
         }

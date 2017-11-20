@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var _utils = require("./utils");
+var _utils = require('./utils');
 
 /**
  * Flag which determines if the ENV variables are already loaded
@@ -32,10 +32,10 @@ var env = {
 
     if (loaded) return;
 
-    var dotenv = require("dotenv");
+    var dotenv = require('dotenv');
 
     if (override) {
-      var envConfig = dotenv.parse(require("fs").readFileSync(path));
+      var envConfig = dotenv.parse(require('fs').readFileSync(path));
       Object.assign(process.env, envConfig);
     } else {
       dotenv.config({ path: path });
@@ -47,10 +47,10 @@ var env = {
     return !this.isProduction();
   },
   isProduction: function isProduction() {
-    return this.getName() === "production";
+    return this.getName() === 'production';
   },
   getName: function getName() {
-    return this.get("NODE_ENV");
+    return this.get('NODE_ENV');
   },
 
 
@@ -62,21 +62,21 @@ var env = {
    */
   get: function get(name, fallback) {
     if (!loaded && (0, _utils.isEmptyObject)(cache)) {
-      console.log("It looks like you're trying to access an ENV variable (" + name + ") before calling the `env.load()` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway");
+      console.log('It looks like you\'re trying to access an ENV variable (' + name + ') before calling the `env.load()` method. Please call it first so the environment can be properly loaded from the .env file. We\'ll try to get the variables out of process.env anyway');
     }
 
     if (!cache[name]) {
       var value = process.env[name];
 
-      if (value === undefined || value === "") {
-        if (typeof fallback === "function") {
+      if (value === undefined || value === '') {
+        if (typeof fallback === 'function') {
           cache[name] = fallback(name);
         } else {
           cache[name] = fallback;
         }
 
         if (!cache.hasOwnProperty(name)) {
-          console.log("Warning: No " + name + " environment variable set, defaulting to " + cache[name]);
+          console.log('Warning: No ' + name + ' environment variable set, defaulting to ' + cache[name]);
         }
       } else {
         cache[name] = value;

@@ -1,18 +1,18 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _nodemailer = require("nodemailer");
+var _nodemailer = require('nodemailer');
 
 var _nodemailer2 = _interopRequireDefault(_nodemailer);
 
-var _log = require("../log");
+var _log = require('../log');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var log = new _log.Log("[SMTP]");
+var log = new _log.Log('[SMTP]');
 
 var EMAIL_COOLDOWN = 60 * 1000; // 1 minute = 60 seconds = 60 * 1000 miliseconds
 
@@ -55,7 +55,7 @@ var SMTP = function () {
 
 
   _createClass(SMTP, [{
-    key: "setTemplate",
+    key: 'setTemplate',
     value: function setTemplate(name, fn) {
       this.templates[name] = fn;
     }
@@ -69,17 +69,17 @@ var SMTP = function () {
      */
 
   }, {
-    key: "sendMail",
+    key: 'sendMail',
     value: function sendMail(email, template) {
       var _this = this;
 
       var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       if (!email) {
-        throw new Error("You need to supply an email to send to");
+        throw new Error('You need to supply an email to send to');
       }
       if (!this.templates[template]) {
-        throw new Error("Invalid template " + template);
+        throw new Error('Invalid template ' + template);
       }
 
       var content = this.templates[template](opts);
@@ -92,21 +92,21 @@ var SMTP = function () {
     // internal
 
   }, {
-    key: "_sendMailWithRetry",
+    key: '_sendMailWithRetry',
     value: function _sendMailWithRetry(email, opts, callback) {
       var _this2 = this;
 
       this.transport.sendMail(opts, function (error, info) {
         if (error) {
-          log.error("Error sending email to " + email + ", retrying in " + EMAIL_COOLDOWN / 1000 + "seconds");
+          log.error('Error sending email to ' + email + ', retrying in ' + EMAIL_COOLDOWN / 1000 + 'seconds');
           log.error(error, error.stack);
 
           return setTimeout(function () {
-            return _this2.sendMailWithRetry(email, opts, callback);
+            return _this2._sendMailWithRetry(email, opts, callback);
           }, EMAIL_COOLDOWN);
         }
 
-        log.info("Email %s sent: %s", info.messageId, info.response);
+        log.info('Email %s sent: %s', info.messageId, info.response);
         callback(info.response);
       });
     }
@@ -121,7 +121,7 @@ var SMTP = function () {
      */
 
   }, {
-    key: "getTransport",
+    key: 'getTransport',
     value: function getTransport(hostname, port, username, password) {
       port = parseInt(port, 10);
 

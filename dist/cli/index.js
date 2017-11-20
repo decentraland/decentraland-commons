@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.runProgram = runProgram;
 
-var _commander = require("commander");
+var _commander = require('commander');
 
 var _commander2 = _interopRequireDefault(_commander);
 
-var _inquirer = require("inquirer");
+var _inquirer = require('inquirer');
 
 var _inquirer2 = _interopRequireDefault(_inquirer);
 
@@ -30,8 +30,8 @@ function runProgram(clients) {
     for (var _iterator = clients[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var client = _step.value;
 
-      if (typeof client.addCommands !== "function") {
-        throw new Error("Each client supplied to `runProgram` must implement the `addCommands` function");
+      if (typeof client.addCommands !== 'function') {
+        throw new Error('Each client supplied to `runProgram` must implement the `addCommands` function');
       }
 
       client.addCommands(_commander2.default);
@@ -67,7 +67,7 @@ function runProgram(clients) {
 
 exports.default = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Are you sure?";
+    var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Are you sure?';
     var defaultAnswer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     var res;
     return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -76,18 +76,18 @@ exports.default = function () {
           case 0:
             _context.next = 2;
             return _inquirer2.default.prompt({
-              type: "confirm",
-              name: "confirm",
+              type: 'confirm',
+              name: 'confirm',
               message: text,
               default: defaultAnswer
             });
 
           case 2:
             res = _context.sent;
-            return _context.abrupt("return", res.confirm);
+            return _context.abrupt('return', res.confirm);
 
           case 4:
-          case "end":
+          case 'end':
             return _context.stop();
         }
       }
