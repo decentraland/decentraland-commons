@@ -71,7 +71,7 @@ class SMTP {
         log.error(error, error.stack);
 
         return setTimeout(
-          () => this.sendMailWithRetry(email, opts, callback),
+          () => this._sendMailWithRetry(email, opts, callback),
           EMAIL_COOLDOWN
         );
       }
