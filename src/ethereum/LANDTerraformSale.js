@@ -4,7 +4,7 @@ import { Log } from '../log'
 import Contract from './Contract'
 import { abi } from '../contracts/LANDTerraformSale.json'
 
-const log = new Log('[LANDTerraformSale]')
+const log = new Log('LANDTerraformSale')
 let instance = null
 
 /** LANDTerraformSale contract class */

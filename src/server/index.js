@@ -1,6 +1,6 @@
 import { Log } from '../log'
 
-const log = new Log('[Server]')
+const log = new Log('Server')
 
 /**
  * Wrapper for the request handler. It creates the appropiate response object and catches errors. For example:
