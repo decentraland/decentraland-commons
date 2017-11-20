@@ -8,7 +8,7 @@ var _log = require('../log');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var log = new _log.Log('[Mailchimp]');
+var log = new _log.Log('Mailchimp');
 
 /**
  * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
