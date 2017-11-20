@@ -1,3 +1,5 @@
+// Same as https://github.com/ConsenSys/abi-decoder which is not correctly published and can't be minified by webpack as an npm module
+
 const SolidityCoder = require('web3/lib/solidity/coder.js')
 const Web3 = require('web3')
 
@@ -13,7 +15,7 @@ function _getABIs() {
 function _addABI(abiArray) {
   if (Array.isArray(abiArray)) {
     // Iterate new abi to generate method id's
-    abiArray.map(function(abi) {
+    abiArray.forEach(abi => {
       if (abi.name) {
         const signature = new Web3().sha3(
           abi.name +
@@ -25,7 +27,7 @@ function _addABI(abiArray) {
               .join(',') +
             ')'
         )
-        if (abi.type == 'event') {
+        if (abi.type === 'event') {
           state.methodIDs[signature.slice(2)] = abi
         } else {
           state.methodIDs[signature.slice(2, 10)] = abi
@@ -42,7 +44,7 @@ function _addABI(abiArray) {
 function _removeABI(abiArray) {
   if (Array.isArray(abiArray)) {
     // Iterate new abi to generate method id's
-    abiArray.map(function(abi) {
+    abiArray.forEach(abi => {
       if (abi.name) {
         const signature = new Web3().sha3(
           abi.name +
@@ -54,7 +56,7 @@ function _removeABI(abiArray) {
               .join(',') +
             ')'
         )
-        if (abi.type == 'event') {
+        if (abi.type === 'event') {
           if (state.methodIDs[signature.slice(2)]) {
             delete state.methodIDs[signature.slice(2)]
           }
@@ -78,13 +80,11 @@ function _decodeMethod(data) {
   const methodID = data.slice(2, 10)
   const abiItem = state.methodIDs[methodID]
   if (abiItem) {
-    const params = abiItem.inputs.map(function(item) {
-      return item.type
-    })
+    const params = abiItem.inputs.map(item => item.type)
     let decoded = SolidityCoder.decodeParams(params, data.slice(10))
     return {
       name: abiItem.name,
-      params: decoded.map(function(param, index) {
+      params: decoded.map((param, index) => {
         let parsedParam = param
         if (abiItem.inputs[index].type.indexOf('uint') !== -1) {
           parsedParam = new Web3().toBigNumber(param).toString()
@@ -101,7 +101,7 @@ function _decodeMethod(data) {
 
 function padZeros(address) {
   var formatted = address
-  if (address.indexOf('0x') != -1) {
+  if (address.indexOf('0x') !== -1) {
     formatted = address.slice(2)
   }
 
@@ -113,17 +113,19 @@ function padZeros(address) {
 }
 
 function _decodeLogs(logs) {
-  return logs.map(function(logItem) {
-    const methodID = logItem.topics[0].slice(2)
-    const method = state.methodIDs[methodID]
-    if (method) {
+  return logs
+    .map(logItem => {
+      const methodID = logItem.topics[0].slice(2)
+      const method = state.methodIDs[methodID]
+      if (!method) return null
+
       const logData = logItem.data
       let decodedParams = []
       let dataIndex = 0
       let topicsIndex = 1
 
       let dataTypes = []
-      method.inputs.map(function(input) {
+      method.inputs.forEach(input => {
         if (!input.indexed) {
           dataTypes.push(input.type)
         }
@@ -133,7 +135,7 @@ function _decodeLogs(logs) {
         logData.slice(2)
       )
       // Loop topic and data to get the params
-      method.inputs.map(function(param) {
+      method.inputs.forEach(function(param) {
         var decodedP = {
           name: param.name,
           type: param.type
@@ -147,14 +149,14 @@ function _decodeLogs(logs) {
           dataIndex++
         }
 
-        if (param.type == 'address') {
+        if (param.type === 'address') {
           decodedP.value = padZeros(
             new Web3().toBigNumber(decodedP.value).toString(16)
           )
         } else if (
-          param.type == 'uint256' ||
-          param.type == 'uint8' ||
-          param.type == 'int'
+          param.type === 'uint256' ||
+          param.type === 'uint8' ||
+          param.type === 'int'
         ) {
           decodedP.value = new Web3().toBigNumber(decodedP.value).toString(10)
         }
@@ -167,8 +169,8 @@ function _decodeLogs(logs) {
         events: decodedParams,
         address: logItem.address
       }
-    }
-  })
+    })
+    .filter(log => log !== null)
 }
 
 module.exports = {
