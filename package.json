@@ -34,7 +34,6 @@
   "author": "Decentraland",
   "license": "ISC",
   "dependencies": {
-    "abi-decoder": "^1.0.8",
     "dotenv": "^4.0.0",
     "ethereumjs-util": "^5.1.2",
     "mailchimp-api-v3": "^1.7.1",
