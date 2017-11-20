@@ -8,12 +8,12 @@ export function promisify(fn) {
     new Promise((resolve, reject) => {
       fn(...args, (error, result) => {
         if (error) {
-          reject(error);
+          reject(error)
         } else {
-          resolve(result);
+          resolve(result)
         }
-      });
-    });
+      })
+    })
 }
 
 /**
@@ -22,7 +22,7 @@ export function promisify(fn) {
  * @return {Promise} - Promise that resolves when the sleeping is done
  */
 export function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 /**
@@ -30,7 +30,7 @@ export function sleep(ms) {
  * @param {object} obj
  */
 export function isEmptyObject(obj) {
-  return obj && Object.keys(obj).length === 0;
+  return obj && Object.keys(obj).length === 0
 }
 
 /**
@@ -38,7 +38,7 @@ export function isEmptyObject(obj) {
  * @param {object} obj - Object to get the values from
  */
 export function getObjectValues(obj) {
-  return obj && Object.keys(obj).map(key => obj[key]);
+  return obj && Object.keys(obj).map(key => obj[key])
 }
 
 /**
@@ -47,8 +47,8 @@ export function getObjectValues(obj) {
  * @param {array} keys
  */
 export function omit(obj, keys) {
-  const newKeys = Object.keys(obj).filter(key => !keys.includes(key));
-  return pick(obj, newKeys);
+  const newKeys = Object.keys(obj).filter(key => !keys.includes(key))
+  return pick(obj, newKeys)
 }
 
 /**
@@ -57,15 +57,15 @@ export function omit(obj, keys) {
  * @param {array} keys
  */
 export function pick(obj, keys) {
-  const result = {};
+  const result = {}
 
   for (const key of keys) {
     if (obj.hasOwnProperty(key)) {
-      result[key] = obj[key];
+      result[key] = obj[key]
     }
   }
 
-  return result;
+  return result
 }
 
 /**
@@ -76,7 +76,7 @@ export function pick(obj, keys) {
  */
 export function arrayToObject(arr, key, value) {
   return arr.reduce((map, obj) => {
-    map[obj[key]] = value != null ? obj[value] : obj;
-    return map;
-  }, {});
+    map[obj[key]] = value != null ? obj[value] : obj
+    return map
+  }, {})
 }

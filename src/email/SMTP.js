@@ -1,10 +1,10 @@
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer'
 
-import { Log } from "../log";
+import { Log } from '../log'
 
-const log = new Log("[SMTP]");
+const log = new Log('[SMTP]')
 
-const EMAIL_COOLDOWN = 60 * 1000; // 1 minute = 60 seconds = 60 * 1000 miliseconds
+const EMAIL_COOLDOWN = 60 * 1000 // 1 minute = 60 seconds = 60 * 1000 miliseconds
 
 class SMTP {
   /**
@@ -17,8 +17,8 @@ class SMTP {
    * @return {STMP}
    */
   constructor({ hostname, port, username, password }, templates = {}) {
-    this.transport = this.getTransport(hostname, port, username, password);
-    this.templates = templates;
+    this.transport = this.getTransport(hostname, port, username, password)
+    this.templates = templates
   }
 
   /**
@@ -35,7 +35,7 @@ class SMTP {
    * @param {Function} fn   - A function accepting `opts` as an argument, which will be forwarded by {@link SMTP#sendMail}
    */
   setTemplate(name, fn) {
-    this.templates[name] = fn;
+    this.templates[name] = fn
   }
 
   /**
@@ -47,17 +47,17 @@ class SMTP {
    */
   sendMail(email, template, opts = {}) {
     if (!email) {
-      throw new Error("You need to supply an email to send to");
+      throw new Error('You need to supply an email to send to')
     }
     if (!this.templates[template]) {
-      throw new Error(`Invalid template ${template}`);
+      throw new Error(`Invalid template ${template}`)
     }
 
-    let content = this.templates[template](opts);
+    let content = this.templates[template](opts)
 
     return new Promise(resolve =>
       this._sendMailWithRetry(email, content, resolve)
-    );
+    )
   }
 
   // internal
@@ -67,18 +67,18 @@ class SMTP {
         log.error(
           `Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN /
             1000}seconds`
-        );
-        log.error(error, error.stack);
+        )
+        log.error(error, error.stack)
 
         return setTimeout(
           () => this._sendMailWithRetry(email, opts, callback),
           EMAIL_COOLDOWN
-        );
+        )
       }
 
-      log.info("Email %s sent: %s", info.messageId, info.response);
-      callback(info.response);
-    });
+      log.info('Email %s sent: %s', info.messageId, info.response)
+      callback(info.response)
+    })
   }
 
   /**
@@ -90,25 +90,25 @@ class SMTP {
    * @return {object} - transport, see @{link https://nodemailer.com/usage/}
    */
   getTransport(hostname, port, username, password) {
-    port = parseInt(port, 10);
+    port = parseInt(port, 10)
 
     const options = {
       host: hostname,
       port: port,
       secure: port === 465
-    };
+    }
 
     if (username || password) {
       options.auth = {
         user: username,
         pass: password
-      };
+      }
     }
 
-    this.transport = nodemailer.createTransport(options);
+    this.transport = nodemailer.createTransport(options)
 
-    return this.transport;
+    return this.transport
   }
 }
 
-module.exports = SMTP;
+module.exports = SMTP

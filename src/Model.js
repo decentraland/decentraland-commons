@@ -1,30 +1,30 @@
-import dbClients from "./db";
-import * as utils from "./utils";
+import dbClients from './db'
+import * as utils from './utils'
 
 /**
  * Basic Model class for accesing inner attributes easily
  */
 class Model {
-  static tableName = null;
-  static columnNames = [];
+  static tableName = null
+  static columnNames = []
 
   /**
    * DB client to use. We use Postgres by default. Can be changed via Model.useDB('db client')
    * It's the same for
    * @type {object}
    */
-  static db = dbClients["postgres"];
+  static db = dbClients['postgres']
 
   /**
    * Change the current DB client
    * @param {string|object} dbClient - The name of an available db client (from /db) or an object with the same API
    */
-  static setDb(dbClient = "postgres") {
-    if (typeof dbClient === "string" && !dbClients[dbClients]) {
-      throw new Error(`Undefined db client ${dbClients}`);
+  static setDb(dbClient = 'postgres') {
+    if (typeof dbClient === 'string' && !dbClients[dbClients]) {
+      throw new Error(`Undefined db client ${dbClients}`)
     }
 
-    this.db = dbClients[dbClients];
+    this.db = dbClients[dbClients]
   }
 
   /**
@@ -34,7 +34,7 @@ class Model {
    * @return {Promise<array>}
    */
   static async find(conditions, orderBy) {
-    return await this.db.select(this.tableName, conditions, orderBy);
+    return await this.db.select(this.tableName, conditions, orderBy)
   }
 
   /**
@@ -44,9 +44,9 @@ class Model {
    */
   static async findOne(idOrCond, orderBy) {
     const conditions =
-      typeof idOrCond === "object" ? idOrCond : { id: idOrCond };
+      typeof idOrCond === 'object' ? idOrCond : { id: idOrCond }
 
-    return await this.db.selectOne(this.tableName, conditions, orderBy);
+    return await this.db.selectOne(this.tableName, conditions, orderBy)
   }
 
   /**
@@ -58,9 +58,9 @@ class Model {
     const insertion = await this.db.insert(
       this.tableName,
       utils.pick(row, this.columnNames)
-    );
-    row.id = insertion.rows[0].id;
-    return row;
+    )
+    row.id = insertion.rows[0].id
+    return row
   }
 
   /**
@@ -74,7 +74,7 @@ class Model {
       this.tableName,
       utils.pick(changes, this.columnNames),
       conditions
-    );
+    )
   }
 
   /**
@@ -83,7 +83,7 @@ class Model {
    * @return {Promise<object>}
    */
   static delete(conditions) {
-    return this.db.delete(this.tableName, conditions);
+    return this.db.delete(this.tableName, conditions)
   }
 
   /**
@@ -93,7 +93,7 @@ class Model {
    * @return {boolean} true if at least one of the properties don't exist on the object
    */
   static isIncomplete(attributes) {
-    return this.columnNames.some(column => !attributes.hasOwnProperty(column));
+    return this.columnNames.some(column => !attributes.hasOwnProperty(column))
   }
 
   /**
@@ -102,7 +102,7 @@ class Model {
    * @return {Model<instance>}
    */
   constructor(attributes) {
-    this.attributes = attributes || {};
+    this.attributes = attributes || {}
   }
 
   /**
@@ -110,15 +110,15 @@ class Model {
    * @return {Promise<object>}
    */
   async retreive() {
-    this.attributes = await this.constructor.findOne(this.attributes.id);
-    return this.attributes;
+    this.attributes = await this.constructor.findOne(this.attributes.id)
+    return this.attributes
   }
 
   /**
    * Forwards to Mode.insert using this.attributes
    */
   async insert() {
-    return await this.constructor.insert(this.attributes);
+    return await this.constructor.insert(this.attributes)
   }
 
   /**
@@ -126,7 +126,7 @@ class Model {
    * @params {object} [conditions]
    */
   async update(conditions = { id: this.attributes.id }) {
-    return await this.constructor.update(this.attributes, conditions);
+    return await this.constructor.update(this.attributes, conditions)
   }
 
   /**
@@ -134,7 +134,7 @@ class Model {
    * @params {object} [conditions]
    */
   async delete(conditions = { id: this.attributes.id }) {
-    return await this.constructor.delete(conditions);
+    return await this.constructor.delete(conditions)
   }
 
   /**
@@ -142,7 +142,7 @@ class Model {
    * @return {boolean}
    */
   isEmpty() {
-    return !this.get();
+    return !this.get()
   }
 
   /**
@@ -150,7 +150,7 @@ class Model {
    * @return {boolean}
    */
   isIncomplete() {
-    return this.constructor.isIncomplete(this.attributes);
+    return this.constructor.isIncomplete(this.attributes)
   }
 
   /**
@@ -159,7 +159,7 @@ class Model {
    * @return {object} Value found, if any
    */
   get(key) {
-    return key ? this.attributes[key] : this.attributes;
+    return key ? this.attributes[key] : this.attributes
   }
 
   /**
@@ -168,14 +168,14 @@ class Model {
    * @return {object} The value of the searched key or null if any key is missing along the way
    */
   getIn(keyPath) {
-    let value = this.attributes;
+    let value = this.attributes
 
     for (let prop of keyPath) {
-      if (!value) return null;
-      value = value[prop];
+      if (!value) return null
+      value = value[prop]
     }
 
-    return value;
+    return value
   }
 
   /**
@@ -185,8 +185,8 @@ class Model {
    * @return {Model<instace>} The instance of the model (chainable)
    */
   set(key, value) {
-    this.attributes[key] = value;
-    return this;
+    this.attributes[key] = value
+    return this
   }
 
   /**
@@ -196,23 +196,23 @@ class Model {
    * @return {Model<instace>} The instance of the model (chainable)
    */
   setIn(keyPath, value) {
-    let keyAmount = keyPath.length;
-    let nested = this.attributes;
+    let keyAmount = keyPath.length
+    let nested = this.attributes
 
     for (let i = 0; i < keyAmount; i++) {
-      if (!nested) return null;
+      if (!nested) return null
 
-      let key = keyPath[i];
+      let key = keyPath[i]
 
       if (i + 1 === keyAmount) {
-        nested[key] = value;
+        nested[key] = value
       } else {
-        nested = nested[key];
+        nested = nested[key]
       }
     }
 
-    return this;
+    return this
   }
 }
 
-module.exports = Model;
+module.exports = Model
