@@ -25,16 +25,15 @@ const eth = {
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts
    * @param  {object} [options] - Extra options for the ETH connection
+   * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
-  connect(defaultAccount, contracts, options = {}) {
+  async connect(defaultAccount, contracts, options = {}) {
     if (web3 !== null) return true;
 
     const { httpProviderUrl } = options;
 
-    const currentProvider = this.getWeb3Provider(
-      httpProviderUrl || "http://localhost:8545"
-    );
+    const currentProvider = this.getWeb3Provider(httpProviderUrl);
     if (!currentProvider) {
       log.info("Could not get a valid provider for web3");
       return false;
@@ -42,21 +41,31 @@ const eth = {
 
     log.info("Instantiating contracts");
     web3 = new Web3(currentProvider);
-    this.web3 = web3;
 
-    this.setAddress(defaultAccount || web3.eth.accounts[0]);
-    this.setContracts(contracts || this._getDefaultContracts());
-
-    if (!this.getAddress()) {
-      log.warn(
-        "Could not get the default address from web3, please re-connect"
-      );
-      web3 = null;
+    const accounts = defaultAccount || (await this.getAccounts());
+    if (accounts.length === 0) {
+      log.warn("Could not get the default address from web3, please try again");
+      this.disconnect();
       return false;
     }
 
+    this.setAddress(accounts[0]);
+    this.setContracts(contracts || this._getDefaultContracts());
+
     log.info(`Got ${this.getAddress()} as current user address`);
     return true;
+  },
+
+  disconnect() {
+    if (web3) {
+      this.setAddress(null);
+    }
+    web3 = null;
+  },
+
+  async reconnect(...args) {
+    this.disconnect();
+    return await this.connect(...args);
   },
 
   // Internal. Dynamic require
@@ -76,6 +85,11 @@ const eth = {
     }
 
     return this.contracts[name];
+  },
+
+  async getAccounts() {
+    log.info("Getting web3 accounts");
+    return await Contract.transaction(web3.eth.getAccounts);
   },
 
   /**
@@ -100,10 +114,10 @@ const eth = {
   /**
    * Gets the appropiate Web3 provider for the given environment.
    * It'll fetch it from the `window` on the browser or use a new HttpProvider instance on nodejs
-   * @param  {string} httpProviderURL - URL for an HTTP provider in case the browser provider is not present
+   * @param  {string} [httpProviderURL="http://localhost:8545"] - URL for an HTTP provider in case the browser provider is not present
    * @return {object} The web3 provider
    */
-  getWeb3Provider(httpProviderUrl) {
+  getWeb3Provider(httpProviderUrl = "http://localhost:8545") {
     return process.browser
       ? window.web3 && window.web3.currentProvider
       : new Web3.providers.HttpProvider(httpProviderUrl);
