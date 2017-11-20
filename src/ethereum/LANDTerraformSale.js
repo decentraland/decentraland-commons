@@ -21,7 +21,7 @@ class LANDTerraformSale extends Contract {
               );
             }
             return "0x4bc79175f1f6fded07f04aa1b4b0465ecff6f1b3";
-          })
+          });
         }),
         abi
       );
