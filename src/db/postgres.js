@@ -179,7 +179,7 @@ const postgres = {
    * @param  {object} conditions - An object describing the WHERE clause.
    * @return {Promise<object>}
    */
-  async delete(tableName, conditions) {
+  delete(tableName, conditions) {
     if (!conditions) {
       throw new Error(
         `Tried to update ${
@@ -190,7 +190,7 @@ const postgres = {
 
     const values = getObjectValues(conditions);
 
-    return await this.client.query(
+    return this.client.query(
       `DELETE FROM ${tableName}
       WHERE ${this.toAssignmentFields(conditions).join(" AND ")}`,
       values
