@@ -205,32 +205,9 @@ var Model = function () {
 
   }, {
     key: "delete",
-    value: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(changes, conditions) {
-        return regeneratorRuntime.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                _context5.next = 2;
-                return this.db.delete(this.tableName, conditions);
-
-              case 2:
-                return _context5.abrupt("return", _context5.sent);
-
-              case 3:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this);
-      }));
-
-      function _delete(_x9, _x10) {
-        return _ref5.apply(this, arguments);
-      }
-
-      return _delete;
-    }()
+    value: function _delete(conditions) {
+      return this.db.delete(this.tableName, conditions);
+    }
 
     /**
      * Checks to see if all column names exist on the attributes object.
@@ -270,28 +247,28 @@ var Model = function () {
   _createClass(Model, [{
     key: "retreive",
     value: function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
-                _context6.next = 2;
+                _context5.next = 2;
                 return this.constructor.findOne(this.attributes.id);
 
               case 2:
-                this.attributes = _context6.sent;
-                return _context6.abrupt("return", this.attributes);
+                this.attributes = _context5.sent;
+                return _context5.abrupt("return", this.attributes);
 
               case 4:
               case "end":
-                return _context6.stop();
+                return _context5.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee5, this);
       }));
 
       function retreive() {
-        return _ref6.apply(this, arguments);
+        return _ref5.apply(this, arguments);
       }
 
       return retreive;
@@ -304,27 +281,27 @@ var Model = function () {
   }, {
     key: "insert",
     value: function () {
-      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _context7.next = 2;
+                _context6.next = 2;
                 return this.constructor.insert(this.attributes);
 
               case 2:
-                return _context7.abrupt("return", _context7.sent);
+                return _context6.abrupt("return", _context6.sent);
 
               case 3:
               case "end":
-                return _context7.stop();
+                return _context6.stop();
             }
           }
-        }, _callee7, this);
+        }, _callee6, this);
       }));
 
       function insert() {
-        return _ref7.apply(this, arguments);
+        return _ref6.apply(this, arguments);
       }
 
       return insert;
@@ -338,28 +315,28 @@ var Model = function () {
   }, {
     key: "update",
     value: function () {
-      var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
         var conditions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { id: this.attributes.id };
-        return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                _context8.next = 2;
+                _context7.next = 2;
                 return this.constructor.update(this.attributes, conditions);
 
               case 2:
-                return _context8.abrupt("return", _context8.sent);
+                return _context7.abrupt("return", _context7.sent);
 
               case 3:
               case "end":
-                return _context8.stop();
+                return _context7.stop();
             }
           }
-        }, _callee8, this);
+        }, _callee7, this);
       }));
 
       function update() {
-        return _ref8.apply(this, arguments);
+        return _ref7.apply(this, arguments);
       }
 
       return update;
@@ -373,28 +350,28 @@ var Model = function () {
   }, {
     key: "delete",
     value: function () {
-      var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
+      var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
         var conditions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { id: this.attributes.id };
-        return regeneratorRuntime.wrap(function _callee9$(_context9) {
+        return regeneratorRuntime.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context9.next = 2;
+                _context8.next = 2;
                 return this.constructor.delete(conditions);
 
               case 2:
-                return _context9.abrupt("return", _context9.sent);
+                return _context8.abrupt("return", _context8.sent);
 
               case 3:
               case "end":
-                return _context9.stop();
+                return _context8.stop();
             }
           }
-        }, _callee9, this);
+        }, _callee8, this);
       }));
 
       function _delete() {
-        return _ref9.apply(this, arguments);
+        return _ref8.apply(this, arguments);
       }
 
       return _delete;

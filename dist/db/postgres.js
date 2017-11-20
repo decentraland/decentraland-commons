@@ -312,42 +312,15 @@ var postgres = {
    * @param  {object} conditions - An object describing the WHERE clause.
    * @return {Promise<object>}
    */
-  delete: function () {
-    var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(tableName, conditions) {
-      var values;
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
-        while (1) {
-          switch (_context7.prev = _context7.next) {
-            case 0:
-              if (conditions) {
-                _context7.next = 2;
-                break;
-              }
-
-              throw new Error("Tried to update " + tableName + " without a WHERE clause. Supply a conditions object");
-
-            case 2:
-              values = (0, _utils.getObjectValues)(conditions);
-              _context7.next = 5;
-              return this.client.query("DELETE FROM " + tableName + "\n      WHERE " + this.toAssignmentFields(conditions).join(" AND "), values);
-
-            case 5:
-              return _context7.abrupt("return", _context7.sent);
-
-            case 6:
-            case "end":
-              return _context7.stop();
-          }
-        }
-      }, _callee7, this);
-    }));
-
-    function _delete(_x17, _x18) {
-      return _ref7.apply(this, arguments);
+  delete: function _delete(tableName, conditions) {
+    if (!conditions) {
+      throw new Error("Tried to update " + tableName + " without a WHERE clause. Supply a conditions object");
     }
 
-    return _delete;
-  }(),
+    var values = (0, _utils.getObjectValues)(conditions);
+
+    return this.client.query("DELETE FROM " + tableName + "\n      WHERE " + this.toAssignmentFields(conditions).join(" AND "), values);
+  },
 
 
   /**
@@ -368,48 +341,48 @@ var postgres = {
    * @return {Promise}
    */
   createTable: function () {
-    var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(tableName, rows) {
+    var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(tableName, rows) {
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       var _options$sequenceName, sequenceName, _options$primaryKey, primaryKey;
 
-      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      return regeneratorRuntime.wrap(function _callee7$(_context7) {
         while (1) {
-          switch (_context8.prev = _context8.next) {
+          switch (_context7.prev = _context7.next) {
             case 0:
               _options$sequenceName = options.sequenceName, sequenceName = _options$sequenceName === undefined ? tableName + "_id_seq" : _options$sequenceName, _options$primaryKey = options.primaryKey, primaryKey = _options$primaryKey === undefined ? "id" : _options$primaryKey;
 
               if (!sequenceName) {
-                _context8.next = 4;
+                _context7.next = 4;
                 break;
               }
 
-              _context8.next = 4;
+              _context7.next = 4;
               return this.createSequence(sequenceName);
 
             case 4:
-              _context8.next = 6;
+              _context7.next = 6;
               return this.client.query("CREATE TABLE IF NOT EXISTS \"" + tableName + "\" (\n      " + rows + ",\n      \"createdAt\" timestamp NOT NULL,\n      \"updatedAt\" timestamp,\n      PRIMARY KEY (\"" + primaryKey + "\")\n    );");
 
             case 6:
               if (!sequenceName) {
-                _context8.next = 9;
+                _context7.next = 9;
                 break;
               }
 
-              _context8.next = 9;
+              _context7.next = 9;
               return this.alterSequenceOwnership(sequenceName, tableName);
 
             case 9:
             case "end":
-              return _context8.stop();
+              return _context7.stop();
           }
         }
-      }, _callee8, this);
+      }, _callee7, this);
     }));
 
-    function createTable(_x20, _x21) {
-      return _ref8.apply(this, arguments);
+    function createTable(_x18, _x19) {
+      return _ref7.apply(this, arguments);
     }
 
     return createTable;
@@ -440,32 +413,32 @@ var postgres = {
    * @return {Promise}
    */
   createSequence: function () {
-    var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(name) {
-      return regeneratorRuntime.wrap(function _callee9$(_context9) {
+    var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(name) {
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
         while (1) {
-          switch (_context9.prev = _context9.next) {
+          switch (_context8.prev = _context8.next) {
             case 0:
-              _context9.prev = 0;
-              _context9.next = 3;
+              _context8.prev = 0;
+              _context8.next = 3;
               return this.client.query("CREATE SEQUENCE " + name + ";");
 
             case 3:
-              return _context9.abrupt("return", _context9.sent);
+              return _context8.abrupt("return", _context8.sent);
 
             case 6:
-              _context9.prev = 6;
-              _context9.t0 = _context9["catch"](0);
+              _context8.prev = 6;
+              _context8.t0 = _context8["catch"](0);
 
             case 8:
             case "end":
-              return _context9.stop();
+              return _context8.stop();
           }
         }
-      }, _callee9, this, [[0, 6]]);
+      }, _callee8, this, [[0, 6]]);
     }));
 
-    function createSequence(_x23) {
-      return _ref9.apply(this, arguments);
+    function createSequence(_x21) {
+      return _ref8.apply(this, arguments);
     }
 
     return createSequence;
@@ -483,27 +456,27 @@ var postgres = {
    * @return {Promise} Query result
    */
   truncate: function () {
-    var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(tableName) {
-      return regeneratorRuntime.wrap(function _callee10$(_context10) {
+    var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(tableName) {
+      return regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) {
-          switch (_context10.prev = _context10.next) {
+          switch (_context9.prev = _context9.next) {
             case 0:
-              _context10.next = 2;
+              _context9.next = 2;
               return this.client.query("TRUNCATE " + tableName + " RESTART IDENTITY;");
 
             case 2:
-              return _context10.abrupt("return", _context10.sent);
+              return _context9.abrupt("return", _context9.sent);
 
             case 3:
             case "end":
-              return _context10.stop();
+              return _context9.stop();
           }
         }
-      }, _callee10, this);
+      }, _callee9, this);
     }));
 
-    function truncate(_x25) {
-      return _ref10.apply(this, arguments);
+    function truncate(_x23) {
+      return _ref9.apply(this, arguments);
     }
 
     return truncate;
@@ -576,27 +549,27 @@ var postgres = {
    * @return {Promise}
    */
   close: function () {
-    var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
-      return regeneratorRuntime.wrap(function _callee11$(_context11) {
+    var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
+      return regeneratorRuntime.wrap(function _callee10$(_context10) {
         while (1) {
-          switch (_context11.prev = _context11.next) {
+          switch (_context10.prev = _context10.next) {
             case 0:
-              _context11.next = 2;
+              _context10.next = 2;
               return this.client.end();
 
             case 2:
-              return _context11.abrupt("return", _context11.sent);
+              return _context10.abrupt("return", _context10.sent);
 
             case 3:
             case "end":
-              return _context11.stop();
+              return _context10.stop();
           }
         }
-      }, _callee11, this);
+      }, _callee10, this);
     }));
 
     function close() {
-      return _ref11.apply(this, arguments);
+      return _ref10.apply(this, arguments);
     }
 
     return close;

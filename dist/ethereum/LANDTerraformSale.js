@@ -23,8 +23,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import eth from "./eth";
-
 
 var log = new _log.Log("[LANDTerraformSale]");
 var instance = null;
@@ -61,7 +59,12 @@ var LANDTerraformSale = function (_Contract) {
     value: function getInstance() {
       if (!instance) {
         instance = new LANDTerraformSale("LANDTerraformSale", env.get("TERRAFORM_CONTRACT_ADDRESS", function (name) {
-          throw new Error("Missing env: " + name);
+          return env.get("REACT_APP_TERRAFORM_CONTRACT_ADDRESS", function () {
+            if (env.isProduction()) {
+              throw new Error("Missing TERRAFORM_CONTRACT_ADDRESS or REACT_APP_TERRAFORM_CONTRACT_ADDRESS");
+            }
+            return "0x4bc79175f1f6fded07f04aa1b4b0465ecff6f1b3";
+          });
         }), _LANDTerraformSale.abi);
       }
       return instance;
