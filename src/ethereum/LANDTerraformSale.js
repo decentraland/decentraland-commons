@@ -1,5 +1,4 @@
 import * as env from "../env";
-// import eth from "./eth";
 import { Log } from "../log";
 
 import Contract from "./Contract";
@@ -15,7 +14,14 @@ class LANDTerraformSale extends Contract {
       instance = new LANDTerraformSale(
         "LANDTerraformSale",
         env.get("TERRAFORM_CONTRACT_ADDRESS", name => {
-          throw new Error(`Missing env: ${name}`);
+          return env.get("REACT_APP_TERRAFORM_CONTRACT_ADDRESS", () => {
+            if (env.isProduction()) {
+              throw new Error(
+                "Missing TERRAFORM_CONTRACT_ADDRESS or REACT_APP_TERRAFORM_CONTRACT_ADDRESS"
+              );
+            }
+            return "0x4bc79175f1f6fded07f04aa1b4b0465ecff6f1b3";
+          })
         }),
         abi
       );
