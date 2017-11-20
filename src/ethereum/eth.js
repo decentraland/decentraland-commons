@@ -80,7 +80,9 @@ const eth = {
   getContract(name) {
     if (!this.contracts[name]) {
       throw new Error(
-        `The contract ${name} not found. Did you add it to the '.connect()' call?`
+        `The contract ${
+          name
+        } not found. Did you add it to the '.connect()' call?`
       );
     }
 
