@@ -84,8 +84,8 @@ const postgres = {
       where = `WHERE ${this.toAssignmentFields(conditions).join(' AND ')}`
     }
 
-    if (order) {
-      order = `ORDER BY ${this.getOrderValues(order)}`
+    if (orderBy) {
+      order = `ORDER BY ${this.getOrderValues(orderBy)}`
     }
 
     const result = await this.client.query(
