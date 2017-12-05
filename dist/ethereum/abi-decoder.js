@@ -123,9 +123,9 @@ function _decodeLogs(logs) {
         dataTypes.push(input.type);
       }
     });
-    var decodedData = SolidityCoder.decodeParams(dataTypes, logData.slice(2));
+    var decodedData = SolidityCoder.decodeParams(dataTypes, logData.slice(2)
     // Loop topic and data to get the params
-    method.inputs.forEach(function (param) {
+    );method.inputs.forEach(function (param) {
       var decodedP = {
         name: param.name,
         type: param.type

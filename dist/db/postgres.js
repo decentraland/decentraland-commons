@@ -168,8 +168,8 @@ var postgres = {
                 where = 'WHERE ' + this.toAssignmentFields(conditions).join(' AND ');
               }
 
-              if (order) {
-                order = 'ORDER BY ' + this.getOrderValues(order);
+              if (orderBy) {
+                order = 'ORDER BY ' + this.getOrderValues(orderBy);
               }
 
               _context4.next = 7;
