@@ -1,6 +1,17 @@
+import Rollbar from 'rollbar'
 import { Log } from '../log'
 
 const log = new Log('Server')
+let rollbar = null
+
+/**
+ * Set up rollbar integration to report server errors raised while using {@link server#handleRequest}
+ * @param  {string} accessToken - Rollbar access token
+ */
+export function useRollbar(accessToken) {
+  if (!accessToken) return
+  rollbar = new Rollbar(accessToken)
+}
 
 /**
  * Wrapper for the request handler. It creates the appropiate response object and catches errors. For example:
@@ -24,6 +35,8 @@ export function handleRequest(callback) {
 
       const data = error.data || {}
       const message = error.message
+
+      if (rollbar) rollbar.error(error, req)
 
       return res.json(sendError(data, message))
     }
