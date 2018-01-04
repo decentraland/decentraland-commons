@@ -41,6 +41,7 @@ const eth = {
 
     log.info('Instantiating contracts')
     web3 = new Web3(currentProvider)
+    this.web3 = web3
 
     const accounts = defaultAccount || (await this.getAccounts())
     if (accounts.length === 0) {
