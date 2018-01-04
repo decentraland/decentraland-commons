@@ -42,6 +42,13 @@ class LANDTerraformSale extends Contract {
       gas: 120000
     })
   }
+
+  transferBackMANAMany(addresses, amounts) {
+    log.info(`(transferBackMANAMany) ${amounts} to ${addresses}`)
+    return this.transaction('transferBackMANAMany', addresses, amounts, {
+      gas: 120000
+    })
+  }
 }
 
 module.exports = LANDTerraformSale
