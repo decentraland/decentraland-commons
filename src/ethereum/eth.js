@@ -42,7 +42,6 @@ const eth = {
     log.info('Instantiating contracts')
     web3 = new Web3(currentProvider)
     this.web3 = web3
-    this.getBlock = web3.eth.getBlock
 
     const accounts = defaultAccount || (await this.getAccounts())
     if (accounts.length === 0) {
@@ -52,7 +51,7 @@ const eth = {
     }
 
     this.setAddress(accounts[0])
-    this.setContracts(contracts || this._getDefaultContracts())
+    this.setContracts(contracts)
 
     log.info(`Got ${this.getAddress()} as current user address`)
     return true
@@ -68,16 +67,6 @@ const eth = {
   async reconnect(...args) {
     this.disconnect()
     return await this.connect(...args)
-  },
-
-  // Internal. Dynamic require
-  _getDefaultContracts() {
-    return [
-      require('./MANAToken'),
-      require('./TerraformReserve'),
-      require('./LANDTerraformSale'),
-      require('./ReturnMANA')
-    ]
   },
 
   getContract(name) {
@@ -173,6 +162,10 @@ const eth = {
 
   async remoteRecover(message, signature) {
     return await web3.personal.ecRecover(message, signature)
+  },
+
+  getBlock(blockNumber) {
+    return web3.eth.getBlock(blockNumber)
   },
 
   setAddress(address) {

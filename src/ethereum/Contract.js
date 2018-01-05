@@ -47,6 +47,11 @@ class Contract {
    * @return {Contract} instance
    */
   constructor(name, address, abi) {
+    console.log({
+      name,
+      address,
+      abi
+    })
     this.name = name
     this.address = address
     this.setAbi(abi)

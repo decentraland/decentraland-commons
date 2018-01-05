@@ -7,6 +7,8 @@ By default `eth.js` will load up all contracts on the `/contracts` folder and ch
 
 If you want to change this behaviour, you can check the breakdown below.
 
+It can be used in conjunction to [decentraland-contracts](https://github.com/decentraland/contracts)
+
 ### index.js
 
 Main API to interface with web3. Acts as a global singleton and must be connected before calling any other method
@@ -35,13 +37,14 @@ An interface to work with Ethereum contracts, takes care of decoding contract da
 
 ```javascript
 import Contract from 'Contract'
-import { abi } from '../contracts/MANAToken.json'
+import { abi } from './abis/MANAToken.json'
 
 const contract = new Contract('MANAToken', '0xdeadbeef', abi)
 
 await contract.call('allowance', sender, receiver)
 await contract.transaction('lockMana', manaValue)
 ```
+
 
 ### tx.js
 
@@ -61,48 +64,4 @@ if (tx.isPending(status)) {
 
 The idea is to define your own `Contract`s and work with them using `eth`. A typical case is described below:
 
-_MANAToken.js_
-
-```javascript
-import Contract from 'Contract'
-import eth from 'eth'
-
-import { abi } from '../contracts/MANAToken.json'
-
-let instance = null
-
-class MANAToken extends Contract {
-    static getInstance() {
-      if (! instance) {
-        instance = new MANAToken('MANAToken', '0xdeadbeef', abi)
-      }
-      return instance
-    }
-
-    async lockMana(sender, mana) {
-     return await this.transaction(
-          'lockMana', sender, mana, { gas: 120000 }
-      )
-    }
-}
-
-export default MANAToken
-```
-
-
-_On the start of your app, maybe server.js_
-
-```javascript
-import MANAToken from './MANAToken'
-
-// The null here is to preserve the default account as is
-eth.connect(null, [
-    MANAToken,
-    // ...etc
-])
-
-eth.getContract('MANAToken').lockMana()
-// or
-manaToken.lockMana()
-```
-
+Check [decentraland-contracts](https://github.com/decentraland/contracts) for more info.
