@@ -105,8 +105,7 @@ var SMTP = function () {
             return _this2._sendMailWithRetry(email, opts, callback);
           }, EMAIL_COOLDOWN);
         }
-
-        log.info('Email %s sent: %s', info.messageId, info.response);
+        log.info('Email ' + info.messageId + ' sent: ' + info.response);
         callback(info.response);
       });
     }

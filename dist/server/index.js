@@ -3,14 +3,31 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.useRollbar = useRollbar;
 exports.handleRequest = handleRequest;
 exports.extractFromReq = extractFromReq;
 
+var _rollbar = require('rollbar');
+
+var _rollbar2 = _interopRequireDefault(_rollbar);
+
 var _log = require('../log');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var log = new _log.Log('Server');
+var rollbar = null;
+
+/**
+ * Set up rollbar integration to report server errors raised while using {@link server#handleRequest}
+ * @param  {string} accessToken - Rollbar access token
+ */
+function useRollbar(accessToken) {
+  if (!accessToken) return;
+  rollbar = new _rollbar2.default(accessToken);
+}
 
 /**
  * Wrapper for the request handler. It creates the appropiate response object and catches errors. For example:
@@ -50,9 +67,13 @@ function handleRequest(callback) {
 
               _data = _context.t0.data || {};
               message = _context.t0.message;
+
+
+              if (rollbar) rollbar.error(_context.t0, req);
+
               return _context.abrupt('return', res.json(sendError(_data, message)));
 
-            case 14:
+            case 15:
             case 'end':
               return _context.stop();
           }

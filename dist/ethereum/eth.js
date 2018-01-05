@@ -69,25 +69,26 @@ var eth = {
 
               log.info('Instantiating contracts');
               web3 = new _web2.default(currentProvider);
+              this.web3 = web3;
 
               _context.t0 = defaultAccount;
 
               if (_context.t0) {
-                _context.next = 14;
+                _context.next = 15;
                 break;
               }
 
-              _context.next = 13;
+              _context.next = 14;
               return this.getAccounts();
 
-            case 13:
+            case 14:
               _context.t0 = _context.sent;
 
-            case 14:
+            case 15:
               accounts = _context.t0;
 
               if (!(accounts.length === 0)) {
-                _context.next = 19;
+                _context.next = 20;
                 break;
               }
 
@@ -95,7 +96,7 @@ var eth = {
               this.disconnect();
               return _context.abrupt('return', false);
 
-            case 19:
+            case 20:
 
               this.setAddress(accounts[0]);
               this.setContracts(contracts || this._getDefaultContracts());
@@ -103,7 +104,7 @@ var eth = {
               log.info('Got ' + this.getAddress() + ' as current user address');
               return _context.abrupt('return', true);
 
-            case 23:
+            case 24:
             case 'end':
               return _context.stop();
           }
@@ -155,7 +156,7 @@ var eth = {
 
   // Internal. Dynamic require
   _getDefaultContracts: function _getDefaultContracts() {
-    return [require('./MANAToken'), require('./TerraformReserve'), require('./LANDTerraformSale')];
+    return [require('./MANAToken'), require('./TerraformReserve'), require('./LANDTerraformSale'), require('./ReturnMANA')];
   },
   getContract: function getContract(name) {
     if (!this.contracts[name]) {
