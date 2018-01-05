@@ -29,10 +29,7 @@ export function runProgram(clients) {
  * @param {string} [text=Are you sure?]  - The text to show to the user
  * @param {boolean} [defaultAnswer=true] - The value for the default answer
  */
-export default async function confirm(
-  text = 'Are you sure?',
-  defaultAnswer = false
-) {
+export async function confirm(text = 'Are you sure?', defaultAnswer = false) {
   const res = await inquirer.prompt({
     type: 'confirm',
     name: 'confirm',

@@ -50,6 +50,19 @@ class Model {
   }
 
   /**
+   * Count the rows for the talbe
+   * @return {Promise<integer>}
+   */
+  static async count() {
+    const result = await this.db.query(
+      `SELECT COUNT(*) as count
+        FROM ${this.tableName}`
+    )
+
+    return result.length ? parseInt(result[0].count, 10) : 0
+  }
+
+  /**
    * Insert the row filtering the Model.columnNames to the Model.tableName table
    * @param  {object} row
    * @return {Promise<object>} the row argument with the inserted id

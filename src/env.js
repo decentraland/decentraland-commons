@@ -39,7 +39,7 @@ const env = {
   },
 
   isDevelopment() {
-    return !this.isProduction()
+    return this.getName() === 'development'
   },
 
   isProduction() {

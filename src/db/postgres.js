@@ -113,8 +113,8 @@ const postgres = {
       )
     }
 
-    changes.createdAt = changes.createdAt || new Date()
-    changes.updatedAt = changes.updatedAt || new Date()
+    changes.created_at = changes.created_at || new Date()
+    changes.updated_at = changes.updated_at || new Date()
 
     const values = getObjectValues(changes)
 
@@ -153,7 +153,7 @@ const postgres = {
       )
     }
 
-    changes.updatedAt = changes.updatedAt || new Date()
+    changes.updated_at = changes.updated_at || new Date()
 
     const changeValues = getObjectValues(changes)
     const conditionValues = getObjectValues(conditions)
@@ -200,7 +200,7 @@ const postgres = {
   /**
    * Creates a table with the desired rows if it doesn't exist.
    * Adds:
-   *   - `createdAt` and `updatedAt` columns by default
+   *   - `created_at` and `updated_at` columns by default
    *   - A secuence with the table name to use as autoincrement id
    * @example
    * this.createTable('users', `
@@ -221,8 +221,8 @@ const postgres = {
 
     await this.client.query(`CREATE TABLE IF NOT EXISTS "${tableName}" (
       ${rows},
-      "createdAt" timestamp NOT NULL,
-      "updatedAt" timestamp,
+      "created_at" timestamp NOT NULL,
+      "updated_at" timestamp,
       PRIMARY KEY ("${primaryKey}")
     );`)
 

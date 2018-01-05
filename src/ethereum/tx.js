@@ -1,27 +1,45 @@
 import { Log } from '../log'
 import { sleep } from '../utils'
 
-import eth from './index'
+import eth from './eth'
 
 const log = new Log('tx')
 
+/**
+ * Some utility functions to work with Ethereum transactions.
+ * @namespace
+ */
 const tx = {
   DUMMY_TX_ID: '0xdeadbeef',
 
-  async waitUntilComplete(hash) {
+  /**
+   * Wait until a transaction finishes by either being mined or failing
+   * @param  {string} txId - Transaction id to watch
+   * @return {object} data - Current transaction data
+   * @return {object.tx} transaction - Transaction status
+   * @return {object.recepeit} transaction - Transaction recepeit
+   */
+  async waitUntilComplete(txId) {
     const retry = () => {
-      log.info(`Transaction ${hash} pending, retrying later`)
-      return sleep(1000 * 60).then(() => this.whenComplete(hash))
+      log.info(`Transaction ${txId} pending, retrying later`)
+      return sleep(1000 * 60).then(() => this.whenComplete(txId))
     }
 
-    const { tx, recepeit } = await this.getFull(hash)
+    const { tx, recepeit } = await this.getFull(txId)
 
     if (this.isPending(tx) || !recepeit) return retry()
 
-    log.info(`Transaction ${hash} completed`)
+    log.info(`Transaction ${txId} completed`)
     return { tx, recepeit }
   },
 
+  /**
+   * Get the transaction status and recepeit
+   * @param  {string} txId - Transaction id
+   * @return {object} data - Current transaction data
+   * @return {object.tx} transaction - Transaction status
+   * @return {object.recepeit} transaction - Transaction recepeit
+   */
   async getFull(txId) {
     const [tx, recepeit] = await Promise.all([
       eth.fetchTxStatus(txId),

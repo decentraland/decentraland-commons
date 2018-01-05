@@ -63,7 +63,7 @@ const mongo = {
 
   /**
    * Upsert an object to the desired collection.
-   * It adds the `createdAt` and `updatedAt` properties by default
+   * It adds the `created_at` and `updated_at` properties by default
    * @param  {string} collectionName - Collection name
    * @param  {string} _id            - _id of the new object or of the one to update
    * @param  {object} [row]          - properties to upsert
@@ -76,10 +76,10 @@ const mongo = {
     if (exists && !row) return // Nothing to do here
 
     if (exists) {
-      row.updatedAt = new Date()
+      row.updated_at = new Date()
       return await collection.update({ _id }, { $set: row })
     } else {
-      row = Object.assign({ _id, createdAt: new Date() }, row)
+      row = Object.assign({ _id, created_at: new Date() }, row)
       return await collection.insertOne(row)
     }
   },
