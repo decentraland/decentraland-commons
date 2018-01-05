@@ -3,13 +3,6 @@ module.exports = {
   ...require('./log'),
   ...require('./email'),
 
-  // Abi accessible using the `.abi` property
-  contracts: {
-    MANAToken: require('./ethereum/MANAToken'),
-    TerraformReserve: require('./ethereum/TerraformReserve'),
-    LANDTerraformSale: require('./ethereum/LANDTerraformSale')
-  },
-
   server: require('./server'),
 
   db: require('./db'),
