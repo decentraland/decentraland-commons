@@ -70,25 +70,26 @@ var eth = {
               log.info('Instantiating contracts');
               web3 = new _web2.default(currentProvider);
               this.web3 = web3;
+              this.getBlock = web3.eth.getBlock;
 
               _context.t0 = defaultAccount;
 
               if (_context.t0) {
-                _context.next = 15;
+                _context.next = 16;
                 break;
               }
 
-              _context.next = 14;
+              _context.next = 15;
               return this.getAccounts();
 
-            case 14:
+            case 15:
               _context.t0 = _context.sent;
 
-            case 15:
+            case 16:
               accounts = _context.t0;
 
               if (!(accounts.length === 0)) {
-                _context.next = 20;
+                _context.next = 21;
                 break;
               }
 
@@ -96,7 +97,7 @@ var eth = {
               this.disconnect();
               return _context.abrupt('return', false);
 
-            case 20:
+            case 21:
 
               this.setAddress(accounts[0]);
               this.setContracts(contracts || this._getDefaultContracts());
@@ -104,7 +105,7 @@ var eth = {
               log.info('Got ' + this.getAddress() + ' as current user address');
               return _context.abrupt('return', true);
 
-            case 24:
+            case 25:
             case 'end':
               return _context.stop();
           }

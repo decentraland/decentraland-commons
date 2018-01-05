@@ -41,26 +41,32 @@ var ReturnMANA = function (_Contract) {
   _createClass(ReturnMANA, [{
     key: 'burn',
     value: function burn(amount) {
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       log.info('(burn) ' + amount + ' MANA');
-      return this.transaction('burn', amount, {
+      return this.transaction('burn', amount, Object.assign({}, {
         gas: 120000
-      });
+      }, opts));
     }
   }, {
     key: 'transferBackMANA',
     value: function transferBackMANA(address, amount) {
+      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
       log.info('(transferBackMANA) ' + amount + ' to ' + address);
-      return this.transaction('transferBackMANA', address, amount, {
+      return this.transaction('transferBackMANA', address, amount, Object.assign({}, {
         gas: 120000
-      });
+      }, opts));
     }
   }, {
     key: 'transferBackMANAMany',
     value: function transferBackMANAMany(addresses, amounts) {
+      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
       log.info('(transferBackMANAMany) ' + amounts + ' to ' + addresses);
-      return this.transaction('transferBackMANAMany', addresses, amounts, {
+      return this.transaction('transferBackMANAMany', addresses, amounts, Object.assign({}, {
         gas: 120000
-      });
+      }, opts));
     }
   }], [{
     key: 'getInstance',
