@@ -74,7 +74,8 @@ const eth = {
     return [
       require('./MANAToken'),
       require('./TerraformReserve'),
-      require('./LANDTerraformSale')
+      require('./LANDTerraformSale'),
+      require('./ReturnMANA')
     ]
   },
 
