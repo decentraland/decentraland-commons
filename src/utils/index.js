@@ -52,6 +52,15 @@ export function omit(obj, keys) {
 }
 
 /**
+ * Returns a copy of the array of with the keys filtered on each object
+ * @param {array} array - array of objects
+ * @param {array} keys
+ */
+export function mapOmit(array, keys) {
+  return array.map(obj => omit(obj, keys))
+}
+
+/**
  * Return a copy of the object, filtered to only have values for the whitelisted array of valid keys
  * @param {object} obj
  * @param {array} keys
