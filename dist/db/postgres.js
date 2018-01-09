@@ -219,8 +219,8 @@ var postgres = {
 
             case 2:
 
-              changes.createdAt = changes.createdAt || new Date();
-              changes.updatedAt = changes.updatedAt || new Date();
+              changes.created_at = changes.created_at || new Date();
+              changes.updated_at = changes.updated_at || new Date();
 
               values = (0, _utils.getObjectValues)(changes);
               _context5.next = 7;
@@ -278,7 +278,7 @@ var postgres = {
 
             case 4:
 
-              changes.updatedAt = changes.updatedAt || new Date();
+              changes.updated_at = changes.updated_at || new Date();
 
               changeValues = (0, _utils.getObjectValues)(changes);
               conditionValues = (0, _utils.getObjectValues)(conditions);
@@ -326,7 +326,7 @@ var postgres = {
   /**
    * Creates a table with the desired rows if it doesn't exist.
    * Adds:
-   *   - `createdAt` and `updatedAt` columns by default
+   *   - `created_at` and `updated_at` columns by default
    *   - A secuence with the table name to use as autoincrement id
    * @example
    * this.createTable('users', `
@@ -362,7 +362,7 @@ var postgres = {
 
             case 4:
               _context7.next = 6;
-              return this.client.query('CREATE TABLE IF NOT EXISTS "' + tableName + '" (\n      ' + rows + ',\n      "createdAt" timestamp NOT NULL,\n      "updatedAt" timestamp,\n      PRIMARY KEY ("' + primaryKey + '")\n    );');
+              return this.client.query('CREATE TABLE IF NOT EXISTS "' + tableName + '" (\n      ' + rows + ',\n      "created_at" timestamp NOT NULL,\n      "updated_at" timestamp,\n      PRIMARY KEY ("' + primaryKey + '")\n    );');
 
             case 6:
               if (!sequenceName) {

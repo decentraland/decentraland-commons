@@ -4,13 +4,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 module.exports = _extends({}, require('./ethereum'), require('./log'), require('./email'), {
 
-  // Abi accessible using the `.abi` property
-  contracts: {
-    MANAToken: require('./ethereum/MANAToken'),
-    TerraformReserve: require('./ethereum/TerraformReserve'),
-    LANDTerraformSale: require('./ethereum/LANDTerraformSale')
-  },
-
   server: require('./server'),
 
   db: require('./db'),

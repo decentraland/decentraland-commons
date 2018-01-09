@@ -44,13 +44,30 @@ var env = {
     loaded = true;
   },
   isDevelopment: function isDevelopment() {
-    return !this.isProduction();
+    return this.getName() === 'development';
   },
   isProduction: function isProduction() {
     return this.getName() === 'production';
   },
   getName: function getName() {
     return this.get('NODE_ENV');
+  },
+
+
+  /**
+   * It checks the environment variable name adding the `REACT_APP` prefix on browsers.
+   * It throws if the value is missing.
+   * @param  {string} name - Environment variable name
+   * @return {object} - Environment value for the name, if any
+   */
+  universalGet: function universalGet(name) {
+    if (process.browser) {
+      name = 'REACT_APP_' + name;
+    }
+
+    return this.get(name, function () {
+      throw new Error('Missing ' + name + ' ENV variable');
+    });
   },
 
 

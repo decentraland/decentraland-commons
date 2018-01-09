@@ -8,6 +8,7 @@ exports.sleep = sleep;
 exports.isEmptyObject = isEmptyObject;
 exports.getObjectValues = getObjectValues;
 exports.omit = omit;
+exports.mapOmit = mapOmit;
 exports.pick = pick;
 exports.arrayToObject = arrayToObject;
 /**
@@ -72,6 +73,17 @@ function omit(obj, keys) {
     return !keys.includes(key);
   });
   return pick(obj, newKeys);
+}
+
+/**
+ * Returns a copy of the array of with the keys filtered on each object
+ * @param {array} array - array of objects
+ * @param {array} keys
+ */
+function mapOmit(array, keys) {
+  return array.map(function (obj) {
+    return omit(obj, keys);
+  });
 }
 
 /**

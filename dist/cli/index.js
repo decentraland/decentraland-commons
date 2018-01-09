@@ -3,6 +3,47 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.confirm = undefined;
+
+/**
+ * Query the user for a boolean result
+ * @param {string} [text=Are you sure?]  - The text to show to the user
+ * @param {boolean} [defaultAnswer=true] - The value for the default answer
+ */
+var confirm = exports.confirm = function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Are you sure?';
+    var defaultAnswer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var res;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _inquirer2.default.prompt({
+              type: 'confirm',
+              name: 'confirm',
+              message: text,
+              default: defaultAnswer
+            });
+
+          case 2:
+            res = _context.sent;
+            return _context.abrupt('return', res.confirm);
+
+          case 4:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function confirm() {
+    return _ref.apply(this, arguments);
+  };
+}();
+
 exports.runProgram = runProgram;
 
 var _commander = require('commander');
@@ -58,45 +99,3 @@ function runProgram(clients) {
 
   _commander2.default.parse(process.argv);
 }
-
-/**
- * Query the user for a boolean result
- * @param {string} [text=Are you sure?]  - The text to show to the user
- * @param {boolean} [defaultAnswer=true] - The value for the default answer
- */
-
-exports.default = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Are you sure?';
-    var defaultAnswer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var res;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return _inquirer2.default.prompt({
-              type: 'confirm',
-              name: 'confirm',
-              message: text,
-              default: defaultAnswer
-            });
-
-          case 2:
-            res = _context.sent;
-            return _context.abrupt('return', res.confirm);
-
-          case 4:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, this);
-  }));
-
-  function confirm() {
-    return _ref.apply(this, arguments);
-  }
-
-  return confirm;
-}();

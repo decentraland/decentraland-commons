@@ -92,7 +92,7 @@ var mongo = {
 
   /**
    * Upsert an object to the desired collection.
-   * It adds the `createdAt` and `updatedAt` properties by default
+   * It adds the `created_at` and `updated_at` properties by default
    * @param  {string} collectionName - Collection name
    * @param  {string} _id            - _id of the new object or of the one to update
    * @param  {object} [row]          - properties to upsert
@@ -126,7 +126,7 @@ var mongo = {
                 break;
               }
 
-              row.updatedAt = new Date();
+              row.updated_at = new Date();
               _context2.next = 10;
               return collection.update({ _id: _id }, { $set: row });
 
@@ -134,7 +134,7 @@ var mongo = {
               return _context2.abrupt('return', _context2.sent);
 
             case 13:
-              row = Object.assign({ _id: _id, createdAt: new Date() }, row);
+              row = Object.assign({ _id: _id, created_at: new Date() }, row);
               _context2.next = 16;
               return collection.insertOne(row);
 

@@ -6,9 +6,9 @@ var _log = require('../log');
 
 var _utils = require('../utils');
 
-var _index = require('./index');
+var _eth = require('./eth');
 
-var _index2 = _interopRequireDefault(_index);
+var _eth2 = _interopRequireDefault(_eth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16,11 +16,22 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 var log = new _log.Log('tx');
 
+/**
+ * Some utility functions to work with Ethereum transactions.
+ * @namespace
+ */
 var tx = {
   DUMMY_TX_ID: '0xdeadbeef',
 
+  /**
+   * Wait until a transaction finishes by either being mined or failing
+   * @param  {string} txId - Transaction id to watch
+   * @return {object} data - Current transaction data
+   * @return {object.tx} transaction - Transaction status
+   * @return {object.recepeit} transaction - Transaction recepeit
+   */
   waitUntilComplete: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(hash) {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(txId) {
       var _this = this;
 
       var retry, _ref2, tx, recepeit;
@@ -30,14 +41,14 @@ var tx = {
           switch (_context.prev = _context.next) {
             case 0:
               retry = function retry() {
-                log.info('Transaction ' + hash + ' pending, retrying later');
+                log.info('Transaction ' + txId + ' pending, retrying later');
                 return (0, _utils.sleep)(1000 * 60).then(function () {
-                  return _this.whenComplete(hash);
+                  return _this.whenComplete(txId);
                 });
               };
 
               _context.next = 3;
-              return this.getFull(hash);
+              return this.getFull(txId);
 
             case 3:
               _ref2 = _context.sent;
@@ -53,7 +64,7 @@ var tx = {
 
             case 8:
 
-              log.info('Transaction ' + hash + ' completed');
+              log.info('Transaction ' + txId + ' completed');
               return _context.abrupt('return', { tx: tx, recepeit: recepeit });
 
             case 10:
@@ -70,6 +81,15 @@ var tx = {
 
     return waitUntilComplete;
   }(),
+
+
+  /**
+   * Get the transaction status and recepeit
+   * @param  {string} txId - Transaction id
+   * @return {object} data - Current transaction data
+   * @return {object.tx} transaction - Transaction status
+   * @return {object.recepeit} transaction - Transaction recepeit
+   */
   getFull: function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(txId) {
       var _ref4, _ref5, tx, recepeit;
@@ -79,7 +99,7 @@ var tx = {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return Promise.all([_index2.default.fetchTxStatus(txId), _index2.default.fetchTxReceipt(txId)]);
+              return Promise.all([_eth2.default.fetchTxStatus(txId), _eth2.default.fetchTxReceipt(txId)]);
 
             case 2:
               _ref4 = _context2.sent;

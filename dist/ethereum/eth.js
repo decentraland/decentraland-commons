@@ -70,26 +70,25 @@ var eth = {
               log.info('Instantiating contracts');
               web3 = new _web2.default(currentProvider);
               this.web3 = web3;
-              this.getBlock = web3.eth.getBlock;
 
               _context.t0 = defaultAccount;
 
               if (_context.t0) {
-                _context.next = 16;
+                _context.next = 15;
                 break;
               }
 
-              _context.next = 15;
+              _context.next = 14;
               return this.getAccounts();
 
-            case 15:
+            case 14:
               _context.t0 = _context.sent;
 
-            case 16:
+            case 15:
               accounts = _context.t0;
 
               if (!(accounts.length === 0)) {
-                _context.next = 21;
+                _context.next = 20;
                 break;
               }
 
@@ -97,15 +96,15 @@ var eth = {
               this.disconnect();
               return _context.abrupt('return', false);
 
-            case 21:
+            case 20:
 
               this.setAddress(accounts[0]);
-              this.setContracts(contracts || this._getDefaultContracts());
+              this.setContracts(contracts);
 
               log.info('Got ' + this.getAddress() + ' as current user address');
               return _context.abrupt('return', true);
 
-            case 25:
+            case 24:
             case 'end':
               return _context.stop();
           }
@@ -153,12 +152,6 @@ var eth = {
 
     return reconnect;
   }(),
-
-
-  // Internal. Dynamic require
-  _getDefaultContracts: function _getDefaultContracts() {
-    return [require('./MANAToken'), require('./TerraformReserve'), require('./LANDTerraformSale'), require('./ReturnMANA')];
-  },
   getContract: function getContract(name) {
     if (!this.contracts[name]) {
       throw new Error('The contract ' + name + ' not found. Did you add it to the \'.connect()\' call?');
@@ -362,6 +355,9 @@ var eth = {
 
     return remoteRecover;
   }(),
+  getBlock: function getBlock(blockNumber) {
+    return web3.eth.getBlock(blockNumber);
+  },
   setAddress: function setAddress(address) {
     web3.eth.defaultAccount = address;
   },
