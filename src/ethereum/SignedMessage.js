@@ -3,7 +3,7 @@ import eth from './eth'
 /**
  * Work with signatures made with Ethereum wallets
  */
-export default class SignedMessage {
+class SignedMessage {
   constructor(message, signature) {
     if (!message || !signature) {
       throw new Error('You need to supply a message and a signature')
@@ -28,7 +28,7 @@ export default class SignedMessage {
       s
     )
 
-    return '0x' + eth.utils.pubToAddress(pubkey).toString('hex')
+    return '0x' + eth.utils.pubToAddressHex(pubkey)
   }
 
   /**
@@ -48,20 +48,32 @@ export default class SignedMessage {
   }
 
   /**
-   * Extract a value from a signed message. This function expects a particular message structure like this:
+   * Extract values from a signed message.
+   * This function expects a particular message structure which looks like this:
    * @example
    * Header title
    * propery1: value1
    * propery2: value2
    * ...etc
-   * @param  {string} property - Property name to find
-   * @return {object} - The value for the supplied propery or undefined
+   * @param  {Array<string>|string} property - Property name or names to find
+   * @return {Array<string>} - The found values or null for each of the supplied properties
    */
-  extract(property) {
-    const propMatch = `^${property}:\\s(.*)$`
-    const regexp = new RegExp(propMatch, 'gim')
+  extract(properties) {
+    if (!Array.isArray(properties)) properties = [properties]
 
-    const match = regexp.exec(this.message)
-    return match && match[1]
+    const message = this.decodeMessage().toString()
+    const result = []
+
+    properties.map(property => {
+      const regexp = new RegExp(`^${property}:\\s(.*)$`, 'gim')
+      const match = regexp.exec(message)
+
+      const value = match && match[1]
+      result.push(value)
+    })
+
+    return result
   }
 }
+
+module.exports = SignedMessage
