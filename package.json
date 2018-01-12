@@ -1,6 +1,6 @@
 {
   "name": "decentraland-commons",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Common functionality between the different Decentraland projects",
   "main": "./dist/index.js",
   "browser": {
