@@ -42,6 +42,7 @@ const eth = {
     log.info('Instantiating contracts')
     web3 = new Web3(currentProvider)
     this.web3 = web3
+    this.getBlock = web3.eth.getBlock
 
     const accounts = defaultAccount || (await this.getAccounts())
     if (accounts.length === 0) {
@@ -162,10 +163,6 @@ const eth = {
 
   async remoteRecover(message, signature) {
     return await web3.personal.ecRecover(message, signature)
-  },
-
-  getBlock(blockNumber) {
-    return web3.eth.getBlock(blockNumber)
   },
 
   setAddress(address) {
