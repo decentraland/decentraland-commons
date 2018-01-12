@@ -13,6 +13,15 @@ class Contract {
   }
 
   /**
+   * Checks if an address is actually 0 in hex or a falsy value
+   * @param  {string} address
+   * @return {Boolean}
+   */
+  static isEmptyAddress(address) {
+    return !address || address === '0x0000000000000000000000000000000000000000'
+  }
+
+  /**
    * See {@link Contract#transaction}
    */
   static async transaction(method, ...args) {
