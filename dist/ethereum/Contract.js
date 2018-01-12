@@ -30,6 +30,18 @@ var Contract = function () {
     }
 
     /**
+     * Checks if an address is actually 0 in hex or a falsy value
+     * @param  {string} address
+     * @return {Boolean}
+     */
+
+  }, {
+    key: 'isEmptyAddress',
+    value: function isEmptyAddress(address) {
+      return !address || address === '0x0000000000000000000000000000000000000000';
+    }
+
+    /**
      * See {@link Contract#transaction}
      */
 
