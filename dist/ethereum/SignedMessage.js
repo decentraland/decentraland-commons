@@ -1,9 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _eth = require('./eth');
@@ -47,7 +43,7 @@ var SignedMessage = function () {
 
       var pubkey = _eth2.default.utils.ecrecover(_eth2.default.utils.hashPersonalMessage(decodedMessage), v, r, s);
 
-      return '0x' + _eth2.default.utils.pubToAddress(pubkey).toString('hex');
+      return '0x' + _eth2.default.utils.pubToAddressHex(pubkey);
     }
 
     /**
@@ -73,28 +69,38 @@ var SignedMessage = function () {
     }
 
     /**
-     * Extract a value from a signed message. This function expects a particular message structure like this:
+     * Extract values from a signed message.
+     * This function expects a particular message structure which looks like this:
      * @example
      * Header title
      * propery1: value1
      * propery2: value2
      * ...etc
-     * @param  {string} property - Property name to find
-     * @return {object} - The value for the supplied propery or undefined
+     * @param  {Array<string>|string} property - Property name or names to find
+     * @return {Array<string>} - The found values or null for each of the supplied properties
      */
 
   }, {
     key: 'extract',
-    value: function extract(property) {
-      var propMatch = '^' + property + ':\\s(.*)$';
-      var regexp = new RegExp(propMatch, 'gim');
+    value: function extract(properties) {
+      if (!Array.isArray(properties)) properties = [properties];
 
-      var match = regexp.exec(this.message);
-      return match && match[1];
+      var message = this.decodeMessage().toString();
+      var result = [];
+
+      properties.map(function (property) {
+        var regexp = new RegExp('^' + property + ':\\s(.*)$', 'gim');
+        var match = regexp.exec(message);
+
+        var value = match && match[1];
+        result.push(value);
+      });
+
+      return result;
     }
   }]);
 
   return SignedMessage;
 }();
 
-exports.default = SignedMessage;
+module.exports = SignedMessage;

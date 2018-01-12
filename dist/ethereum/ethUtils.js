@@ -2,6 +2,8 @@
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _web = require('web3');
 
 var _web2 = _interopRequireDefault(_web);
@@ -19,11 +21,7 @@ var web3utils = new _web2.default();
  * It also provides a reference to the [ethereumjs-util lib]{@link https://github.com/ethereumjs/ethereumjs-util}
  * @namespace
  */
-var ethUtils = {
-  /**
-   * Reference to the [ethereumjs-util lib]{@link https://github.com/ethereumjs/ethereumjs-util}
-   */
-  ethereumJsUtils: _ethereumjsUtil2.default,
+var ethUtils = _extends({}, _ethereumjsUtil2.default, {
 
   /**
    * Converts a given number into a BigNumber instance. Check {@link https://github.com/ethereum/wiki/wiki/JavaScript-API#web3tobignumber} for more info.
@@ -112,10 +110,20 @@ var ethUtils = {
    * @param  {Buffer|string} privKey - private key from where to derive the public key
    * @return {string} Hex public key
    */
-  privateToPublic: function privateToPublic(privKey) {
+  privateToPublicHex: function privateToPublicHex(privKey) {
     if (typeof privKey === 'string') privKey = new Buffer(privKey, 'hex');
     return _ethereumjsUtil2.default.privateToPublic(privKey).toString('hex');
+  },
+
+
+  /**
+   * Returns the ethereum address for a given public key
+   * @param  {string} pubKey - public key from where to derive the address
+   * @return {string} Hex address
+   */
+  pubToAddressHex: function pubToAddressHex(pubkey) {
+    return _ethereumjsUtil2.default.pubToAddress(pubkey).toString('hex');
   }
-};
+});
 
 module.exports = ethUtils;
