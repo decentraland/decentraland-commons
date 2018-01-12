@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import ethereumJsUtils from 'ethereumjs-util'
+import ethereumJsUtil from 'ethereumjs-util'
 
 const web3utils = new Web3()
 
@@ -10,9 +10,9 @@ const web3utils = new Web3()
  */
 const ethUtils = {
   /**
-   * Reference to the [ethereumjs-util lib]{@link https://github.com/ethereumjs/ethereumjs-util}
+   * Extend the [ethereumjs-util lib]{@link https://github.com/ethereumjs/ethereumjs-util} methods
    */
-  ethereumJsUtils,
+  ...ethereumJsUtil,
 
   /**
    * Converts a given number into a BigNumber instance. Check {@link https://github.com/ethereum/wiki/wiki/JavaScript-API#web3tobignumber} for more info.
@@ -56,10 +56,10 @@ const ethUtils = {
    * @return {string} vrs sign result concatenated as a string
    */
   localSign(data, privKey) {
-    if (typeof data === 'string') data = ethereumJsUtils.sha3(data)
+    if (typeof data === 'string') data = ethereumJsUtil.sha3(data)
     if (typeof privKey === 'string') privKey = new Buffer(privKey, 'hex')
 
-    const vrs = ethereumJsUtils.ecsign(data, privKey)
+    const vrs = ethereumJsUtil.ecsign(data, privKey)
 
     return `${vrs.r.toString('hex')}||${vrs.s.toString('hex')}||${vrs.v}`
   },
@@ -72,7 +72,7 @@ const ethUtils = {
    */
   localRecover(data, signature) {
     if (typeof data === 'string') {
-      data = ethereumJsUtils.sha3(data)
+      data = ethereumJsUtil.sha3(data)
     }
     let [r, s, v] = signature.split('||')
 
@@ -80,7 +80,7 @@ const ethUtils = {
     s = Buffer.from(s, 'hex')
     v = parseInt(v, 10)
 
-    const publicKey = ethereumJsUtils.ecrecover(data, v, r, s)
+    const publicKey = ethereumJsUtil.ecrecover(data, v, r, s)
 
     return publicKey.toString('hex')
   },
@@ -90,9 +90,18 @@ const ethUtils = {
    * @param  {Buffer|string} privKey - private key from where to derive the public key
    * @return {string} Hex public key
    */
-  privateToPublic(privKey) {
+  privateToPublicHex(privKey) {
     if (typeof privKey === 'string') privKey = new Buffer(privKey, 'hex')
-    return ethereumJsUtils.privateToPublic(privKey).toString('hex')
+    return ethereumJsUtil.privateToPublic(privKey).toString('hex')
+  },
+
+  /**
+   * Returns the ethereum address for a given public key
+   * @param  {string} pubKey - public key from where to derive the address
+   * @return {string} Hex address
+   */
+  pubToAddressHex(pubkey) {
+    return ethereumJsUtil.pubToAddress(pubkey).toString('hex')
   }
 }
 

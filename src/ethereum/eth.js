@@ -23,7 +23,7 @@ const eth = {
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use. By default will use the available contracts
+   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use
    * @param  {object} [options] - Extra options for the ETH connection
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful

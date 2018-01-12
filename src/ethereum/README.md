@@ -23,7 +23,8 @@ class SuperTokenContract extends Contract {
   }
 }
 
-eth.connect([
+// null is the default account here
+eth.connect(null, [
     { name: 'MANAToken', address: '0x221100', abi: {} },
     SuperTokenContract
 ])
