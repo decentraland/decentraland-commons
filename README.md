@@ -22,6 +22,11 @@ Run tests using mocha and chai
 
 To get a global overview of the ENV variables used, take a look at `.env.example`.
 
+### Dependencies
+
+**babel-polyfill**
+If you're using `decentraland-commons` as a dependency without using `babel-node` you'll need to add an `import 'babel-polyfill'` to your code's entrypoint.
+
 **IMPORTANT**
 
 If you make a breaking change or fix a critial bug please alert the users of the lib so they can update their projects accordingly

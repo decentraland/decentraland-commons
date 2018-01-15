@@ -23,12 +23,12 @@ const eth = {
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use
+   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use
    * @param  {object} [options] - Extra options for the ETH connection
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
-  async connect(defaultAccount, contracts, options = {}) {
+  async connect(defaultAccount, contracts = [], options = {}) {
     if (web3 !== null) return true
 
     const { httpProviderUrl } = options
@@ -42,6 +42,7 @@ const eth = {
     log.info('Instantiating contracts')
     web3 = new Web3(currentProvider)
     this.web3 = web3
+    this.getBlock = web3.eth.getBlock
 
     const accounts = defaultAccount || (await this.getAccounts())
     if (accounts.length === 0) {
@@ -139,20 +140,20 @@ const eth = {
   /**
    * Interface for the web3 `getTransactionReceipt` method. It adds the decoded logs to the result (if any)
    * @param  {string} txId - Transaction id/hash
-   * @return {object} - An object describing the transaction recepeit (if it exists) with it's logs
+   * @return {object} - An object describing the transaction receipt (if it exists) with it's logs
    */
   async fetchTxReceipt(txId) {
-    log.info(`Getting ${txId} recepeit`)
-    const recepeit = await Contract.transaction(
+    log.info(`Getting ${txId} receipt`)
+    const receipt = await Contract.transaction(
       web3.eth.getTransactionReceipt,
       txId
     )
 
-    if (recepeit) {
-      recepeit.logs = Contract.decodeLogs(recepeit.logs)
+    if (receipt) {
+      receipt.logs = Contract.decodeLogs(receipt.logs)
     }
 
-    return recepeit
+    return receipt
   },
 
   async remoteSign(message, address) {
@@ -162,10 +163,6 @@ const eth = {
 
   async remoteRecover(message, signature) {
     return await web3.personal.ecRecover(message, signature)
-  },
-
-  getBlock(blockNumber) {
-    return web3.eth.getBlock(blockNumber)
   },
 
   setAddress(address) {
