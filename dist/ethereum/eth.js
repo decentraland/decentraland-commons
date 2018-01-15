@@ -33,13 +33,14 @@ var eth = {
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use
+   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use
    * @param  {object} [options] - Extra options for the ETH connection
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
   connect: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(defaultAccount, contracts) {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(defaultAccount) {
+      var contracts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var httpProviderUrl, currentProvider, accounts;
       return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -112,7 +113,7 @@ var eth = {
       }, _callee, this);
     }));
 
-    function connect(_x2, _x3) {
+    function connect(_x3) {
       return _ref.apply(this, arguments);
     }
 
@@ -264,28 +265,28 @@ var eth = {
   /**
    * Interface for the web3 `getTransactionReceipt` method. It adds the decoded logs to the result (if any)
    * @param  {string} txId - Transaction id/hash
-   * @return {object} - An object describing the transaction recepeit (if it exists) with it's logs
+   * @return {object} - An object describing the transaction receipt (if it exists) with it's logs
    */
   fetchTxReceipt: function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(txId) {
-      var recepeit;
+      var receipt;
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
-              log.info('Getting ' + txId + ' recepeit');
+              log.info('Getting ' + txId + ' receipt');
               _context4.next = 3;
               return _Contract2.default.transaction(web3.eth.getTransactionReceipt, txId);
 
             case 3:
-              recepeit = _context4.sent;
+              receipt = _context4.sent;
 
 
-              if (recepeit) {
-                recepeit.logs = _Contract2.default.decodeLogs(recepeit.logs);
+              if (receipt) {
+                receipt.logs = _Contract2.default.decodeLogs(receipt.logs);
               }
 
-              return _context4.abrupt('return', recepeit);
+              return _context4.abrupt('return', receipt);
 
             case 6:
             case 'end':
@@ -355,14 +356,14 @@ var eth = {
 
     return remoteRecover;
   }(),
-  getBlock: function getBlock(blockNumber) {
-    return web3.eth.getBlock(blockNumber);
-  },
   setAddress: function setAddress(address) {
     web3.eth.defaultAccount = address;
   },
   getAddress: function getAddress() {
     return web3.eth.defaultAccount;
+  },
+  getBlock: function getBlock(blockNumber) {
+    return web3.eth.getBlock(blockNumber);
   },
   setupFilter: function setupFilter(type) {
     return web3.eth.filter(type);
