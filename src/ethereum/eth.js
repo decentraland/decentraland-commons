@@ -23,12 +23,12 @@ const eth = {
   /**
    * Connect to web3
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use
+   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use
    * @param  {object} [options] - Extra options for the ETH connection
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
-  async connect(defaultAccount, contracts, options = {}) {
+  async connect(defaultAccount, contracts = [], options = {}) {
     if (web3 !== null) return true
 
     const { httpProviderUrl } = options
