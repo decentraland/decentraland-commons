@@ -42,7 +42,6 @@ const eth = {
     log.info('Instantiating contracts')
     web3 = new Web3(currentProvider)
     this.web3 = web3
-    this.getBlock = web3.eth.getBlock
 
     const accounts = defaultAccount || (await this.getAccounts())
     if (accounts.length === 0) {
@@ -171,6 +170,10 @@ const eth = {
 
   getAddress() {
     return web3.eth.defaultAccount
+  },
+
+  getBlock(blockNumber) {
+    return web3.eth.getBlock(blockNumber)
   },
 
   setupFilter(type) {
