@@ -140,20 +140,20 @@ const eth = {
   /**
    * Interface for the web3 `getTransactionReceipt` method. It adds the decoded logs to the result (if any)
    * @param  {string} txId - Transaction id/hash
-   * @return {object} - An object describing the transaction recepeit (if it exists) with it's logs
+   * @return {object} - An object describing the transaction receipt (if it exists) with it's logs
    */
   async fetchTxReceipt(txId) {
-    log.info(`Getting ${txId} recepeit`)
-    const recepeit = await Contract.transaction(
+    log.info(`Getting ${txId} receipt`)
+    const receipt = await Contract.transaction(
       web3.eth.getTransactionReceipt,
       txId
     )
 
-    if (recepeit) {
-      recepeit.logs = Contract.decodeLogs(recepeit.logs)
+    if (receipt) {
+      receipt.logs = Contract.decodeLogs(receipt.logs)
     }
 
-    return recepeit
+    return receipt
   },
 
   async remoteSign(message, address) {
