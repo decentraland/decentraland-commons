@@ -206,19 +206,26 @@ var eth = {
         var contractData = _step.value;
 
         var contract = null;
+        var contractName = null;
 
         if (_Contract2.default.isPrototypeOf(contractData)) {
+          // contractData is subclass of Contract
           contract = new contractData();
+          contractName = contractData.name;
         } else if (contractData instanceof _Contract2.default) {
+          // contractData is an instance of Contract or of one of its instances
           contract = contractData;
+          contractName = contractData.constructor.name;
         } else {
+          // contractData is an object defining the contract
           contract = new _Contract2.default(contractData);
+          contractName = contractData.name;
         }
 
         var instance = web3.eth.contract(contract.abi).at(contract.address);
         contract.setInstance(instance);
 
-        this.contracts[contract.name] = contract;
+        this.contracts[contractName] = contract;
       }
     } catch (err) {
       _didIteratorError = true;

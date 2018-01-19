@@ -69,7 +69,7 @@ var Log = function () {
         args[_key2] = arguments[_key2];
       }
 
-      return this.msg.apply(this, ['warn'].concat(args));
+      return this.msg.apply(this, ['error'].concat(args));
     }
   }, {
     key: 'info',
