@@ -22,13 +22,13 @@ const eth = {
 
   /**
    * Connect to web3
+   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link Contract#setContracts}
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use
    * @param  {object} [options] - Extra options for the ETH connection
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
-  async connect(defaultAccount, contracts = [], options = {}) {
+  async connect(contracts = [], defaultAccount, options = {}) {
     if (web3 !== null) return true
 
     const { httpProviderUrl } = options
@@ -89,14 +89,20 @@ const eth = {
   /**
    * Set the Ethereum contracts to use on the `contracts` property. It builds a map of
    *   { [Contract Name]: Contract instance }
-   * Usable later via `.getContract`
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use.
+   * usable later via `.getContract`. Check {@link https://github.com/decentraland/commons/tree/master/src/ethereum} for more info
+   * @param  {array<Contract|object>} [contracts] - An array comprised of a a wide of options: objects defining contracts, Contract subclasses or Contract instances.
    */
   setContracts(contracts) {
-    for (let contract of contracts) {
-      contract = Contract.isPrototypeOf(contract)
-        ? contract.getInstance()
-        : new Contract(contract)
+    for (const contractData of contracts) {
+      let contract = null
+
+      if (Contract.isPrototypeOf(contractData)) {
+        contract = new contractData()
+      } else if (contractData instanceof Contract) {
+        contract = contractData
+      } else {
+        contract = new Contract(contractData)
+      }
 
       const instance = web3.eth.contract(contract.abi).at(contract.address)
       contract.setInstance(instance)

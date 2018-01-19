@@ -18,16 +18,26 @@ import eth from 'ethereum'
 import Contract from 'Contract'
 
 class SuperTokenContract extends Contract {
-  static getInstance() {
-    return new Contract({ name: 'LAND', address: '0xe2a10f', abi: {} })
+  static getDefaultAddress() {
+    return env.universalGet('0xe2a10f'),
+  }
+
+  static getDefaultAbi() {
+    return [{
+        name: "method",
+        type: "function"
+    }]
   }
 }
 
 // null is the default account here
-eth.connect(null, [
-    { name: 'MANAToken', address: '0x221100', abi: {} },
-    SuperTokenContract
-])
+eth.connect([
+    { address: '0x221100', abi: [{}] },
+    // or
+    SuperTokenContract,
+    // or
+    new SuperTokenContract()
+], /* defaultAccount */)
 
 eth.fetchTxStatus('TX_HASH')
 ```
@@ -40,7 +50,7 @@ An interface to work with Ethereum contracts, takes care of decoding contract da
 import Contract from 'Contract'
 import { abi } from './abis/MANAToken.json'
 
-const contract = new Contract('MANAToken', '0xdeadbeef', abi)
+const contract = new Contract('0xdeadbeef', abi)
 
 await contract.call('allowance', sender, receiver)
 await contract.transaction('lockMana', manaValue)
@@ -63,6 +73,4 @@ if (tx.isPending(status)) {
 
 ## Putting it all together
 
-The idea is to define your own `Contract`s and work with them using `eth`. A typical case is described below:
-
-Check [decentraland-contracts](https://github.com/decentraland/contracts) for more info.
+The idea is to define your own `Contract`s and work with them using `eth`. A typical case is described on [decentraland-contracts](https://github.com/decentraland/contracts).

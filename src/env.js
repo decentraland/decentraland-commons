@@ -52,17 +52,22 @@ const env = {
 
   /**
    * It checks the environment variable name adding the `REACT_APP` prefix on browsers.
-   * It throws if the value is missing.
+   * It throws if the value *and* fallback are missing.
    * @param  {string} name - Environment variable name
+   * @param  {function} [fallback] - fallback in case no var is found
    * @return {object} - Environment value for the name, if any
    */
-  universalGet(name) {
+  universalGet(name, fallback) {
     if (process.browser) {
       name = 'REACT_APP_' + name
     }
 
     return this.get(name, () => {
-      throw new Error(`Missing ${name} ENV variable`)
+      if (!fallback) {
+        throw new Error(`Missing ${name} ENV variable`)
+      }
+
+      return fallback()
     })
   },
 

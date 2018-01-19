@@ -5,10 +5,18 @@ import { promisify } from '../utils'
 /** Class to work with Ethereum contracts */
 class Contract {
   /**
-   * Get a singleton instance of the current contract. Intended to be overriden
-   * @return {Contract<instance>} - instance
+   * Get the default address used for this contract. You should override it on subclasses
+   * @return {string} - address
    */
-  static getInstance() {
+  static getDefaultAddress() {
+    throw new Error('You should override this method on each Contract subclass')
+  }
+
+  /**
+   * Get the default abi used for this contract. You should override it on subclasses
+   * @return {object} - abi
+   */
+  static getDefaultAbi() {
     throw new Error('You should override this method on each Contract subclass')
   }
 
@@ -50,19 +58,33 @@ class Contract {
   }
 
   /**
-   * @param  {string} name    - Name of the contract, just as a reference
-   * @param  {string} address - Address of the contract
-   * @param  {object} abi     - Object describing the contract (build result)
+   * @param  {string} [address] - Address of the contract. If it's undefined, it'll use the result of calling {@link Contract#getDefaultAddress}
+   * @param  {object} [abi]     - Object describing the contract (compile result). If it's undefined, it'll use the result of calling {@link Contract#getDefaultAbi}
    * @return {Contract} instance
    */
-  constructor(name, address, abi) {
-    this.name = name
-    this.address = address
-    this.setAbi(abi)
+  constructor(address, abi) {
+    this.setAddress(address || this.constructor.getDefaultAddress())
+    this.setAbi(abi || this.constructor.getDefaultAbi())
 
     this.instance = null
   }
 
+  /**
+   * Set's the address of the contract. It'll throw on falsy values
+   * @param {string} address - Address of the contract
+   */
+  setAddress(address) {
+    if (!address) {
+      throw new Error('Tried to instantiate a Contract without an `address`')
+    }
+
+    this.address = address
+  }
+
+  /**
+   * Set's the abi of the contract. It'll throw on falsy values
+   * @param {object} abi - Abi of the contract
+   */
   setAbi(abi) {
     if (!abi) {
       throw new Error('Tried to instantiate a Contract without an `abi`')
