@@ -19,13 +19,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /** Class to work with Ethereum contracts */
 var Contract = function () {
   _createClass(Contract, null, [{
-    key: 'getInstance',
+    key: 'getDefaultAddress',
 
     /**
-     * Get a singleton instance of the current contract. Intended to be overriden
-     * @return {Contract<instance>} - instance
+     * Get the default address used for this contract. You should override it on subclasses
+     * @return {string} - address
      */
-    value: function getInstance() {
+    value: function getDefaultAddress() {
+      throw new Error('You should override this method on each Contract subclass');
+    }
+
+    /**
+     * Get the default abi used for this contract. You should override it on subclasses
+     * @return {object} - abi
+     */
+
+  }, {
+    key: 'getDefaultAbi',
+    value: function getDefaultAbi() {
       throw new Error('You should override this method on each Contract subclass');
     }
 
@@ -136,25 +147,44 @@ var Contract = function () {
     }
 
     /**
-     * @param  {string} name    - Name of the contract, just as a reference
-     * @param  {string} address - Address of the contract
-     * @param  {object} abi     - Object describing the contract (build result)
+     * @param  {string} [address] - Address of the contract. If it's undefined, it'll use the result of calling {@link Contract#getDefaultAddress}
+     * @param  {object} [abi]     - Object describing the contract (compile result). If it's undefined, it'll use the result of calling {@link Contract#getDefaultAbi}
      * @return {Contract} instance
      */
 
   }]);
 
-  function Contract(name, address, abi) {
+  function Contract(address, abi) {
     _classCallCheck(this, Contract);
 
-    this.name = name;
-    this.address = address;
-    this.setAbi(abi);
+    this.setAddress(address || this.constructor.getDefaultAddress());
+    this.setAbi(abi || this.constructor.getDefaultAbi());
 
     this.instance = null;
   }
 
+  /**
+   * Set's the address of the contract. It'll throw on falsy values
+   * @param {string} address - Address of the contract
+   */
+
+
   _createClass(Contract, [{
+    key: 'setAddress',
+    value: function setAddress(address) {
+      if (!address) {
+        throw new Error('Tried to instantiate a Contract without an `address`');
+      }
+
+      this.address = address;
+    }
+
+    /**
+     * Set's the abi of the contract. It'll throw on falsy values
+     * @param {object} abi - Abi of the contract
+     */
+
+  }, {
     key: 'setAbi',
     value: function setAbi(abi) {
       if (!abi) {

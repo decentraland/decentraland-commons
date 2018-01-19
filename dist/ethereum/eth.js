@@ -32,15 +32,16 @@ var eth = {
 
   /**
    * Connect to web3
+   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link Contract#setContracts}
    * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use
    * @param  {object} [options] - Extra options for the ETH connection
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
   connect: function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(defaultAccount) {
-      var contracts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var contracts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var defaultAccount = arguments[1];
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var httpProviderUrl, currentProvider, accounts;
       return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -113,7 +114,7 @@ var eth = {
       }, _callee, this);
     }));
 
-    function connect(_x3) {
+    function connect() {
       return _ref.apply(this, arguments);
     }
 
@@ -192,8 +193,8 @@ var eth = {
   /**
    * Set the Ethereum contracts to use on the `contracts` property. It builds a map of
    *   { [Contract Name]: Contract instance }
-   * Usable later via `.getContract`
-   * @param  {array<Contract>} [contracts] - An array of objects defining contracts or of Contract subclasses to use.
+   * usable later via `.getContract`. Check {@link https://github.com/decentraland/commons/tree/master/src/ethereum} for more info
+   * @param  {array<Contract|object>} [contracts] - An array comprised of a a wide of options: objects defining contracts, Contract subclasses or Contract instances.
    */
   setContracts: function setContracts(contracts) {
     var _iteratorNormalCompletion = true;
@@ -202,9 +203,17 @@ var eth = {
 
     try {
       for (var _iterator = contracts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var contract = _step.value;
+        var contractData = _step.value;
 
-        contract = _Contract2.default.isPrototypeOf(contract) ? contract.getInstance() : new _Contract2.default(contract);
+        var contract = null;
+
+        if (_Contract2.default.isPrototypeOf(contractData)) {
+          contract = new contractData();
+        } else if (contractData instanceof _Contract2.default) {
+          contract = contractData;
+        } else {
+          contract = new _Contract2.default(contractData);
+        }
 
         var instance = web3.eth.contract(contract.abi).at(contract.address);
         contract.setInstance(instance);
@@ -296,7 +305,7 @@ var eth = {
       }, _callee4, this);
     }));
 
-    function fetchTxReceipt(_x5) {
+    function fetchTxReceipt(_x4) {
       return _ref4.apply(this, arguments);
     }
 
@@ -324,7 +333,7 @@ var eth = {
       }, _callee5, this);
     }));
 
-    function remoteSign(_x6, _x7) {
+    function remoteSign(_x5, _x6) {
       return _ref5.apply(this, arguments);
     }
 
@@ -350,7 +359,7 @@ var eth = {
       }, _callee6, this);
     }));
 
-    function remoteRecover(_x8, _x9) {
+    function remoteRecover(_x7, _x8) {
       return _ref6.apply(this, arguments);
     }
 
