@@ -32,7 +32,7 @@ class SuperTokenContract extends Contract {
 
 // null is the default account here
 eth.connect([
-    { address: '0x221100', abi: [{}] },
+    { name: 'ContractName', address: '0x221100', abi: [{}] },
     // or
     SuperTokenContract,
     // or

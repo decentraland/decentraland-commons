@@ -36,7 +36,7 @@ class Log {
   }
 
   warn(...args) {
-    return this.msg('warn', ...args)
+    return this.msg('error', ...args)
   }
 
   info(...args) {
