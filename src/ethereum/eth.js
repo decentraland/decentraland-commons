@@ -95,19 +95,26 @@ const eth = {
   setContracts(contracts) {
     for (const contractData of contracts) {
       let contract = null
+      let contractName = null
 
       if (Contract.isPrototypeOf(contractData)) {
+        // contractData is subclass of Contract
         contract = new contractData()
+        contractName = contractData.name
       } else if (contractData instanceof Contract) {
+        // contractData is an instance of Contract or of one of its instances
         contract = contractData
+        contractName = contractData.constructor.name
       } else {
+        // contractData is an object defining the contract
         contract = new Contract(contractData)
+        contractName = contractData.name
       }
 
       const instance = web3.eth.contract(contract.abi).at(contract.address)
       contract.setInstance(instance)
 
-      this.contracts[contract.name] = contract
+      this.contracts[contractName] = contract
     }
   },
 
