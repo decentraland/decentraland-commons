@@ -32,18 +32,18 @@ var eth = {
 
   /**
    * Connect to web3
-   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link Contract#setContracts}
-   * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {object} [options] - Extra options for the ETH connection
+   * @param  {object} [options] - Options for the ETH connection
+   * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link Contract#setContracts}
+   * @param  {string} [options.defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
   connect: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var contracts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-      var defaultAccount = arguments[1];
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      var httpProviderUrl, currentProvider, accounts;
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      var _options$contracts, contracts, defaultAccount, httpProviderUrl, currentProvider, account;
+
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -56,7 +56,7 @@ var eth = {
               return _context.abrupt('return', true);
 
             case 2:
-              httpProviderUrl = options.httpProviderUrl;
+              _options$contracts = options.contracts, contracts = _options$contracts === undefined ? [] : _options$contracts, defaultAccount = options.defaultAccount, httpProviderUrl = options.httpProviderUrl;
               currentProvider = this.getWeb3Provider(httpProviderUrl);
 
               if (currentProvider) {
@@ -84,12 +84,12 @@ var eth = {
               return this.getAccounts();
 
             case 14:
-              _context.t0 = _context.sent;
+              _context.t0 = _context.sent[0];
 
             case 15:
-              accounts = _context.t0;
+              account = _context.t0;
 
-              if (!(accounts.length === 0)) {
+              if (account) {
                 _context.next = 20;
                 break;
               }
@@ -100,7 +100,7 @@ var eth = {
 
             case 20:
 
-              this.setAddress(accounts[0]);
+              this.setAddress(account);
               this.setContracts(contracts);
 
               log.info('Got ' + this.getAddress() + ' as current user address');
@@ -222,6 +222,8 @@ var eth = {
           contractName = contractData.name;
         }
 
+        if (!contractName) continue; // skip
+
         var instance = web3.eth.contract(contract.abi).at(contract.address);
         contract.setInstance(instance);
 
@@ -312,7 +314,7 @@ var eth = {
       }, _callee4, this);
     }));
 
-    function fetchTxReceipt(_x4) {
+    function fetchTxReceipt(_x3) {
       return _ref4.apply(this, arguments);
     }
 
@@ -340,7 +342,7 @@ var eth = {
       }, _callee5, this);
     }));
 
-    function remoteSign(_x5, _x6) {
+    function remoteSign(_x4, _x5) {
       return _ref5.apply(this, arguments);
     }
 
@@ -366,7 +368,7 @@ var eth = {
       }, _callee6, this);
     }));
 
-    function remoteRecover(_x7, _x8) {
+    function remoteRecover(_x6, _x7) {
       return _ref6.apply(this, arguments);
     }
 

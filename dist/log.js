@@ -13,7 +13,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
-console.debug = console.log.bind(console
+console.debug = console.log.bind(console);
 
 /**
  * Log singleton class. A single instance is exported by default from this module
@@ -21,7 +21,7 @@ console.debug = console.log.bind(console
  * The public API consist on calling each log level with the desired log:
  *    log.info('something')
  */
-);
+
 var Log = function () {
   /**
    * @param  {string} [name=''] - A name prepended to each log
