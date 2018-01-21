@@ -22,16 +22,16 @@ const eth = {
 
   /**
    * Connect to web3
-   * @param  {array<Contract>} [contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link Contract#setContracts}
-   * @param  {string} [defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {object} [options] - Extra options for the ETH connection
+   * @param  {object} [options] - Options for the ETH connection
+   * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link Contract#setContracts}
+   * @param  {string} [options.defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
-  async connect(contracts = [], defaultAccount, options = {}) {
+  async connect(options = {}) {
     if (web3 !== null) return true
 
-    const { httpProviderUrl } = options
+    const { contracts = [], defaultAccount, httpProviderUrl } = options
 
     const currentProvider = this.getWeb3Provider(httpProviderUrl)
     if (!currentProvider) {
@@ -43,14 +43,14 @@ const eth = {
     web3 = new Web3(currentProvider)
     this.web3 = web3
 
-    const accounts = defaultAccount || (await this.getAccounts())
-    if (accounts.length === 0) {
+    const account = defaultAccount || (await this.getAccounts())[0]
+    if (!account) {
       log.warn('Could not get the default address from web3, please try again')
       this.disconnect()
       return false
     }
 
-    this.setAddress(accounts[0])
+    this.setAddress(account)
     this.setContracts(contracts)
 
     log.info(`Got ${this.getAddress()} as current user address`)
@@ -110,6 +110,8 @@ const eth = {
         contract = new Contract(contractData)
         contractName = contractData.name
       }
+
+      if (!contractName) continue // skip
 
       const instance = web3.eth.contract(contract.abi).at(contract.address)
       contract.setInstance(instance)

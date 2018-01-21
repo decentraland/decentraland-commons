@@ -31,13 +31,15 @@ class SuperTokenContract extends Contract {
 }
 
 // null is the default account here
-eth.connect([
+eth.connect({
+  contracts: [
     { name: 'ContractName', address: '0x221100', abi: [{}] },
     // or
     SuperTokenContract,
     // or
     new SuperTokenContract()
-], /* defaultAccount */)
+  ]
+})
 
 eth.fetchTxStatus('TX_HASH')
 ```
