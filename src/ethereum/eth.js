@@ -104,7 +104,6 @@ const eth = {
     for (const contractData of contracts) {
       let contract = null
       let contractName = null
-      console.log('hola capo')
 
       if (typeof contractData === 'function') {
         // contractData is subclass of Contract
