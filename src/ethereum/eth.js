@@ -86,6 +86,14 @@ const eth = {
     return await Contract.transaction(web3.eth.getAccounts)
   },
 
+  isContractOptions(contractData) {
+    return (
+      'name' in contractData &&
+      'address' in contractData &&
+      'abi' in contractData
+    )
+  },
+
   /**
    * Set the Ethereum contracts to use on the `contracts` property. It builds a map of
    *   { [Contract Name]: Contract instance }
@@ -96,12 +104,16 @@ const eth = {
     for (const contractData of contracts) {
       let contract = null
       let contractName = null
+      console.log('hola capo')
 
-      if (Contract.isPrototypeOf(contractData)) {
+      if (typeof contractData === 'function') {
         // contractData is subclass of Contract
         contract = new contractData()
         contractName = contractData.name
-      } else if (contractData instanceof Contract) {
+      } else if (
+        typeof contractData === 'object' &&
+        !this.isContractOptions(contractData)
+      ) {
         // contractData is an instance of Contract or of one of its instances
         contract = contractData
         contractName = contractData.constructor.name
@@ -110,7 +122,6 @@ const eth = {
         contract = new Contract(contractData)
         contractName = contractData.name
       }
-
       if (!contractName) continue // skip
 
       const instance = web3.eth.contract(contract.abi).at(contract.address)
