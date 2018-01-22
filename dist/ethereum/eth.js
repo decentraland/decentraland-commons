@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _web = require('web3');
 
 var _web2 = _interopRequireDefault(_web);
@@ -188,6 +190,9 @@ var eth = {
 
     return getAccounts;
   }(),
+  isContractOptions: function isContractOptions(contractData) {
+    return 'name' in contractData && 'address' in contractData && 'abi' in contractData;
+  },
 
 
   /**
@@ -208,11 +213,11 @@ var eth = {
         var contract = null;
         var contractName = null;
 
-        if (_Contract2.default.isPrototypeOf(contractData)) {
+        if (typeof contractData === 'function') {
           // contractData is subclass of Contract
           contract = new contractData();
           contractName = contractData.name;
-        } else if (contractData instanceof _Contract2.default) {
+        } else if ((typeof contractData === 'undefined' ? 'undefined' : _typeof(contractData)) === 'object' && !this.isContractOptions(contractData)) {
           // contractData is an instance of Contract or of one of its instances
           contract = contractData;
           contractName = contractData.constructor.name;
@@ -221,7 +226,6 @@ var eth = {
           contract = new _Contract2.default(contractData);
           contractName = contractData.name;
         }
-
         if (!contractName) continue; // skip
 
         var instance = web3.eth.contract(contract.abi).at(contract.address);
