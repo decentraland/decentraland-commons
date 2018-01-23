@@ -2,6 +2,7 @@ import Web3 from 'web3'
 
 import { Log } from '../log'
 import { Contract } from './Contract'
+import { ethUtils } from './ethUtils'
 
 const log = new Log('Ethereum')
 let web3 = null
@@ -17,7 +18,7 @@ export const eth = {
   /**
    * Reference to the utilities object {@link ethUtils}
    */
-  utils: require('./ethUtils'),
+  utils: ethUtils,
 
   /**
    * Connect to web3
