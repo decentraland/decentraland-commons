@@ -1,11 +1,10 @@
 import { abi } from './artifacts/MANAToken.json'
-import TerraformReserve from './TerraformReserve'
-
+import { TerraformReserve } from './TerraformReserve'
 import { eth, Contract } from '../ethereum'
-import env from '../env'
+import { env } from '../env'
 
 /** MANAToken contract class */
-class MANAToken extends Contract {
+export class MANAToken extends Contract {
   static getDefaultAddress() {
     return env.universalGet('MANA_TOKEN_CONTRACT_ADDRESS')
   }
@@ -32,5 +31,3 @@ class MANAToken extends Contract {
     return this.call('balanceOf', sender)
   }
 }
-
-module.exports = MANAToken

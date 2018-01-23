@@ -1,13 +1,12 @@
 import { abi } from './artifacts/ReturnMANA.json'
-
 import { Contract } from './ethereum'
-import env from '../env'
-import { Log } from './log'
+import { env } from '../env'
+import { Log } from '../log'
 
 const log = new Log('ReturnMANA')
 
 /** ReturnMANA contract class */
-class ReturnMANA extends Contract {
+export class ReturnMANA extends Contract {
   static getDefaultAddress() {
     return env.universalGet('RETURN_MANA_CONTRACT_ADDRESS')
   }
@@ -48,5 +47,3 @@ class ReturnMANA extends Contract {
     )
   }
 }
-
-module.exports = ReturnMANA

@@ -1,10 +1,9 @@
 import { abi } from './artifacts/DecentralandVesting.json'
-
 import { eth, Contract } from '../ethereum'
-import env from '../env'
+import { env } from '../env'
 
 /** DecentralandVesting contract class */
-class DecentralandVesting extends Contract {
+export class DecentralandVesting extends Contract {
   static getDefaultAddress() {
     return env.universalGet('TERRAFORM_RESERVE_CONTRACT_ADDRESS')
   }
@@ -63,5 +62,3 @@ class DecentralandVesting extends Contract {
     return this.transaction('release', address)
   }
 }
-
-module.exports = DecentralandVesting

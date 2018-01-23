@@ -1,13 +1,12 @@
 import { abi } from './artifacts/LANDTerraformSale.json'
-
 import { Contract } from '../ethereum'
-import env from '../env'
+import { env } from '../env'
 import { Log } from '../log'
 
 const log = new Log('LANDTerraformSale')
 
 /** LANDTerraformSale contract class */
-class LANDTerraformSale extends Contract {
+export class LANDTerraformSale extends Contract {
   static getDefaultAddress() {
     return env.universalGet('LAND_TERRAFORM_SALE_CONTRACT_ADDRESS')
   }
@@ -37,5 +36,3 @@ class LANDTerraformSale extends Contract {
     })
   }
 }
-
-module.exports = LANDTerraformSale

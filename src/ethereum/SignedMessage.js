@@ -1,9 +1,9 @@
-import eth from './eth'
+import { eth } from './eth'
 
 /**
  * Work with signatures made with Ethereum wallets
  */
-class SignedMessage {
+export class SignedMessage {
   constructor(message, signature) {
     if (!message || !signature) {
       throw new Error('You need to supply a message and a signature')
@@ -75,5 +75,3 @@ class SignedMessage {
     return result
   }
 }
-
-module.exports = SignedMessage

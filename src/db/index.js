@@ -1,4 +1,2 @@
-module.exports = {
-  postgres: require('./postgres.js'),
-  mongo: require('./mongo')
-}
+export { postgres } from './postgres'
+export { mongo } from './mongo'

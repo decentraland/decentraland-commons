@@ -1,9 +1,9 @@
 import { abi } from './artifacts/LANDRegistry.json'
 import { Contract } from '../ethereum'
-import env from '../env'
+import { env } from '../env'
 
 /** LANDToken contract class */
-class LANDRegistry extends Contract {
+export class LANDRegistry extends Contract {
   static getDefaultAddress() {
     return env.universalGet('LAND_REGISTRY_CONTRACT_ADDRESS')
   }
@@ -82,5 +82,3 @@ class LANDRegistry extends Contract {
     )
   }
 }
-
-module.exports = LANDRegistry

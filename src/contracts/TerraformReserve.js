@@ -1,13 +1,12 @@
 import { abi } from './artifacts/TerraformReserve.json'
-
 import { eth, Contract } from '../ethereum'
-import env from '../env'
+import { env } from '../env'
 import { Log } from '../log'
 
 const log = new Log('TerraformReserve')
 
 /** TerraformReserve contract class */
-class TerraformReserve extends Contract {
+export class TerraformReserve extends Contract {
   static getDefaultAddress() {
     return env.universalGet('TERRAFORM_RESERVE_CONTRACT_ADDRESS')
   }
@@ -26,5 +25,3 @@ class TerraformReserve extends Contract {
     return this.transaction('lockMana', sender, mana, { gas: 120000 })
   }
 }
-
-module.exports = TerraformReserve

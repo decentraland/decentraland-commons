@@ -1,7 +1,6 @@
 import { Log } from '../log'
 import { sleep } from '../utils'
-
-import eth from './eth'
+import { eth } from './eth'
 
 const log = new Log('tx')
 
@@ -9,7 +8,7 @@ const log = new Log('tx')
  * Some utility functions to work with Ethereum transactions.
  * @namespace
  */
-const tx = {
+export const tx = {
   DUMMY_TX_ID: '0xdeadbeef',
 
   /**
@@ -75,5 +74,3 @@ const tx = {
     return logs.every(log => names.includes(log.name))
   }
 }
-
-module.exports = tx

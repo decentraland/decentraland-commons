@@ -14,7 +14,7 @@ const cache = {}
  * ENV management
  * @namespace
  */
-const env = {
+export const env = {
   /**
    * Sets the `loaded` variable to true enabling the rest of the ENV variables to be accessed.
    * If we're on a node environment ensure that this method it's called first, as it parses the .env file and adds all variables to the environment.
@@ -111,5 +111,3 @@ const env = {
     return cache[name]
   }
 }
-
-module.exports = env

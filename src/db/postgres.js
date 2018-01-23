@@ -1,11 +1,12 @@
 import pg from 'pg'
+
 import { getObjectValues } from '../utils'
 
 /**
  * Client to query Postgres. Uses `pg` behind the scenes. Check {@link https://node-postgres.com/} for more info.
  * @namespace
  */
-const postgres = {
+export const postgres = {
   client: null, // defined in `.connect()`
 
   /**
@@ -334,5 +335,3 @@ const postgres = {
     return await this.client.end()
   }
 }
-
-module.exports = postgres
