@@ -1,5 +1,5 @@
 import { promisify } from '../utils'
-import * as abiDecoder from './abi-decoder'
+import { abiDecoder } from './abi-decoder'
 
 /** Class to work with Ethereum contracts */
 export class Contract {
