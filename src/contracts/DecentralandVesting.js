@@ -1,7 +1,7 @@
-import { eth, Contract } from './ethereum'
-import { env } from './env'
-
 import { abi } from './artifacts/DecentralandVesting.json'
+
+import { eth, Contract } from '../ethereum'
+import env from '../env'
 
 /** DecentralandVesting contract class */
 class DecentralandVesting extends Contract {

@@ -1,8 +1,8 @@
-import { Contract } from './ethereum'
-import { env } from './env'
-import { Log } from './Log'
-
 import { abi } from './artifacts/ReturnMANA.json'
+
+import { Contract } from './ethereum'
+import env from '../env'
+import { Log } from './log'
 
 const log = new Log('ReturnMANA')
 

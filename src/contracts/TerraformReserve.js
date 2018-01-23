@@ -1,8 +1,8 @@
-import { eth, Contract } from './ethereum'
-import { env } from './env'
-import { Log } from './Log'
-
 import { abi } from './artifacts/TerraformReserve.json'
+
+import { eth, Contract } from '../ethereum'
+import env from '../env'
+import { Log } from '../log'
 
 const log = new Log('TerraformReserve')
 

@@ -1,7 +1,7 @@
-import { Contract } from './ethereum'
-import { env } from './env'
-
 import { abi } from './artifacts/LANDTestSale.json'
+
+import { Contract } from '../ethereum'
+import env from '../env'
 
 /** LANDTestSale contract class */
 class LANDTestSale extends Contract {

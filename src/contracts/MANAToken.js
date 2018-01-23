@@ -1,8 +1,8 @@
-import { eth, Contract } from './ethereum'
-import { env } from './env'
-
 import { abi } from './artifacts/MANAToken.json'
 import TerraformReserve from './TerraformReserve'
+
+import { eth, Contract } from '../ethereum'
+import env from '../env'
 
 /** MANAToken contract class */
 class MANAToken extends Contract {
