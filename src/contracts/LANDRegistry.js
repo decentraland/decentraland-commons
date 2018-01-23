@@ -4,11 +4,11 @@ import { env } from '../env'
 
 /** LANDToken contract class */
 export class LANDRegistry extends Contract {
-  static decodeLandData(string = '') {
-    const version = string.charAt(0)
+  static decodeLandData(data = '') {
+    const version = data.charAt(0)
     switch (version) {
       case '0': {
-        const [version, name, description, ipns] = string.split(',')
+        const [version, name, description, ipns] = data.split(',')
         return {
           version: parseInt(version),
           name,
@@ -19,7 +19,7 @@ export class LANDRegistry extends Contract {
       default:
         throw new Error(
           'Unknown version when trying to decode land data:',
-          string,
+          data,
           '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)'
         )
     }
