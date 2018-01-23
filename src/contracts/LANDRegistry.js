@@ -4,6 +4,42 @@ import { env } from '../env'
 
 /** LANDToken contract class */
 export class LANDRegistry extends Contract {
+  static decodeLandData(string = '') {
+    const version = string.charAt(0)
+    switch (version) {
+      case '0': {
+        const [version, name, description, ipns] = string.split(',')
+        return {
+          version,
+          name,
+          description,
+          ipns
+        }
+      }
+      default:
+        throw new Error(
+          'Unknown version when trying to decode land data:',
+          string,
+          '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)'
+        )
+    }
+  }
+
+  static encodeLandData(data = {}) {
+    switch (data.version) {
+      case '0': {
+        const { version, name, description, ipns } = data
+        return [version, name, description, ipns].join(',')
+      }
+      default:
+        throw new Error(
+          'Unknown version when trying to encode land data:',
+          JSON.stringify(data),
+          '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)'
+        )
+    }
+  }
+
   static getDefaultAddress() {
     return env.universalGet('LAND_REGISTRY_CONTRACT_ADDRESS')
   }
