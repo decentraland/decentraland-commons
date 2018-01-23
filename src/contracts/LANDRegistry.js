@@ -26,8 +26,8 @@ export class LANDRegistry extends Contract {
   }
 
   static encodeLandData(data = {}) {
-    switch (data.version) {
-      case 0: {
+    switch (data.version.toString()) {
+      case '0': {
         const { version, name, description, ipns } = data
         return [version, name, description, ipns].join(',')
       }
