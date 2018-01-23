@@ -1,9 +1,8 @@
-import abiDecoder from './abi-decoder'
-
 import { promisify } from '../utils'
+import { abiDecoder } from './abi-decoder'
 
 /** Class to work with Ethereum contracts */
-class Contract {
+export class Contract {
   /**
    * Get the default address used for this contract. You should override it on subclasses
    * @return {string} - address
@@ -154,5 +153,3 @@ class Contract {
     }
   }
 }
-
-module.exports = Contract

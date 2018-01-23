@@ -1,4 +1,6 @@
-// Same as https://github.com/ConsenSys/abi-decoder which is not correctly published and can't be minified by webpack as an npm module
+// This is a port.
+// It fixes https://github.com/ConsenSys/abi-decoder
+// which is not correctly published and can't be minified by webpack as an npm module
 
 const SolidityCoder = require('web3/lib/solidity/coder.js')
 const Web3 = require('web3')
@@ -173,7 +175,7 @@ function _decodeLogs(logs) {
     .filter(log => log !== null)
 }
 
-module.exports = {
+export const abiDecoder = {
   getABIs: _getABIs,
   addABI: _addABI,
   getMethodIDs: _getMethodIDs,

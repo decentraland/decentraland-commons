@@ -10,7 +10,7 @@ const log = new Log('MongoDB')
  * IMPORTANT: To use this client with the `Model` class, it should be updated to follow the common API found on `postgres.js`
  * @namespace
  */
-const mongo = {
+export const mongo = {
   client: null, // Defined on `.connect()`
 
   /**
@@ -162,5 +162,3 @@ const mongo = {
     }
   }
 }
-
-module.exports = mongo

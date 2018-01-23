@@ -1,6 +1,4 @@
-module.exports = {
-  eth: require('./eth'),
-  Contract: require('./Contract'),
-  SignedMessage: require('./SignedMessage'),
-  tx: require('./tx')
-}
+export { eth } from './eth'
+export { Contract } from './Contract'
+export { SignedMessage } from './SignedMessage'
+export { tx } from './tx'

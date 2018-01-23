@@ -1,14 +1,13 @@
 import Web3 from 'web3'
 
 import { Log } from '../log'
-
-import Contract from './Contract'
+import { Contract } from './Contract'
 
 const log = new Log('Ethereum')
 let web3 = null
 
 /** @namespace */
-const eth = {
+export const eth = {
   /**
    * Filled on .connect()
    */
@@ -72,9 +71,7 @@ const eth = {
   getContract(name) {
     if (!this.contracts[name]) {
       throw new Error(
-        `The contract ${
-          name
-        } not found. Did you add it to the '.connect()' call?`
+        `The contract ${name} not found. Did you add it to the '.connect()' call?`
       )
     }
 
@@ -205,5 +202,3 @@ const eth = {
     return web3.eth.filter(type)
   }
 }
-
-module.exports = eth
