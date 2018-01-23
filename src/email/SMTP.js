@@ -6,7 +6,7 @@ const log = new Log('SMTP')
 
 const EMAIL_COOLDOWN = 60 * 1000 // 1 minute = 60 seconds = 60 * 1000 miliseconds
 
-class SMTP {
+export class SMTP {
   /**
    * SMTP interface uses `nodemailer` behind the scenes. Check {@link https://github.com/nodemailer/nodemailer} for more info.
    * @param  {string} options.hostname    - Mailer host name
@@ -109,5 +109,3 @@ class SMTP {
     return this.transport
   }
 }
-
-module.exports = SMTP

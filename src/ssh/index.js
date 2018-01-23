@@ -10,7 +10,7 @@ const log = new Log('SSH')
  * Connect via an SSH tunnel. It uses tunnel-ssh behind the scenes. Check {@link https://github.com/agebrock/tunnel-ssh} for more info.
  * @namespace
  */
-const tunnel = {
+export const tunnel = {
   /**
    * Connect using an SSH tunnel
    * @param  {object|string} configOrPath - Object or path to JSON file which describes the connection. See {@link tunnel#readTunnelConfig}
@@ -78,5 +78,3 @@ const tunnel = {
     return tunnelConfig
   }
 }
-
-module.exports = tunnel

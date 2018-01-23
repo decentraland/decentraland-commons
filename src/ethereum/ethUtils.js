@@ -8,7 +8,7 @@ const web3utils = new Web3()
  * It also provides a reference to the [ethereumjs-util lib]{@link https://github.com/ethereumjs/ethereumjs-util}
  * @namespace
  */
-const ethUtils = {
+export const ethUtils = {
   /**
    * Extend the [ethereumjs-util lib]{@link https://github.com/ethereumjs/ethereumjs-util} methods
    */
@@ -104,5 +104,3 @@ const ethUtils = {
     return ethereumJsUtil.pubToAddress(pubkey).toString('hex')
   }
 }
-
-module.exports = ethUtils

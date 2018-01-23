@@ -14,7 +14,7 @@ const cache = {}
  * ENV management
  * @namespace
  */
-const env = {
+export const env = {
   /**
    * Sets the `loaded` variable to true enabling the rest of the ENV variables to be accessed.
    * If we're on a node environment ensure that this method it's called first, as it parses the .env file and adds all variables to the environment.
@@ -80,9 +80,7 @@ const env = {
   get(name, fallback) {
     if (!loaded && isEmptyObject(cache)) {
       console.log(
-        `It looks like you're trying to access an ENV variable (${
-          name
-        }) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`
+        `It looks like you're trying to access an ENV variable (${name}) before calling the \`env.load()\` method. Please call it first so the environment can be properly loaded from the .env file. We'll try to get the variables out of process.env anyway`
       )
     }
 
@@ -111,5 +109,3 @@ const env = {
     return cache[name]
   }
 }
-
-module.exports = env

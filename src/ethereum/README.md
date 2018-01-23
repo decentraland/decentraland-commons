@@ -3,11 +3,9 @@
 
 Set of utility functions to work with the Ethereum blockchain.
 
-By default `eth.js` will load up all contracts on the `/contracts` folder and choose a default account for you. So calling `eth.connect()` should be enough.
+Calling `eth.connect()` should be enough to get you going. If you want to customize this this behaviour, you can check the breakdown below.
 
-If you want to change this behaviour, you can check the breakdown below.
-
-It can be used in conjunction to [decentraland-contracts](https://github.com/decentraland/contracts)
+Implementations for all important Decentraland contracts live on the `/contracts` folder. An example of its use can be found below.
 
 ### index.js
 
@@ -75,4 +73,60 @@ if (tx.isPending(status)) {
 
 ## Putting it all together
 
-The idea is to define your own `Contract`s and work with them using `eth`. A typical case is described on [decentraland-contracts](https://github.com/decentraland/contracts).
+The idea is to define your own `Contract`s and work with them using `eth`. A typical case is described below:
+
+_MANAToken.js_
+
+```javascript
+import { eth } from 'decentraland-commons'
+
+import { abi } from './artifacts/MANAToken.json'
+
+class MANAToken extends eth.Contract {
+    static getDefaultAddress() {
+      return '0xdeadbeef'
+    }
+
+    static getDefaultAbi() {
+      return abi
+    }
+
+    async lockMana(sender, mana) {
+     return await this.transaction(
+          'lockMana', sender, mana, { gas: 120000 }
+      )
+    }
+}
+
+export default MANAToken
+```
+
+
+_On the start of your app, maybe server.js_
+
+```javascript
+import { eth } from 'decentraland-commons'
+import { MANAToken } from 'decentraland-commons/contracts'
+
+eth.connect({
+  contracts: [
+    MANAToken,
+      // ...etc
+  ]
+})
+
+const manaToken = eth.getContract('MANAToken')
+manaToken.lockMana()
+
+// or maybe
+
+const manaToken = new ManaToken(/*address*/, /*abi*/)
+eth.connect({
+  contracts: [
+      manaToken,
+      // ...etc
+  ]
+})
+manaToken.lockMana()
+```
+

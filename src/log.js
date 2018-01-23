@@ -1,4 +1,4 @@
-import env from './env'
+import { env } from './env'
 
 // Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
 console.debug = console.log.bind(console)
@@ -9,7 +9,7 @@ console.debug = console.log.bind(console)
  * The public API consist on calling each log level with the desired log:
  *    log.info('something')
  */
-class Log {
+export class Log {
   /**
    * @param  {string} [name=''] - A name prepended to each log
    * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
@@ -99,9 +99,4 @@ function consoleOutput(priority, prefix = '', message, ...extras) {
     extras = []
   }
   console[priority](prefix, message, ...extras)
-}
-
-module.exports = {
-  Log,
-  log: new Log()
 }

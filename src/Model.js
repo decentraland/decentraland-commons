@@ -1,10 +1,10 @@
-import dbClients from './db'
+import * as dbClients from './db'
 import * as utils from './utils'
 
 /**
  * Basic Model class for accesing inner attributes easily
  */
-class Model {
+export class Model {
   static tableName = null
   static columnNames = []
 
@@ -227,5 +227,3 @@ class Model {
     return this
   }
 }
-
-module.exports = Model
