@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.tunnel = undefined;
+
 var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
@@ -22,7 +27,7 @@ var log = new _log.Log('SSH');
  * Connect via an SSH tunnel. It uses tunnel-ssh behind the scenes. Check {@link https://github.com/agebrock/tunnel-ssh} for more info.
  * @namespace
  */
-var tunnel = {
+var tunnel = exports.tunnel = {
   /**
    * Connect using an SSH tunnel
    * @param  {object|string} configOrPath - Object or path to JSON file which describes the connection. See {@link tunnel#readTunnelConfig}
@@ -107,5 +112,3 @@ var tunnel = {
     return tunnelConfig;
   }
 };
-
-module.exports = tunnel;

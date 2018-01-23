@@ -1,8 +1,14 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-// Same as https://github.com/ConsenSys/abi-decoder which is not correctly published and can't be minified by webpack as an npm module
+// This is a port.
+// It fixes https://github.com/ConsenSys/abi-decoder
+// which is not correctly published and can't be minified by webpack as an npm module
 
 var SolidityCoder = require('web3/lib/solidity/coder.js');
 var Web3 = require('web3');
@@ -158,7 +164,7 @@ function _decodeLogs(logs) {
   });
 }
 
-module.exports = {
+var abiDecoder = exports.abiDecoder = {
   getABIs: _getABIs,
   addABI: _addABI,
   getMethodIDs: _getMethodIDs,

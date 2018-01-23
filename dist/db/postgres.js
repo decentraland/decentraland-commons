@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.postgres = undefined;
+
 var _pg = require('pg');
 
 var _pg2 = _interopRequireDefault(_pg);
@@ -14,7 +19,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  * Client to query Postgres. Uses `pg` behind the scenes. Check {@link https://node-postgres.com/} for more info.
  * @namespace
  */
-var postgres = {
+var postgres = exports.postgres = {
   client: null, // defined in `.connect()`
 
   /**
@@ -575,5 +580,3 @@ var postgres = {
     return close;
   }()
 };
-
-module.exports = postgres;

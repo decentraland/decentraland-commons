@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.tx = undefined;
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _log = require('../log');
@@ -7,10 +12,6 @@ var _log = require('../log');
 var _utils = require('../utils');
 
 var _eth = require('./eth');
-
-var _eth2 = _interopRequireDefault(_eth);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -20,7 +21,7 @@ var log = new _log.Log('tx');
  * Some utility functions to work with Ethereum transactions.
  * @namespace
  */
-var tx = {
+var tx = exports.tx = {
   DUMMY_TX_ID: '0xdeadbeef',
 
   /**
@@ -99,7 +100,7 @@ var tx = {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return Promise.all([_eth2.default.fetchTxStatus(txId), _eth2.default.fetchTxReceipt(txId)]);
+              return Promise.all([_eth.eth.fetchTxStatus(txId), _eth.eth.fetchTxReceipt(txId)]);
 
             case 2:
               _ref4 = _context2.sent;
@@ -155,5 +156,3 @@ var tx = {
     });
   }
 };
-
-module.exports = tx;

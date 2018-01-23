@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mailchimp = undefined;
+
 var _mailchimpApiV = require('mailchimp-api-v3');
 
 var _mailchimpApiV2 = _interopRequireDefault(_mailchimpApiV);
@@ -14,7 +19,7 @@ var log = new _log.Log('Mailchimp');
  * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
  * @namespace
  */
-var mailchimp = {
+var mailchimp = exports.mailchimp = {
   client: null, // defined on `.connect()`
 
   /**
@@ -64,5 +69,3 @@ var mailchimp = {
     });
   }
 };
-
-module.exports = mailchimp;

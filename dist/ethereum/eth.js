@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.eth = undefined;
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _web = require('web3');
@@ -10,7 +15,7 @@ var _log = require('../log');
 
 var _Contract = require('./Contract');
 
-var _Contract2 = _interopRequireDefault(_Contract);
+var _ethUtils = require('./ethUtils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,7 +25,7 @@ var log = new _log.Log('Ethereum');
 var web3 = null;
 
 /** @namespace */
-var eth = {
+var eth = exports.eth = {
   /**
    * Filled on .connect()
    */
@@ -30,7 +35,7 @@ var eth = {
   /**
    * Reference to the utilities object {@link ethUtils}
    */
-  utils: require('./ethUtils'),
+  utils: _ethUtils.ethUtils,
 
   /**
    * Connect to web3
@@ -171,7 +176,7 @@ var eth = {
             case 0:
               log.info('Getting web3 accounts');
               _context3.next = 3;
-              return _Contract2.default.transaction(web3.eth.getAccounts);
+              return _Contract.Contract.transaction(web3.eth.getAccounts);
 
             case 3:
               return _context3.abrupt('return', _context3.sent);
@@ -223,7 +228,7 @@ var eth = {
           contractName = contractData.constructor.name;
         } else {
           // contractData is an object defining the contract
-          contract = new _Contract2.default(contractData);
+          contract = new _Contract.Contract(contractData);
           contractName = contractData.name;
         }
         if (!contractName) continue; // skip
@@ -259,7 +264,7 @@ var eth = {
   getWeb3Provider: function getWeb3Provider() {
     var httpProviderUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'http://localhost:8545';
 
-    return process.browser ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider(httpProviderUrl);
+    return typeof window !== 'undefined' ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider(httpProviderUrl);
   },
 
 
@@ -280,7 +285,7 @@ var eth = {
    */
   fetchTxStatus: function fetchTxStatus(txId) {
     log.info('Getting ' + txId + ' status');
-    return _Contract2.default.transaction(web3.eth.getTransaction, txId);
+    return _Contract.Contract.transaction(web3.eth.getTransaction, txId);
   },
 
 
@@ -298,14 +303,14 @@ var eth = {
             case 0:
               log.info('Getting ' + txId + ' receipt');
               _context4.next = 3;
-              return _Contract2.default.transaction(web3.eth.getTransactionReceipt, txId);
+              return _Contract.Contract.transaction(web3.eth.getTransactionReceipt, txId);
 
             case 3:
               receipt = _context4.sent;
 
 
               if (receipt) {
-                receipt.logs = _Contract2.default.decodeLogs(receipt.logs);
+                receipt.logs = _Contract.Contract.decodeLogs(receipt.logs);
               }
 
               return _context4.abrupt('return', receipt);
@@ -333,7 +338,7 @@ var eth = {
             case 0:
               sign = web3.personal.sign.bind(web3.personal);
               _context5.next = 3;
-              return _Contract2.default.transaction(sign, message, address);
+              return _Contract.Contract.transaction(sign, message, address);
 
             case 3:
               return _context5.abrupt('return', _context5.sent);
@@ -391,5 +396,3 @@ var eth = {
     return web3.eth.filter(type);
   }
 };
-
-module.exports = eth;

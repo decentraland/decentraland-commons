@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.env = undefined;
+
 var _utils = require('./utils');
 
 /**
@@ -16,7 +21,7 @@ var cache = {};
  * ENV management
  * @namespace
  */
-var env = {
+var env = exports.env = {
   /**
    * Sets the `loaded` variable to true enabling the rest of the ENV variables to be accessed.
    * If we're on a node environment ensure that this method it's called first, as it parses the .env file and adds all variables to the environment.
@@ -108,5 +113,3 @@ var env = {
     return cache[name];
   }
 };
-
-module.exports = env;

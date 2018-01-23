@@ -1,12 +1,13 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Log = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _env = require('./env');
-
-var _env2 = _interopRequireDefault(_env);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -22,7 +23,7 @@ console.debug = console.log.bind(console);
  *    log.info('something')
  */
 
-var Log = function () {
+var Log = exports.Log = function () {
   /**
    * @param  {string} [name=''] - A name prepended to each log
    * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
@@ -148,7 +149,7 @@ var Log = function () {
     key: 'getLogLevels',
     value: function getLogLevels() {
       if (!this.logLevels) {
-        var inDev = _env2.default.isDevelopment();
+        var inDev = _env.env.isDevelopment();
 
         this.logLevels = Object.assign({
           trace: inDev,
@@ -182,8 +183,3 @@ function consoleOutput(priority) {
   }
   (_console2 = console)[priority].apply(_console2, [prefix, message].concat(_toConsumableArray(extras)));
 }
-
-module.exports = {
-  Log: Log,
-  log: new Log()
-};

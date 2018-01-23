@@ -1,19 +1,20 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SignedMessage = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _eth = require('./eth');
-
-var _eth2 = _interopRequireDefault(_eth);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Work with signatures made with Ethereum wallets
  */
-var SignedMessage = function () {
+var SignedMessage = exports.SignedMessage = function () {
   function SignedMessage(message, signature) {
     _classCallCheck(this, SignedMessage);
 
@@ -41,9 +42,9 @@ var SignedMessage = function () {
           r = _decodeSignature.r,
           s = _decodeSignature.s;
 
-      var pubkey = _eth2.default.utils.ecrecover(_eth2.default.utils.hashPersonalMessage(decodedMessage), v, r, s);
+      var pubkey = _eth.eth.utils.ecrecover(_eth.eth.utils.hashPersonalMessage(decodedMessage), v, r, s);
 
-      return '0x' + _eth2.default.utils.pubToAddressHex(pubkey);
+      return '0x' + _eth.eth.utils.pubToAddressHex(pubkey);
     }
 
     /**
@@ -65,7 +66,7 @@ var SignedMessage = function () {
   }, {
     key: 'decodeSignature',
     value: function decodeSignature() {
-      return _eth2.default.utils.fromRpcSig(new Buffer(this.signature.substr(2), 'hex'));
+      return _eth.eth.utils.fromRpcSig(new Buffer(this.signature.substr(2), 'hex'));
     }
 
     /**
@@ -102,5 +103,3 @@ var SignedMessage = function () {
 
   return SignedMessage;
 }();
-
-module.exports = SignedMessage;

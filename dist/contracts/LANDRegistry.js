@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LANDRegistry = undefined;
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _LANDRegistry = require('./artifacts/LANDRegistry.json');
@@ -110,6 +112,52 @@ var LANDRegistry = exports.LANDRegistry = function (_Contract) {
       return this.transaction('assignMultipleParcels', x, y, address, Object.assign({}, { gas: 1000000, gasPrice: 28 * 1e9 }, opts));
     }
   }], [{
+    key: 'decodeLandData',
+    value: function decodeLandData() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+      var version = data.charAt(0);
+      switch (version) {
+        case '0':
+          {
+            var _data$split = data.split(','),
+                _data$split2 = _slicedToArray(_data$split, 4),
+                _version = _data$split2[0],
+                name = _data$split2[1],
+                description = _data$split2[2],
+                ipns = _data$split2[3];
+
+            return {
+              version: parseInt(_version),
+              name: name,
+              description: description,
+              ipns: ipns
+            };
+          }
+        default:
+          throw new Error('Unknown version when trying to decode land data:', data, '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)');
+      }
+    }
+  }, {
+    key: 'encodeLandData',
+    value: function encodeLandData() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      switch (data.version.toString()) {
+        case '0':
+          {
+            var version = data.version,
+                name = data.name,
+                description = data.description,
+                ipns = data.ipns;
+
+            return [version, name, description, ipns].join(',');
+          }
+        default:
+          throw new Error('Unknown version when trying to encode land data:', JSON.stringify(data), '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)');
+      }
+    }
+  }, {
     key: 'getDefaultAddress',
     value: function getDefaultAddress() {
       return _env.env.universalGet('LAND_REGISTRY_CONTRACT_ADDRESS');

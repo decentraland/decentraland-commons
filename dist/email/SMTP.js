@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SMTP = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _nodemailer = require('nodemailer');
@@ -16,7 +21,7 @@ var log = new _log.Log('SMTP');
 
 var EMAIL_COOLDOWN = 60 * 1000; // 1 minute = 60 seconds = 60 * 1000 miliseconds
 
-var SMTP = function () {
+var SMTP = exports.SMTP = function () {
   /**
    * SMTP interface uses `nodemailer` behind the scenes. Check {@link https://github.com/nodemailer/nodemailer} for more info.
    * @param  {string} options.hostname    - Mailer host name
@@ -145,5 +150,3 @@ var SMTP = function () {
 
   return SMTP;
 }();
-
-module.exports = SMTP;

@@ -1,20 +1,23 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Model = undefined;
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _db = require('./db');
 
-var _db2 = _interopRequireDefault(_db);
+var dbClients = _interopRequireWildcard(_db);
 
 var _utils = require('./utils');
 
 var utils = _interopRequireWildcard(_utils);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -23,7 +26,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * Basic Model class for accesing inner attributes easily
  */
-var Model = function () {
+var Model = exports.Model = function () {
   _createClass(Model, null, [{
     key: 'setDb',
 
@@ -35,11 +38,11 @@ var Model = function () {
     value: function setDb() {
       var dbClient = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'postgres';
 
-      if (typeof dbClient === 'string' && !_db2.default[_db2.default]) {
-        throw new Error('Undefined db client ' + _db2.default);
+      if (typeof dbClient === 'string' && !dbClients[dbClients]) {
+        throw new Error('Undefined db client ' + dbClients);
       }
 
-      this.db = _db2.default[_db2.default];
+      this.db = dbClients[dbClients];
     }
 
     /**
@@ -535,7 +538,4 @@ var Model = function () {
 
 Model.tableName = null;
 Model.columnNames = [];
-Model.db = _db2.default['postgres'];
-
-
-module.exports = Model;
+Model.db = dbClients['postgres'];

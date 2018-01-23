@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mongo = undefined;
+
 var _mongodb = require('mongodb');
 
 var _log = require('../log');
@@ -15,7 +20,7 @@ var log = new _log.Log('MongoDB');
  * IMPORTANT: To use this client with the `Model` class, it should be updated to follow the common API found on `postgres.js`
  * @namespace
  */
-var mongo = {
+var mongo = exports.mongo = {
   client: null, // Defined on `.connect()`
 
   /**
@@ -329,5 +334,3 @@ var mongo = {
     }
   }
 };
-
-module.exports = mongo;

@@ -1,14 +1,15 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Contract = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _abiDecoder = require('./abi-decoder');
-
-var _abiDecoder2 = _interopRequireDefault(_abiDecoder);
 
 var _utils = require('../utils');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _abiDecoder = require('./abi-decoder');
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -17,7 +18,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /** Class to work with Ethereum contracts */
-var Contract = function () {
+var Contract = exports.Contract = function () {
   _createClass(Contract, null, [{
     key: 'getDefaultAddress',
 
@@ -133,7 +134,7 @@ var Contract = function () {
   }, {
     key: 'decodeMethod',
     value: function decodeMethod(input) {
-      return _abiDecoder2.default.decodeMethod(input);
+      return _abiDecoder.abiDecoder.decodeMethod(input);
     }
 
     /**
@@ -143,7 +144,7 @@ var Contract = function () {
   }, {
     key: 'decodeLogs',
     value: function decodeLogs(logs) {
-      return _abiDecoder2.default.decodeLogs(logs);
+      return _abiDecoder.abiDecoder.decodeLogs(logs);
     }
 
     /**
@@ -192,7 +193,7 @@ var Contract = function () {
       }
 
       this.abi = abi;
-      _abiDecoder2.default.addABI(abi);
+      _abiDecoder.abiDecoder.addABI(abi);
     }
   }, {
     key: 'setInstance',
@@ -284,5 +285,3 @@ var Contract = function () {
 
   return Contract;
 }();
-
-module.exports = Contract;
