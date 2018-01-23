@@ -3,7 +3,7 @@ import { LANDRegistry } from '../src/contracts/LANDRegistry'
 
 describe('LANDRegistry', function() {
   describe('Version 0', function() {
-    const version = '0'
+    const version = 0
     const name = 'My Parcel'
     const description = 'This is my awesome parcel'
     const ipns = 'ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY'

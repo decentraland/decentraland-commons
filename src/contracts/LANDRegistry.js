@@ -10,7 +10,7 @@ export class LANDRegistry extends Contract {
       case '0': {
         const [version, name, description, ipns] = string.split(',')
         return {
-          version,
+          version: parseInt(version),
           name,
           description,
           ipns
@@ -27,7 +27,7 @@ export class LANDRegistry extends Contract {
 
   static encodeLandData(data = {}) {
     switch (data.version) {
-      case '0': {
+      case 0: {
         const { version, name, description, ipns } = data
         return [version, name, description, ipns].join(',')
       }
