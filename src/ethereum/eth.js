@@ -135,7 +135,7 @@ export const eth = {
    * @return {object} The web3 provider
    */
   getWeb3Provider(httpProviderUrl = 'http://localhost:8545') {
-    return process.browser && typeof window == 'undefined'
+    return process.browser && typeof window !== 'undefined'
       ? window.web3 && window.web3.currentProvider
       : new Web3.providers.HttpProvider(httpProviderUrl)
   },
