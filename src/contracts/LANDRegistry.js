@@ -79,7 +79,7 @@ export class LANDRegistry extends Contract {
   }
 
   transferTo(x, y, newOwner) {
-    return this.transaction('transferLand', newOwner, x, y)
+    return this.transaction('transferLand', x, y, newOwner)
   }
 
   assetsOf(address) {
