@@ -75,7 +75,7 @@ var LANDRegistry = exports.LANDRegistry = function (_Contract) {
   }, {
     key: 'transferTo',
     value: function transferTo(x, y, newOwner) {
-      return this.transaction('transferLand', newOwner, x, y);
+      return this.transaction('transferLand', x, y, newOwner);
     }
   }, {
     key: 'assetsOf',
