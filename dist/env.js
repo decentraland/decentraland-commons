@@ -54,6 +54,9 @@ var env = exports.env = {
   isProduction: function isProduction() {
     return this.getName() === 'production';
   },
+  isTest: function isTest() {
+    return this.getName() === 'test';
+  },
   getName: function getName() {
     return this.get('NODE_ENV');
   },

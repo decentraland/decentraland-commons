@@ -13,7 +13,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
+// Re-define console.debug which no longer logs (but still exists for some reason) as console.log
 console.debug = console.log.bind(console);
 
 /**
@@ -70,7 +70,7 @@ var Log = exports.Log = function () {
         args[_key2] = arguments[_key2];
       }
 
-      return this.msg.apply(this, ['error'].concat(args));
+      return this.msg.apply(this, ['warn'].concat(args));
     }
   }, {
     key: 'info',
@@ -93,7 +93,7 @@ var Log = exports.Log = function () {
   }, {
     key: 'trace',
     value: function trace() {
-      if (this.shouldLog.trace) {
+      if (this.getLogLevels().trace) {
         var _console;
 
         return (_console = console).trace.apply(_console, arguments);
@@ -154,7 +154,7 @@ var Log = exports.Log = function () {
         this.logLevels = Object.assign({
           trace: inDev,
           debug: inDev,
-          warn: inDev,
+          warn: true,
           log: true,
           error: true
         }, this.shouldLog);
