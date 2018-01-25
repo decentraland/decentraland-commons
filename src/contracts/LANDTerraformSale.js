@@ -7,6 +7,10 @@ const log = new Log('LANDTerraformSale')
 
 /** LANDTerraformSale contract class */
 export class LANDTerraformSale extends Contract {
+  static getContractName() {
+    return 'LANDTerraformSale'
+  }
+
   static getDefaultAddress() {
     return env.universalGet('LAND_TERRAFORM_SALE_CONTRACT_ADDRESS')
   }

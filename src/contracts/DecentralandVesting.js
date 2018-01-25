@@ -4,6 +4,10 @@ import { env } from '../env'
 
 /** DecentralandVesting contract class */
 export class DecentralandVesting extends Contract {
+  static getContractName() {
+    return 'DecentralandVesting'
+  }
+
   static getDefaultAddress() {
     return env.universalGet('TERRAFORM_RESERVE_CONTRACT_ADDRESS')
   }
