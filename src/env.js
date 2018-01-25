@@ -46,6 +46,10 @@ export const env = {
     return this.getName() === 'production'
   },
 
+  isTest() {
+    return this.getName() === 'test'
+  },
+
   getName() {
     return this.get('NODE_ENV')
   },
