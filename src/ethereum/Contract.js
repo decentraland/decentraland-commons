@@ -4,11 +4,19 @@ import { abiDecoder } from './abi-decoder'
 /** Class to work with Ethereum contracts */
 export class Contract {
   /**
+   * Get the contract name
+   * @return {string} - contract name
+   */
+  static getContractName() {
+    throw new Error('Not implemented, please override `getContractName`')
+  }
+
+  /**
    * Get the default address used for this contract. You should override it on subclasses
    * @return {string} - address
    */
   static getDefaultAddress() {
-    throw new Error('You should override this method on each Contract subclass')
+    throw new Error('Not implemented, please override `getDefaultAddress`')
   }
 
   /**
@@ -16,7 +24,7 @@ export class Contract {
    * @return {object} - abi
    */
   static getDefaultAbi() {
-    throw new Error('You should override this method on each Contract subclass')
+    throw new Error('Not implemented, please override `getDefaultAbi`')
   }
 
   /**

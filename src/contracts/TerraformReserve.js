@@ -7,6 +7,10 @@ const log = new Log('TerraformReserve')
 
 /** TerraformReserve contract class */
 export class TerraformReserve extends Contract {
+  static getContractName() {
+    return 'TerraformReserve'
+  }
+
   static getDefaultAddress() {
     return env.universalGet('TERRAFORM_RESERVE_CONTRACT_ADDRESS')
   }

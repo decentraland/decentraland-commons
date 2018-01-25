@@ -4,6 +4,10 @@ import { env } from '../env'
 
 /** LANDToken contract class */
 export class LANDRegistry extends Contract {
+  static getContractName() {
+    return 'LANDRegistry'
+  }
+
   static decodeLandData(data = '') {
     const version = data.charAt(0)
     switch (version) {

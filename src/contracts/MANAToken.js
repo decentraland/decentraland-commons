@@ -5,6 +5,10 @@ import { env } from '../env'
 
 /** MANAToken contract class */
 export class MANAToken extends Contract {
+  static getContractName() {
+    return 'MANAToken'
+  }
+
   static getDefaultAddress() {
     return env.universalGet('MANA_TOKEN_CONTRACT_ADDRESS')
   }

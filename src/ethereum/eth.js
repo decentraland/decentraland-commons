@@ -71,8 +71,9 @@ export const eth = {
 
   getContract(name) {
     if (!this.contracts[name]) {
+      const contractNames = Object.keys(this.contracts)
       throw new Error(
-        `The contract ${name} not found. Did you add it to the '.connect()' call?`
+        `The contract ${name} not found.\nDid you add it to the '.connect()' call?\nAvailable contracts are ${contractNames}`
       )
     }
 
@@ -106,14 +107,14 @@ export const eth = {
       if (typeof contractData === 'function') {
         // contractData is subclass of Contract
         contract = new contractData()
-        contractName = contractData.name
+        contractName = contractData.getContractName()
       } else if (
         typeof contractData === 'object' &&
         !this.isContractOptions(contractData)
       ) {
-        // contractData is an instance of Contract or of one of its instances
+        // contractData is an instance of Contract or of one of its children
         contract = contractData
-        contractName = contractData.constructor.name
+        contractName = contractData.constructor.getContractName()
       } else {
         // contractData is an object defining the contract
         contract = new Contract(contractData)

@@ -4,6 +4,10 @@ import { env } from '../env'
 
 /** LANDTestSale contract class */
 export class LANDTestSale extends Contract {
+  static getContractName() {
+    return 'LANDTestSale'
+  }
+
   static getDefaultAddress() {
     return env.universalGet('LAND_TEST_SALE_CONTRACT_ADDRESS')
   }
