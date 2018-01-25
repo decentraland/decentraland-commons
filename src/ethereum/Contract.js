@@ -5,6 +5,7 @@ import { abiDecoder } from './abi-decoder'
 export class Contract {
   /**
    * Get the contract name
+   * @return {string} - contract name
    */
   static getContractName() {
     throw new Error('Not implemented, please override `getContractName`')
