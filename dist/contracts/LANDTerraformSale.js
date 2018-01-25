@@ -59,6 +59,11 @@ var LANDTerraformSale = exports.LANDTerraformSale = function (_Contract) {
       });
     }
   }], [{
+    key: 'getContractName',
+    value: function getContractName() {
+      return 'LANDTerraformSale';
+    }
+  }, {
     key: 'getDefaultAddress',
     value: function getDefaultAddress() {
       return _env.env.universalGet('LAND_TERRAFORM_SALE_CONTRACT_ADDRESS');

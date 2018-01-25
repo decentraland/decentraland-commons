@@ -20,14 +20,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /** Class to work with Ethereum contracts */
 var Contract = exports.Contract = function () {
   _createClass(Contract, null, [{
-    key: 'getDefaultAddress',
+    key: 'getContractName',
+
+    /**
+     * Get the contract name
+     * @return {string} - contract name
+     */
+    value: function getContractName() {
+      throw new Error('Not implemented, please override `getContractName`');
+    }
 
     /**
      * Get the default address used for this contract. You should override it on subclasses
      * @return {string} - address
      */
+
+  }, {
+    key: 'getDefaultAddress',
     value: function getDefaultAddress() {
-      throw new Error('You should override this method on each Contract subclass');
+      throw new Error('Not implemented, please override `getDefaultAddress`');
     }
 
     /**
@@ -38,7 +49,7 @@ var Contract = exports.Contract = function () {
   }, {
     key: 'getDefaultAbi',
     value: function getDefaultAbi() {
-      throw new Error('You should override this method on each Contract subclass');
+      throw new Error('Not implemented, please override `getDefaultAbi`');
     }
 
     /**

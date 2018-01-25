@@ -237,6 +237,11 @@ var DecentralandVesting = exports.DecentralandVesting = function (_Contract) {
       return this.transaction('release', address);
     }
   }], [{
+    key: 'getContractName',
+    value: function getContractName() {
+      return 'DecentralandVesting';
+    }
+  }, {
     key: 'getDefaultAddress',
     value: function getDefaultAddress() {
       return _env.env.universalGet('TERRAFORM_RESERVE_CONTRACT_ADDRESS');

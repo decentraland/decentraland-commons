@@ -47,6 +47,11 @@ var TerraformReserve = exports.TerraformReserve = function (_Contract) {
       return this.transaction('lockMana', sender, mana, { gas: 120000 });
     }
   }], [{
+    key: 'getContractName',
+    value: function getContractName() {
+      return 'TerraformReserve';
+    }
+  }, {
     key: 'getDefaultAddress',
     value: function getDefaultAddress() {
       return _env.env.universalGet('TERRAFORM_RESERVE_CONTRACT_ADDRESS');

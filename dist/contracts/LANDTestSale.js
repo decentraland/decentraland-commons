@@ -35,6 +35,11 @@ var LANDTestSale = exports.LANDTestSale = function (_Contract) {
       return this.transaction('buy', x, y, { gas: 120000 });
     }
   }], [{
+    key: 'getContractName',
+    value: function getContractName() {
+      return 'LANDTestSale';
+    }
+  }, {
     key: 'getDefaultAddress',
     value: function getDefaultAddress() {
       return _env.env.universalGet('LAND_TEST_SALE_CONTRACT_ADDRESS');

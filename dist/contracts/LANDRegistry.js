@@ -112,6 +112,11 @@ var LANDRegistry = exports.LANDRegistry = function (_Contract) {
       return this.transaction('assignMultipleParcels', x, y, address, Object.assign({}, { gas: 1000000, gasPrice: 28 * 1e9 }, opts));
     }
   }], [{
+    key: 'getContractName',
+    value: function getContractName() {
+      return 'LANDRegistry';
+    }
+  }, {
     key: 'decodeLandData',
     value: function decodeLandData() {
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';

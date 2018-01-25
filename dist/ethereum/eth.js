@@ -163,7 +163,8 @@ var eth = exports.eth = {
   }(),
   getContract: function getContract(name) {
     if (!this.contracts[name]) {
-      throw new Error('The contract ' + name + ' not found. Did you add it to the \'.connect()\' call?');
+      var contractNames = Object.keys(this.contracts);
+      throw new Error('The contract ' + name + ' not found.\nDid you add it to the \'.connect()\' call?\nAvailable contracts are ' + contractNames);
     }
 
     return this.contracts[name];
@@ -221,11 +222,11 @@ var eth = exports.eth = {
         if (typeof contractData === 'function') {
           // contractData is subclass of Contract
           contract = new contractData();
-          contractName = contractData.name;
+          contractName = contractData.getContractName();
         } else if ((typeof contractData === 'undefined' ? 'undefined' : _typeof(contractData)) === 'object' && !this.isContractOptions(contractData)) {
-          // contractData is an instance of Contract or of one of its instances
+          // contractData is an instance of Contract or of one of its children
           contract = contractData;
-          contractName = contractData.constructor.name;
+          contractName = contractData.constructor.getContractName();
         } else {
           // contractData is an object defining the contract
           contract = new _Contract.Contract(contractData);

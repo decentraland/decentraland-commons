@@ -62,6 +62,11 @@ var ReturnMANA = exports.ReturnMANA = function (_Contract) {
       return this.transaction('transferBackMANAMany', addresses, amounts, Object.assign({}, { gas: 120000 }, opts));
     }
   }], [{
+    key: 'getContractName',
+    value: function getContractName() {
+      return 'ReturnMANA';
+    }
+  }, {
     key: 'getDefaultAddress',
     value: function getDefaultAddress() {
       return _env.env.universalGet('RETURN_MANA_CONTRACT_ADDRESS');

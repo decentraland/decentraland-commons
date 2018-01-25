@@ -104,6 +104,11 @@ var MANAToken = exports.MANAToken = function (_Contract) {
       return this.call('balanceOf', sender);
     }
   }], [{
+    key: 'getContractName',
+    value: function getContractName() {
+      return 'MANAToken';
+    }
+  }, {
     key: 'getDefaultAddress',
     value: function getDefaultAddress() {
       return _env.env.universalGet('MANA_TOKEN_CONTRACT_ADDRESS');
