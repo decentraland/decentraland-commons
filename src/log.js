@@ -1,6 +1,6 @@
 import { env } from './env'
 
-// Re-define console.debug which no longer does anything (but still exists for some reason) as console.log
+// Re-define console.debug which no longer logs (but still exists for some reason) as console.log
 console.debug = console.log.bind(console)
 
 /**
@@ -36,7 +36,7 @@ export class Log {
   }
 
   warn(...args) {
-    return this.msg('error', ...args)
+    return this.msg('warn', ...args)
   }
 
   info(...args) {
@@ -48,7 +48,7 @@ export class Log {
   }
 
   trace(...args) {
-    if (this.shouldLog.trace) {
+    if (this.getLogLevels().trace) {
       return console.trace(...args)
     }
   }
@@ -81,7 +81,7 @@ export class Log {
         {
           trace: inDev,
           debug: inDev,
-          warn: inDev,
+          warn: true,
           log: true,
           error: true
         },
