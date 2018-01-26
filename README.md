@@ -19,7 +19,7 @@ Lint js files with `eslint`
 Builds an static page with the JSDoc documentation
 
 **test**
- 
+
 Run tests using mocha and chai
 
 ### Dependencies
