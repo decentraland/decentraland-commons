@@ -18,7 +18,9 @@
     "build": "babel ./src -d ./dist --ignore specs",
     "fastbuild": "npm run clean && npm run init && babel ./src -d ./dist --ignore specs",
     "test": "npx mocha -r babel-register -r specs/spec_utils.js specs/*.spec.js",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "cm": "git-cz",
+    "precommit": "npm run cm"
   },
   "repository": {
     "type": "git",
@@ -60,13 +62,21 @@
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.11.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-prettier": "^2.3.1",
+    "husky": "^0.14.3",
     "jsdoc": "^3.5.5",
     "mocha": "^4.0.1",
     "npx": "^9.7.1",
     "prettier": "^1.8.2",
     "semantic-release": "^12.2.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
