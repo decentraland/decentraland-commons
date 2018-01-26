@@ -71,10 +71,5 @@
     "npx": "^9.7.1",
     "prettier": "^1.8.2",
     "semantic-release": "^12.2.5"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
