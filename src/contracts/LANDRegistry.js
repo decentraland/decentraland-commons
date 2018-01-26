@@ -56,6 +56,10 @@ export class LANDRegistry extends Contract {
     return this.call('landData', x, y)
   }
 
+  updateLandData(x, y, data) {
+    return this.transaction('updateLandData', x, y, data)
+  }
+
   updateManyLandData(coordinates, data) {
     const x = coordinates.map(coor => coor.x)
     const y = coordinates.map(coor => coor.y)
