@@ -33,5 +33,33 @@ jobs:
       # run tests!
       - run: npm run prebuild && npm test
 
+      - run: npm run build
 
+      - save_cache:
+          paths:
+            - dist
+          key: dist-{{ .Revision }}
 
+  deploy:
+    docker:
+      - image: circleci/node:7.10
+
+    working_directory: ~/repo
+
+    steps:
+      - restore_cache:
+          keys:
+          - dist-{{ .Revision }}
+      - run: npm run semantic-release
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
