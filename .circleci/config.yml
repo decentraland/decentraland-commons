@@ -50,7 +50,10 @@ jobs:
       - restore_cache:
           keys:
           - dist-{{ .Revision }}
-      - run: npm run semantic-release
+      # semantic-release requires node >= 8.3 and the latest version available at circle-ci is node 7.10
+      # they recommend using npx to install node 8 and then use it to run semantic-release (https://github.com/semantic-release/semantic-release/blob/caribou/docs/support/node-version.md)
+      # since node 7.10 comes with npm 4 and npx is only available on npm >= 5 it has to be installed first, and run from the local node_modules
+      - run: npm install npx && node_modules/npx/index.js -p node@8 -c "npx semantic-release"
 
 workflows:
   version: 2
