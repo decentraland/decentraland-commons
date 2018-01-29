@@ -48,5 +48,5 @@ for example
 feature(Map): added zoom levels
 ```
 
-We use [husky](https://github.com/typicode/husky) and [validate-commit-msg](https://www.npmjs.com/package/validate-commit-msg) to enfore this format on every commit.
+We use [husky](https://github.com/typicode/husky) and [validate-commit-msg](https://www.npmjs.com/package/validate-commit-msg) to enforce this format on every commit.
 
