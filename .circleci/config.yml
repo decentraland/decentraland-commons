@@ -37,7 +37,7 @@ jobs:
 
       - save_cache:
           paths:
-            - dist
+            - "."
           key: dist-{{ .Revision }}
 
   deploy:
