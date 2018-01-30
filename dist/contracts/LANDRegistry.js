@@ -37,6 +37,11 @@ var LANDRegistry = exports.LANDRegistry = function (_Contract) {
       return this.call('landData', x, y);
     }
   }, {
+    key: 'updateLandData',
+    value: function updateLandData(x, y, data) {
+      return this.transaction('updateLandData', x, y, data);
+    }
+  }, {
     key: 'updateManyLandData',
     value: function updateManyLandData(coordinates, data) {
       var x = coordinates.map(function (coor) {
@@ -140,7 +145,7 @@ var LANDRegistry = exports.LANDRegistry = function (_Contract) {
             };
           }
         default:
-          throw new Error('Unknown version when trying to decode land data:', data, '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)');
+          throw new Error('Unknown version when trying to decode land data: "' + data + '" (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)');
       }
     }
   }, {
@@ -159,7 +164,7 @@ var LANDRegistry = exports.LANDRegistry = function (_Contract) {
             return [version, name, description, ipns].join(',');
           }
         default:
-          throw new Error('Unknown version when trying to encode land data:', JSON.stringify(data), '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)');
+          throw new Error('Unknown version when trying to encode land data: "' + JSON.stringify(data) + '"\n          (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)');
       }
     }
   }, {

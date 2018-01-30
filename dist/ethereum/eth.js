@@ -7,17 +7,15 @@ exports.eth = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _web = require('web3');
-
-var _web2 = _interopRequireDefault(_web);
-
 var _log = require('../log');
+
+var _NodeWallet = require('./NodeWallet');
+
+var _LedgerWallet = require('./LedgerWallet');
 
 var _Contract = require('./Contract');
 
 var _ethUtils = require('./ethUtils');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -30,7 +28,7 @@ var eth = exports.eth = {
    * Filled on .connect()
    */
   contracts: {},
-  web3: null,
+  wallet: null,
 
   /**
    * Reference to the utilities object {@link ethUtils}
@@ -40,85 +38,52 @@ var eth = exports.eth = {
   /**
    * Connect to web3
    * @param  {object} [options] - Options for the ETH connection
-   * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link Contract#setContracts}
+   * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link eth#setContracts}
    * @param  {string} [options.defaultAccount=web3.eth.accounts[0]] - Override the default account address
-   * @param  {string} [options.httpProviderUrl] - URL for an HTTP provider forwarded to {@link eth#getWeb3Provider}
+   * @param  {string} [options.providerUrl] - URL for a provider forwarded to {@link Wallet#getWeb3Provider}
    * @return {boolean} - True if the connection was successful
    */
   connect: function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      var _options$contracts, contracts, defaultAccount, httpProviderUrl, currentProvider, account;
+      var _options$contracts, contracts, defaultAccount, providerUrl;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              if (!(web3 !== null)) {
-                _context.next = 2;
-                break;
+              if (this.wallet && this.wallet.isConnected()) {
+                this.disconnect();
               }
 
-              return _context.abrupt('return', true);
+              _options$contracts = options.contracts, contracts = _options$contracts === undefined ? [] : _options$contracts, defaultAccount = options.defaultAccount, providerUrl = options.providerUrl;
+              _context.prev = 2;
+              _context.next = 5;
+              return this.createWallet(defaultAccount, providerUrl);
 
-            case 2:
-              _options$contracts = options.contracts, contracts = _options$contracts === undefined ? [] : _options$contracts, defaultAccount = options.defaultAccount, httpProviderUrl = options.httpProviderUrl;
-              currentProvider = this.getWeb3Provider(httpProviderUrl);
+            case 5:
+              this.wallet = _context.sent;
 
-              if (currentProvider) {
-                _context.next = 7;
-                break;
-              }
+              web3 = this.wallet.getWeb3();
 
-              log.info('Could not get a valid provider for web3');
-              return _context.abrupt('return', false);
-
-            case 7:
-
-              log.info('Instantiating contracts');
-              web3 = new _web2.default(currentProvider);
-              this.web3 = web3;
-
-              _context.t0 = defaultAccount;
-
-              if (_context.t0) {
-                _context.next = 15;
-                break;
-              }
-
-              _context.next = 14;
-              return this.getAccounts();
-
-            case 14:
-              _context.t0 = _context.sent[0];
-
-            case 15:
-              account = _context.t0;
-
-              if (account) {
-                _context.next = 20;
-                break;
-              }
-
-              log.warn('Could not get the default address from web3, please try again');
-              this.disconnect();
-              return _context.abrupt('return', false);
-
-            case 20:
-
-              this.setAddress(account);
               this.setContracts(contracts);
 
-              log.info('Got ' + this.getAddress() + ' as current user address');
               return _context.abrupt('return', true);
 
-            case 24:
+            case 11:
+              _context.prev = 11;
+              _context.t0 = _context['catch'](2);
+
+              log.info('Error trying to connect Ethereum wallet: ' + _context.t0.message);
+              return _context.abrupt('return', false);
+
+            case 15:
             case 'end':
               return _context.stop();
           }
         }
-      }, _callee, this);
+      }, _callee, this, [[2, 11]]);
     }));
 
     function connect() {
@@ -127,40 +92,71 @@ var eth = exports.eth = {
 
     return connect;
   }(),
-  disconnect: function disconnect() {
-    if (web3) {
-      this.setAddress(null);
-    }
-    web3 = null;
-  },
-  reconnect: function () {
-    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var _args2 = arguments;
+  createWallet: function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(defaultAccount, providerUrl) {
+      var wallet;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              this.disconnect();
-              _context2.next = 3;
-              return this.connect.apply(this, _args2);
+              wallet = void 0;
+              _context2.prev = 1;
 
-            case 3:
-              return _context2.abrupt('return', _context2.sent);
+              wallet = new _LedgerWallet.LedgerWallet(defaultAccount);
+              _context2.next = 5;
+              return wallet.connect(providerUrl);
 
-            case 4:
+            case 5:
+              _context2.next = 12;
+              break;
+
+            case 7:
+              _context2.prev = 7;
+              _context2.t0 = _context2['catch'](1);
+
+              wallet = new _NodeWallet.NodeWallet(defaultAccount);
+              _context2.next = 12;
+              return wallet.connect(providerUrl);
+
+            case 12:
+              return _context2.abrupt('return', wallet);
+
+            case 13:
             case 'end':
               return _context2.stop();
           }
         }
-      }, _callee2, this);
+      }, _callee2, this, [[1, 7]]);
     }));
 
-    function reconnect() {
+    function createWallet(_x2, _x3) {
       return _ref2.apply(this, arguments);
     }
 
-    return reconnect;
+    return createWallet;
   }(),
+  disconnect: function disconnect() {
+    if (this.wallet) {
+      this.wallet.disconnect();
+    }
+    this.wallet = null;
+    this.contracts = {};
+    web3 = null;
+  },
+  getAddress: function getAddress() {
+    return this.getAccount();
+  },
+  getAccount: function getAccount() {
+    return this.wallet.getAccount();
+  },
+
+
+  /**
+   * Get a contract instance built on {@link eth#setContracts}
+   * It'll throw if the contract is not found on the `contracts` mapping
+   * @param  {string} name - Contract name
+   * @return {object} contract
+   */
   getContract: function getContract(name) {
     if (!this.contracts[name]) {
       var contractNames = Object.keys(this.contracts);
@@ -168,36 +164,6 @@ var eth = exports.eth = {
     }
 
     return this.contracts[name];
-  },
-  getAccounts: function () {
-    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              log.info('Getting web3 accounts');
-              _context3.next = 3;
-              return _Contract.Contract.transaction(web3.eth.getAccounts);
-
-            case 3:
-              return _context3.abrupt('return', _context3.sent);
-
-            case 4:
-            case 'end':
-              return _context3.stop();
-          }
-        }
-      }, _callee3, this);
-    }));
-
-    function getAccounts() {
-      return _ref3.apply(this, arguments);
-    }
-
-    return getAccounts;
-  }(),
-  isContractOptions: function isContractOptions(contractData) {
-    return 'name' in contractData && 'address' in contractData && 'abi' in contractData;
   },
 
 
@@ -232,9 +198,10 @@ var eth = exports.eth = {
           contract = new _Contract.Contract(contractData);
           contractName = contractData.name;
         }
+
         if (!contractName) continue; // skip
 
-        var instance = web3.eth.contract(contract.abi).at(contract.address);
+        var instance = this.wallet.createContractInstance(contract.abi, contract.address);
         contract.setInstance(instance);
 
         this.contracts[contractName] = contract;
@@ -254,28 +221,8 @@ var eth = exports.eth = {
       }
     }
   },
-
-
-  /**
-   * Gets the appropiate Web3 provider for the given environment.
-   * It'll fetch it from the `window` on the browser or use a new HttpProvider instance on nodejs
-   * @param  {string} [httpProviderURL="http://localhost:8545"] - URL for an HTTP provider in case the browser provider is not present
-   * @return {object} The web3 provider
-   */
-  getWeb3Provider: function getWeb3Provider() {
-    var httpProviderUrl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'http://localhost:8545';
-
-    return typeof window !== 'undefined' ? window.web3 && window.web3.currentProvider : new _web2.default.providers.HttpProvider(httpProviderUrl);
-  },
-
-
-  /**
-   * Unlocks the current account with the given password
-   * @param  {string} password - Account password
-   * @return {boolean} Whether the operation was successfull or not
-   */
-  unlockAccount: function unlockAccount(password) {
-    return web3.personal.unlockAccount(this.getAddress(), password);
+  isContractOptions: function isContractOptions(contractData) {
+    return 'name' in contractData && 'address' in contractData && 'abi' in contractData;
   },
 
 
@@ -285,7 +232,6 @@ var eth = exports.eth = {
    * @return {object}      - An object describing the transaction (if it exists)
    */
   fetchTxStatus: function fetchTxStatus(txId) {
-    log.info('Getting ' + txId + ' status');
     return _Contract.Contract.transaction(web3.eth.getTransaction, txId);
   },
 
@@ -296,27 +242,55 @@ var eth = exports.eth = {
    * @return {object} - An object describing the transaction receipt (if it exists) with it's logs
    */
   fetchTxReceipt: function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(txId) {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(txId) {
       var receipt;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
-              log.info('Getting ' + txId + ' receipt');
-              _context4.next = 3;
+              _context3.next = 2;
               return _Contract.Contract.transaction(web3.eth.getTransactionReceipt, txId);
 
-            case 3:
-              receipt = _context4.sent;
+            case 2:
+              receipt = _context3.sent;
 
 
               if (receipt) {
                 receipt.logs = _Contract.Contract.decodeLogs(receipt.logs);
               }
 
-              return _context4.abrupt('return', receipt);
+              return _context3.abrupt('return', receipt);
 
-            case 6:
+            case 5:
+            case 'end':
+              return _context3.stop();
+          }
+        }
+      }, _callee3, this);
+    }));
+
+    function fetchTxReceipt(_x4) {
+      return _ref3.apply(this, arguments);
+    }
+
+    return fetchTxReceipt;
+  }(),
+  sign: function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(payload) {
+      var message, signature;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              message = this.utils.toHex(payload);
+              _context4.next = 3;
+              return this.wallet.sign(message);
+
+            case 3:
+              signature = _context4.sent;
+              return _context4.abrupt('return', { message: message, signature: signature });
+
+            case 5:
             case 'end':
               return _context4.stop();
           }
@@ -324,27 +298,25 @@ var eth = exports.eth = {
       }, _callee4, this);
     }));
 
-    function fetchTxReceipt(_x3) {
+    function sign(_x5) {
       return _ref4.apply(this, arguments);
     }
 
-    return fetchTxReceipt;
+    return sign;
   }(),
-  remoteSign: function () {
-    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(message, address) {
-      var sign;
+  recover: function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(message, signature) {
       return regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
-              sign = web3.personal.sign.bind(web3.personal);
-              _context5.next = 3;
-              return _Contract.Contract.transaction(sign, message, address);
+              _context5.next = 2;
+              return this.wallet.recover(message, signature);
 
-            case 3:
+            case 2:
               return _context5.abrupt('return', _context5.sent);
 
-            case 4:
+            case 3:
             case 'end':
               return _context5.stop();
           }
@@ -352,48 +324,10 @@ var eth = exports.eth = {
       }, _callee5, this);
     }));
 
-    function remoteSign(_x4, _x5) {
+    function recover(_x6, _x7) {
       return _ref5.apply(this, arguments);
     }
 
-    return remoteSign;
-  }(),
-  remoteRecover: function () {
-    var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(message, signature) {
-      return regeneratorRuntime.wrap(function _callee6$(_context6) {
-        while (1) {
-          switch (_context6.prev = _context6.next) {
-            case 0:
-              _context6.next = 2;
-              return web3.personal.ecRecover(message, signature);
-
-            case 2:
-              return _context6.abrupt('return', _context6.sent);
-
-            case 3:
-            case 'end':
-              return _context6.stop();
-          }
-        }
-      }, _callee6, this);
-    }));
-
-    function remoteRecover(_x6, _x7) {
-      return _ref6.apply(this, arguments);
-    }
-
-    return remoteRecover;
-  }(),
-  setAddress: function setAddress(address) {
-    web3.eth.defaultAccount = address;
-  },
-  getAddress: function getAddress() {
-    return web3.eth.defaultAccount;
-  },
-  getBlock: function getBlock(blockNumber) {
-    return web3.eth.getBlock(blockNumber);
-  },
-  setupFilter: function setupFilter(type) {
-    return web3.eth.filter(type);
-  }
+    return recover;
+  }()
 };
