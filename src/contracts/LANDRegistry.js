@@ -22,9 +22,7 @@ export class LANDRegistry extends Contract {
       }
       default:
         throw new Error(
-          'Unknown version when trying to decode land data:',
-          data,
-          '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)'
+          `Unknown version when trying to decode land data: "${data}" (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)`
         )
     }
   }
@@ -37,9 +35,10 @@ export class LANDRegistry extends Contract {
       }
       default:
         throw new Error(
-          'Unknown version when trying to encode land data:',
-          JSON.stringify(data),
-          '(see https://github.com/decentraland/commons/blob/master/docs/land-data.md)'
+          `Unknown version when trying to encode land data: "${JSON.stringify(
+            data
+          )}"
+          (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)`
         )
     }
   }
@@ -54,6 +53,10 @@ export class LANDRegistry extends Contract {
 
   getData(x, y) {
     return this.call('landData', x, y)
+  }
+
+  updateLandData(x, y, data) {
+    return this.transaction('updateLandData', x, y, data)
   }
 
   updateManyLandData(coordinates, data) {

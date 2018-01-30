@@ -33,5 +33,37 @@ jobs:
       # run tests!
       - run: npm run prebuild && npm test
 
+      - run: npm run build
 
+      - save_cache:
+          paths:
+            - "."
+          key: dist-{{ .Revision }}
 
+  deploy:
+    docker:
+      - image: circleci/node:7.10
+
+    working_directory: ~/repo
+
+    steps:
+      - restore_cache:
+          keys:
+          - dist-{{ .Revision }}
+      # semantic-release requires node >= 8.3 and the latest version available at circle-ci is node 7.10
+      # they recommend using npx to install node 8 and then use it to run semantic-release (https://github.com/semantic-release/semantic-release/blob/caribou/docs/support/node-version.md)
+      # since node 7.10 comes with npm 4 and npx is only available on npm >= 5 it has to be installed first, and run from the local node_modules
+      # TODO: we should replace the following line with just "npm run semantic-release" once there's a node:8 image available at circle-ci
+      - run: npm install npx && node_modules/npx/index.js -p node@8 -c "npx semantic-release"
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
