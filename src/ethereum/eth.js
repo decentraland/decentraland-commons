@@ -101,7 +101,7 @@ export const eth = {
    * Set the Ethereum contracts to use on the `contracts` property. It builds a map of
    *   { [Contract Name]: Contract instance }
    * usable later via `.getContract`. Check {@link https://github.com/decentraland/commons/tree/master/src/ethereum} for more info
-   * @param  {array<Contract|object>} [contracts] - An array comprised of a a wide of options: objects defining contracts, Contract subclasses or Contract instances.
+   * @param  {array<Contract|object>} contracts - An array comprised of a wide variety of options: objects defining contracts, Contract subclasses or Contract instances.
    */
   setContracts(contracts) {
     for (const contractData of contracts) {

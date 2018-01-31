@@ -49,3 +49,13 @@ feature(Map): added zoom levels
 ```
 
 We use [husky](https://github.com/typicode/husky) and [validate-commit-msg](https://www.npmjs.com/package/validate-commit-msg) to enforce this format on every commit.
+
+### Continuous Deployment
+
+If you have commons as a dependency and you're deploying to a Linux system, you might run into an error like this one: [commit 2dd8319 on CircleCI](https://circleci.com/gh/decentraland/commons/186?utm_campaign=vcs-integration-link&utm_medium=referral&utm_source=github-build-link).
+
+The error comes from the installation of [`node-hid`](https://github.com/node-hid/node-hid), you need to have `libusb` available for it to work, and it's not present in all Linux systems.
+
+You can see an example of a fix in this repos [`config.yml`](https://github.com/decentraland/commons/blob/master/.circleci/config.yml) file.
+
+[`node-hid`](https://github.com/node-hid/node-hid) is a dependency of [`ledgerco`](https://github.com/LedgerHQ/ledgerjs), which in turn is a dependency of [`ledger-wallet-provider`](https://github.com/Neufund/ledger-wallet-provider), used by this lib.
