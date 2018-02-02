@@ -37,7 +37,7 @@ export const eth = {
     const { contracts = [], defaultAccount, providerUrl } = options
 
     try {
-      this.wallet = await this.createWallet(defaultAccount, providerUrl)
+      this.wallet = await this.connectWallet(defaultAccount, providerUrl)
       web3 = this.wallet.getWeb3()
 
       this.setContracts(contracts)
@@ -49,7 +49,7 @@ export const eth = {
     }
   },
 
-  async createWallet(defaultAccount, providerUrl) {
+  async connectWallet(defaultAccount, providerUrl) {
     let wallet
 
     try {
