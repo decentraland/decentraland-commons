@@ -62,7 +62,7 @@ export class LANDRegistry extends Contract {
         return [
           version,
           name.length > 0 ? JSON.stringify(name) : '',
-          description.length > 0 ? JSON.stringify(description) : description,
+          description.length > 0 ? JSON.stringify(description) : '',
           ipns
         ].join(',')
       }
