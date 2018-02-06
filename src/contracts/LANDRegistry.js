@@ -2,6 +2,9 @@ import { abi } from './artifacts/LANDRegistry.json'
 import { Contract } from '../ethereum'
 import { env } from '../env'
 
+const MAX_NAME_LENGTH = 50
+const MAX_DESCRIPTION_LENGHT = 140
+
 /** LANDToken contract class */
 export class LANDRegistry extends Contract {
   static getContractName() {
@@ -12,7 +15,22 @@ export class LANDRegistry extends Contract {
     const version = data.charAt(0)
     switch (version) {
       case '0': {
-        const [version, name, description, ipns] = data.split(',')
+        const [version, name, description, ipns] = data
+          // fill empty parts
+          .replace(/,,/, ',"",')
+          .replace(/,,/, ',"",')
+          // split by commas not surronded by double quotes
+          .match(/(".*?"|[^",\s*]*)(?=\s*,|\s*$)/g)
+          // filter out the commas [version, comma, name, comma, description, comma, ipns]
+          .filter((part, index) => (index + 1) % 2)
+          // try to parse stringified values
+          .map(x => {
+            try {
+              return JSON.parse(x)
+            } catch (e) {
+              return x
+            }
+          })
         return {
           version: parseInt(version),
           name,
@@ -31,7 +49,22 @@ export class LANDRegistry extends Contract {
     switch (data.version.toString()) {
       case '0': {
         const { version, name, description, ipns } = data
-        return [version, name, description, ipns].join(',')
+        if (name.length > MAX_NAME_LENGTH) {
+          throw new Error(
+            `Error: name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
+          )
+        }
+        if (description.length > MAX_DESCRIPTION_LENGHT) {
+          throw new Error(
+            `Error: description is too long, max length allowed is ${MAX_DESCRIPTION_LENGHT} chars`
+          )
+        }
+        return [
+          version,
+          name.length > 0 ? JSON.stringify(name) : '',
+          description.length > 0 ? JSON.stringify(description) : description,
+          ipns
+        ].join(',')
       }
       default:
         throw new Error(
