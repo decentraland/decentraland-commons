@@ -4,6 +4,7 @@ import { NodeWallet } from './NodeWallet'
 import { LedgerWallet } from './LedgerWallet'
 import { Contract } from './Contract'
 import { ethUtils } from './ethUtils'
+import { promisify } from '../utils/index'
 
 const log = new Log('Ethereum')
 let web3 = null
@@ -180,5 +181,53 @@ export const eth = {
 
   async recover(message, signature) {
     return await this.wallet.recover(message, signature)
+  },
+
+  /**
+   * Get a list of known networks
+   * @return {array} - An array of objects describing each network: { id, name, label }
+   */
+  getNetworks() {
+    return [
+      {
+        id: '1',
+        name: 'mainnet',
+        label: 'Main Ethereum Network'
+      },
+      {
+        id: '2',
+        name: 'morden',
+        label: 'Morden Test Network'
+      },
+      {
+        id: '3',
+        name: 'ropsten',
+        label: 'Ropsten Test Network'
+      },
+      {
+        id: '4',
+        name: 'rinkeby',
+        label: 'Rinkeby Test Network'
+      },
+      {
+        id: '42',
+        name: 'kovan',
+        label: 'Kovan Test Network'
+      }
+    ]
+  },
+
+  /**
+   * Interface for the web3 `getNetwork` method (it adds the network name and label).
+   * @return {object} - An object describing the current network: { id, name, label }
+   */
+  async getNetwork() {
+    const id = await promisify(web3.version.getNetwork)()
+    const networks = this.getNetworks()
+    const network = networks.find(network => network.id === id)
+    if (!network) {
+      throw new Error('Unknown Network')
+    }
+    return network
   }
 }
