@@ -1,6 +1,7 @@
 import { abi } from './artifacts/LANDRegistry.json'
 import { Contract } from '../ethereum'
 import { env } from '../env'
+import CSV from 'comma-separated-values'
 
 const MAX_NAME_LENGTH = 50
 const MAX_DESCRIPTION_LENGHT = 140
@@ -15,26 +16,14 @@ export class LANDRegistry extends Contract {
     const version = data.charAt(0)
     switch (version) {
       case '0': {
-        const [version, name, description, ipns] = data
-          // fill empty parts
-          .replace(/,,/, ',"",')
-          .replace(/,,/, ',"",')
-          // split by commas not surronded by double quotes
-          .match(/(".*?"|[^",\s*]*)(?=\s*,|\s*$)/g)
-          // filter out the commas [version, comma, name, comma, description, comma, ipns]
-          .filter((part, index) => (index + 1) % 2)
-          // try to parse stringified values
-          .map(x => {
-            try {
-              return JSON.parse(x)
-            } catch (e) {
-              return x
-            }
-          })
+        const [version, name, description, ipns] = CSV.parse(data)[0]
+
         return {
-          version: parseInt(version),
-          name,
-          description,
+          version,
+          // when a value is blank, csv.parse returns 0, so we fallback to empty string
+          // to support stuff like `0,,,ipns:link`
+          name: name || '',
+          description: description || '',
           ipns
         }
       }
@@ -51,20 +40,15 @@ export class LANDRegistry extends Contract {
         const { version, name, description, ipns } = data
         if (name.length > MAX_NAME_LENGTH) {
           throw new Error(
-            `Error: name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
+            `The name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
           )
         }
         if (description.length > MAX_DESCRIPTION_LENGHT) {
           throw new Error(
-            `Error: description is too long, max length allowed is ${MAX_DESCRIPTION_LENGHT} chars`
+            `The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGHT} chars`
           )
         }
-        return [
-          version,
-          name.length > 0 ? JSON.stringify(name) : '',
-          description.length > 0 ? JSON.stringify(description) : '',
-          ipns
-        ].join(',')
+        return CSV.encode([[version, name, description, ipns]])
       }
       default:
         throw new Error(
