@@ -85,6 +85,14 @@ export class LANDRegistry extends Contract {
     return this.call('exists', x, y)
   }
 
+  authorizeOperator(operator, isAuthorized) {
+    return this.transaction('authorizeOperator', operator, isAuthorized)
+  }
+
+  isOperatorAuthorizedBy(operator, holder) {
+    return this.transaction('isOperatorAuthorizedBy', operator, holder)
+  }
+
   transferTo(x, y, newOwner) {
     return this.transaction('transferLand', x, y, newOwner)
   }
@@ -106,22 +114,12 @@ export class LANDRegistry extends Contract {
   }
 
   assignNewParcel(x, y, address, opts = {}) {
-    return this.transaction(
-      'assignNewParcel',
-      x,
-      y,
-      address,
-      Object.assign({}, { gas: 4000000, gasPrice: 28 * 1e9 }, opts)
-    )
+    opts = Object.assign({ gas: 4000000, gasPrice: 28 * 1e9 }, opts)
+    return this.transaction('assignNewParcel', x, y, address, opts)
   }
 
   assignMultipleParcels(x, y, address, opts = {}) {
-    return this.transaction(
-      'assignMultipleParcels',
-      x,
-      y,
-      address,
-      Object.assign({}, { gas: 1000000, gasPrice: 28 * 1e9 }, opts)
-    )
+    opts = Object.assign({ gas: 1000000, gasPrice: 28 * 1e9 }, opts)
+    return this.transaction('assignMultipleParcels', x, y, address, opts)
   }
 }
