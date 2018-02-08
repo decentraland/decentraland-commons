@@ -4,7 +4,7 @@ import { env } from '../env'
 import CSV from 'comma-separated-values'
 
 const MAX_NAME_LENGTH = 50
-const MAX_DESCRIPTION_LENGHT = 140
+const MAX_DESCRIPTION_LENGTH = 140
 
 /** LANDToken contract class */
 export class LANDRegistry extends Contract {
@@ -43,9 +43,9 @@ export class LANDRegistry extends Contract {
             `The name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
           )
         }
-        if (description.length > MAX_DESCRIPTION_LENGHT) {
+        if (description.length > MAX_DESCRIPTION_LENGTH) {
           throw new Error(
-            `The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGHT} chars`
+            `The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGTH} chars`
           )
         }
         return CSV.encode([[version, name, description, ipns]])
