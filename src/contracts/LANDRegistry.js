@@ -1,6 +1,10 @@
 import { abi } from './artifacts/LANDRegistry.json'
 import { Contract } from '../ethereum'
 import { env } from '../env'
+import CSV from 'comma-separated-values'
+
+const MAX_NAME_LENGTH = 50
+const MAX_DESCRIPTION_LENGTH = 140
 
 /** LANDToken contract class */
 export class LANDRegistry extends Contract {
@@ -12,11 +16,14 @@ export class LANDRegistry extends Contract {
     const version = data.charAt(0)
     switch (version) {
       case '0': {
-        const [version, name, description, ipns] = data.split(',')
+        const [version, name, description, ipns] = CSV.parse(data)[0]
+
         return {
-          version: parseInt(version),
-          name,
-          description,
+          version,
+          // when a value is blank, csv.parse returns 0, so we fallback to empty string
+          // to support stuff like `0,,,ipns:link`
+          name: name || '',
+          description: description || '',
           ipns
         }
       }
@@ -31,7 +38,17 @@ export class LANDRegistry extends Contract {
     switch (data.version.toString()) {
       case '0': {
         const { version, name, description, ipns } = data
-        return [version, name, description, ipns].join(',')
+        if (name.length > MAX_NAME_LENGTH) {
+          throw new Error(
+            `The name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
+          )
+        }
+        if (description.length > MAX_DESCRIPTION_LENGTH) {
+          throw new Error(
+            `The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGTH} chars`
+          )
+        }
+        return CSV.encode([[version, name, description, ipns]])
       }
       default:
         throw new Error(
