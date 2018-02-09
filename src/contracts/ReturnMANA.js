@@ -1,5 +1,5 @@
 import { abi } from './artifacts/ReturnMANA.json'
-import { Contract } from './ethereum'
+import { Contract } from '../ethereum'
 import { env } from '../env'
 import { Log } from '../log'
 
