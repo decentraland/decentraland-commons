@@ -16,54 +16,54 @@ export class DecentralandVesting extends Contract {
     return abi
   }
 
-  async getDuration(address) {
-    const bigNumber = await this.call('duration', address)
+  async getDuration() {
+    const bigNumber = await this.call('duration')
     return bigNumber.toNumber()
   }
 
-  async getCliff(address) {
-    const bigNumber = await this.call('cliff', address)
+  async getCliff() {
+    const bigNumber = await this.call('cliff')
     return bigNumber.toNumber()
   }
 
-  getBeneficiary(address) {
-    return this.call('beneficiary', address)
+  getBeneficiary() {
+    return this.call('beneficiary')
   }
 
-  async getVestedAmount(address) {
-    const bigNumber = await this.call('vestedAmount', address)
+  async getVestedAmount() {
+    const bigNumber = await this.call('vestedAmount')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  async getReleasableAmount(address) {
-    const bigNumber = await this.call('releasableAmount', address)
+  async getReleasableAmount() {
+    const bigNumber = await this.call('releasableAmount')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  isRevoked(address) {
-    return this.call('revoked', address)
+  isRevoked() {
+    return this.call('revoked')
   }
 
-  isRevocable(address) {
-    return this.call('revocable', address)
+  isRevocable() {
+    return this.call('revocable')
   }
 
-  getOwner(address) {
-    return this.call('owner', address)
+  getOwner() {
+    return this.call('owner')
   }
 
-  async getReleased(address) {
-    const bigNumber = await this.call('released', address)
+  async getReleased() {
+    const bigNumber = await this.call('released')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  async getStart(address) {
-    const bigNumber = await this.call('start', address)
+  async getStart() {
+    const bigNumber = await this.call('start')
     return bigNumber.toNumber()
   }
 
-  release(address) {
-    return this.transaction('release', address)
+  release() {
+    return this.transaction('release')
   }
 
   changeBeneficiary(address) {
