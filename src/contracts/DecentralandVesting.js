@@ -65,4 +65,8 @@ export class DecentralandVesting extends Contract {
   release(address) {
     return this.transaction('release', address)
   }
+
+  changeBeneficiary(address) {
+    return this.transaction('changeBeneficiary', address)
+  }
 }
