@@ -31,7 +31,7 @@ export const eth = {
    * @return {boolean} - True if the connection was successful
    */
   async connect(options = {}) {
-    if (this.wallet && this.wallet.isConnected()) {
+    if (this.isConnected()) {
       this.disconnect()
     }
 
@@ -62,6 +62,10 @@ export const eth = {
     }
 
     return wallet
+  },
+
+  isConnected() {
+    return (this.wallet && this.wallet.isConnected()) || !!web3
   },
 
   disconnect() {
