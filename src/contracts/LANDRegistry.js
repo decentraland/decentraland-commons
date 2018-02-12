@@ -106,8 +106,8 @@ export class LANDRegistry extends Contract {
     return this.transaction('authorizeOperator', operator, isAuthorized)
   }
 
-  isOperatorAuthorizedBy(operator, holder) {
-    return this.transaction('isOperatorAuthorizedBy', operator, holder)
+  isOperatorAuthorizedFor(operator, holder) {
+    return this.transaction('isOperatorAuthorizedFor', operator, holder)
   }
 
   transferTo(x, y, newOwner) {
