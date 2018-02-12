@@ -12,8 +12,8 @@ Implementations for all important Decentraland contracts live on the `/contracts
 Main API to interface with web3. Acts as a global singleton and must be connected before calling any other method
 
 ```javascript
-import eth from 'ethereum'
-import Contract from 'Contract'
+import { eth } from 'ethereum'
+import { Contract } from 'Contract'
 
 class SuperTokenContract extends Contract {
   static getDefaultAddress() {
@@ -47,7 +47,7 @@ eth.fetchTxStatus('TX_HASH')
 An interface to work with Ethereum contracts, takes care of decoding contract data and of calls/transactions.
 
 ```javascript
-import Contract from 'Contract'
+import { Contract } from 'Contract'
 import { abi } from './abis/MANAToken.json'
 
 const contract = new Contract('0xdeadbeef', abi)
@@ -57,16 +57,16 @@ await contract.transaction('lockMana', manaValue)
 ```
 
 
-### tx.js
+### txUtils.js
 
 A set of common utility functions to work with transactions
 
 ```javascript
-import tx from 'tx'
+import { txUtils } from 'txUtils'
 
 const status = eth.fetchTxStatus('TX_HASH')
 
-if (tx.isPending(status)) {
+if (txUtils.isPending(status)) {
     // something
 }
 ```
