@@ -1,5 +1,6 @@
 import { promisify } from '../utils'
 import { abiDecoder } from './abi-decoder'
+import { Event } from './Event'
 
 /** Class to work with Ethereum contracts */
 export class Contract {
@@ -30,7 +31,7 @@ export class Contract {
   /**
    * Checks if an address is actually 0 in hex or a falsy value
    * @param  {string} address
-   * @return {Boolean}
+   * @return {boolean}
    */
   static isEmptyAddress(address) {
     return !address || address === '0x0000000000000000000000000000000000000000'
@@ -159,5 +160,9 @@ export class Contract {
     if (param) {
       return param.value
     }
+  }
+
+  getEvent(eventName) {
+    return new Event(this, eventName)
   }
 }
