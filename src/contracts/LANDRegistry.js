@@ -24,7 +24,7 @@ export class LANDRegistry extends Contract {
           // to support stuff like `0,,,ipns:link`
           name: name || '',
           description: description || '',
-          ipns
+          ipns: ipns || ''
         }
       }
       default:

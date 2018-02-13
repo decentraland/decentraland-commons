@@ -159,6 +159,17 @@ has a line break`,
         }
         expect(LANDRegistry.decodeLandData(data)).to.deep.equal(expected)
       })
+
+      it('should work with a blank ipns link', function() {
+        const data = '0,"My Parcel","This is my awesome parcel",'
+        const expected = {
+          version: 0,
+          name: 'My Parcel',
+          description: 'This is my awesome parcel',
+          ipns: ''
+        }
+        expect(LANDRegistry.decodeLandData(data)).to.deep.equal(expected)
+      })
     })
   })
 })
