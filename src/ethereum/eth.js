@@ -86,29 +86,18 @@ export const eth = {
   },
 
   /**
-   * Get a contract instance built on {@link eth#setContracts}
-   * It'll throw if the contract is not found on the `contracts` mapping
-   * @param  {string} name - Contract name
-   * @return {object} contract
-   */
-  getContract(name) {
-    if (!this.contracts[name]) {
-      const contractNames = Object.keys(this.contracts)
-      throw new Error(
-        `The contract ${name} not found.\nDid you add it to the '.connect()' call?\nAvailable contracts are ${contractNames}`
-      )
-    }
-
-    return this.contracts[name]
-  },
-
-  /**
    * Set the Ethereum contracts to use on the `contracts` property. It builds a map of
    *   { [Contract Name]: Contract instance }
    * usable later via `.getContract`. Check {@link https://github.com/decentraland/commons/tree/master/src/ethereum} for more info
    * @param  {array<Contract|object>} contracts - An array comprised of a wide variety of options: objects defining contracts, Contract subclasses or Contract instances.
    */
   setContracts(contracts) {
+    if (!this.isConnected()) {
+      throw new Error(
+        'Tried to set eth contracts without connecting successfully first'
+      )
+    }
+
     for (const contractData of contracts) {
       let contract = null
       let contractName = null
@@ -119,9 +108,9 @@ export const eth = {
         contractName = contractData.getContractName()
       } else if (
         typeof contractData === 'object' &&
-        !this.isContractOptions(contractData)
+        !contract.constructor !== Object
       ) {
-        // contractData is an instance of Contract or of one of its children
+        // contractData is an instance of Contract or of one of its subclasses
         contract = contractData
         contractName = contractData.constructor.getContractName()
       } else {
@@ -142,12 +131,21 @@ export const eth = {
     }
   },
 
-  isContractOptions(contractData) {
-    return (
-      'name' in contractData &&
-      'address' in contractData &&
-      'abi' in contractData
-    )
+  /**
+   * Get a contract instance built on {@link eth#setContracts}
+   * It'll throw if the contract is not found on the `contracts` mapping
+   * @param  {string} name - Contract name
+   * @return {object} contract
+   */
+  getContract(name) {
+    if (!this.contracts[name]) {
+      const contractNames = Object.keys(this.contracts)
+      throw new Error(
+        `The contract ${name} not found.\nDid you add it to the '.connect()' call?\nAvailable contracts are ${contractNames}`
+      )
+    }
+
+    return this.contracts[name]
   },
 
   /**
