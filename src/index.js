@@ -1,4 +1,5 @@
 import * as cli from './cli'
+import * as contracts from './contracts'
 import * as db from './db'
 import * as email from './email'
 import * as server from './server'
@@ -11,4 +12,4 @@ export { Log } from './log'
 export { Model } from './Model'
 export { env } from './env'
 
-export { cli, db, email, server, ssh, utils }
+export { cli, contracts, db, email, server, ssh, utils }
