@@ -7,6 +7,7 @@ import * as utils from './utils'
 export class Model {
   static tableName = null
   static columnNames = []
+  static primaryKey = 'id'
 
   /**
    * DB client to use. We use Postgres by default. Can be changed via Model.useDB('db client')
@@ -30,49 +31,61 @@ export class Model {
   /**
    * Return the rows that match the conditions
    * @param  {object} [conditions] - It returns all rows if empty
-   * @param  {object} [orderBy]
+   * @param  {object} [orderBy]    - Object describing the column ordering
+   * @param  {string} [extra]      - String appended at the end of the query
    * @return {Promise<array>}
    */
-  static async find(conditions, orderBy) {
-    return await this.db.select(this.tableName, conditions, orderBy)
+  static async find(conditions, orderBy, extra) {
+    return await this.db.select(this.tableName, conditions, orderBy, extra)
   }
 
   /**
-   * Return the row for the supplied id or searches for the condition object
-   * @param  {string|number|object} idOrCond - If the argument is an object it uses it a s conditions. Otherwise it uses it as the searched id.
+   * Return the row for the supplied primaryKey or condition object
+   * @param  {string|number|object} primaryKeyOrCond - If the argument is an object it uses it for the conditions. Otherwise it'll use it as the searched primaryKey.
    * @return {Promise<object>}
    */
-  static async findOne(idOrCond, orderBy) {
+  static async findOne(primaryKeyOrCond, orderBy) {
     const conditions =
-      typeof idOrCond === 'object' ? idOrCond : { id: idOrCond }
+      typeof primaryKeyOrCond === 'object'
+        ? primaryKeyOrCond
+        : { [this.primaryKey]: primaryKeyOrCond }
 
     return await this.db.selectOne(this.tableName, conditions, orderBy)
   }
 
   /**
-   * Count the rows for the talbe
+   * Count the rows for the table
+   * @param  {object} [conditions] - It returns all rows if empty
+   * @param  {string} [extra]      - String appended at the end of the query
    * @return {Promise<integer>}
    */
-  static async count() {
-    const result = await this.db.query(
-      `SELECT COUNT(*) as count
-        FROM ${this.tableName}`
-    )
-
+  static async count(conditions, extra) {
+    const result = await this.db.count(this.tableName, conditions, extra)
     return result.length ? parseInt(result[0].count, 10) : 0
+  }
+
+  /**
+   * Forward queries to the db client
+   * @param  {string} queryString
+   * @param  {array} [values]
+   * @return {Promise<array>} - Array containing the matched rows
+   */
+  static async query(queryString, values) {
+    return await this.db.query(queryString, values)
   }
 
   /**
    * Insert the row filtering the Model.columnNames to the Model.tableName table
    * @param  {object} row
-   * @return {Promise<object>} the row argument with the inserted id
+   * @return {Promise<object>} the row argument with the inserted primaryKey
    */
   static async insert(row) {
     const insertion = await this.db.insert(
       this.tableName,
-      utils.pick(row, this.columnNames)
+      utils.pick(row, this.columnNames),
+      this.primaryKey
     )
-    row.id = insertion.rows[0].id
+    row[this.primaryKey] = insertion.rows[0][this.primaryKey]
     return row
   }
 
@@ -119,11 +132,12 @@ export class Model {
   }
 
   /**
-   * Return the row for the this.attributes id property, fordwards to Model.findOne
+   * Return the row for the this.attributes primaryKey property, forwards to Model.findOne
    * @return {Promise<object>}
    */
   async retreive() {
-    this.attributes = await this.constructor.findOne(this.attributes.id)
+    const primaryKey = this.attributes[this.constructor.primaryKey]
+    this.attributes = await this.constructor.findOne(primaryKey)
     return this.attributes
   }
 
@@ -135,18 +149,26 @@ export class Model {
   }
 
   /**
-   * Forwards to Mode.update using this.attributes. If no conditions are supplied, it uses this.attributes.id
-   * @params {object} [conditions]
+   * Forwards to Mode.update using this.attributes. If no conditions are supplied, it uses this.attributes[primaryKey]
+   * @params {object} [conditions={ primaryKey: this.attributes[primaryKey] }]
    */
-  async update(conditions = { id: this.attributes.id }) {
+  async update(conditions) {
+    if (!conditions) {
+      const primaryKey = this.constructor.primaryKey
+      conditions = { [primaryKey]: this.attributes[primaryKey] }
+    }
     return await this.constructor.update(this.attributes, conditions)
   }
 
   /**
-   * Forwards to Mode.delete using this.attributes. If no conditions are supplied, it uses this.attributes.id
-   * @params {object} [conditions]
+   * Forwards to Mode.delete using this.attributes. If no conditions are supplied, it uses this.attributes[primaryKey]
+   * @params {object} [conditions={ primaryKey: this.attributes[primaryKey] }]
    */
-  async delete(conditions = { id: this.attributes.id }) {
+  async delete(conditions) {
+    if (!conditions) {
+      const primaryKey = this.constructor.primaryKey
+      conditions = { [primaryKey]: this.attributes[primaryKey] }
+    }
     return await this.constructor.delete(conditions)
   }
 

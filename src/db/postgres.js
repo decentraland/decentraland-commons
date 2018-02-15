@@ -26,7 +26,7 @@ export const postgres = {
    * Forward queries to the pg client. Check {@link https://node-postgres.com/} for more info.
    * @param  {string} queryString
    * @param  {array} [values]
-   * @return {Promise<object>} - Object containing the matched rows
+   * @return {Promise<array>} - Array containing the matched rows
    */
   async query(queryString, values) {
     const result = await this.client.query(queryString, values)
@@ -37,11 +37,11 @@ export const postgres = {
    * Counts rows from a query result
    * @param  {string} tableName
    * @param  {object} [conditions] - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
-   * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. See {@link postgres#getOrderValues}
+   * @param  {string} [extra]      - String appended at the end of the query
    * @return {Promise<array>} - Rows
    */
-  count(tableName, conditions, orderBy) {
-    return this._query('COUNT', tableName, conditions, orderBy)
+  count(tableName, conditions, extra) {
+    return this._query('SELECT COUNT(*)', tableName, conditions, null, extra)
   },
 
   /**
@@ -49,10 +49,11 @@ export const postgres = {
    * @param  {string} tableName
    * @param  {object} [conditions] - An object describing the WHERE clause. The properties should be the column names and it's values the condition value.
    * @param  {object} [orderBy]    - An object describing the ORDER BY clause. The properties should be the column names and it's values the order value. See {@link postgres#getOrderValues}
+   * @param  {string} [extra]      - String appended at the end of the query
    * @return {Promise<array>} - Rows
    */
-  select(tableName, conditions, orderBy) {
-    return this._query('SELECT', tableName, conditions, orderBy)
+  select(tableName, conditions, orderBy, extra) {
+    return this._query('SELECT *', tableName, conditions, orderBy, extra)
   },
 
   /**
@@ -64,7 +65,7 @@ export const postgres = {
    */
   async selectOne(tableName, conditions, orderBy) {
     const rows = await this._query(
-      'SELECT',
+      'SELECT *',
       tableName,
       conditions,
       orderBy,
@@ -90,7 +91,7 @@ export const postgres = {
     }
 
     const result = await this.client.query(
-      `${method} * FROM ${tableName} ${where} ${order} ${extra}`,
+      `${method} FROM ${tableName} ${where} ${order} ${extra}`,
       values
     )
 
@@ -102,10 +103,11 @@ export const postgres = {
    * @example
    * insert('users', { name: 'Name', avatar: 'image.png' }) => INSERT INTO users ("name", "avatar") VALUES ('Name', 'image.png')
    * @param  {string} tableName
-   * @param  {object} changes   - An object describing the insertion. The properties should be the column names and it's values the value to insert
+   * @param  {object} changes           - An object describing the insertion. The properties should be the column names and it's values the value to insert
+   * @param  {string} [primaryKey='id'] - Which primary key return upon insertion
    * @return {Promise<object>}
    */
-  async insert(tableName, changes) {
+  async insert(tableName, changes, primaryKey = 'id') {
     if (!changes) {
       throw new Error(
         `Tried to perform an insert on ${tableName} without any values. Supply a changes object`
@@ -122,7 +124,7 @@ export const postgres = {
       ${this.toColumnFields(changes)}
     ) VALUES(
       ${this.toValuePlaceholders(changes)}
-    ) RETURNING id`,
+    ) RETURNING ${primaryKey}`,
       values
     )
   },
