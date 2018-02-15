@@ -31,11 +31,12 @@ export class Model {
   /**
    * Return the rows that match the conditions
    * @param  {object} [conditions] - It returns all rows if empty
-   * @param  {object} [orderBy]
+   * @param  {object} [orderBy]    - Object describing the column ordering
+   * @param  {string} [extra]      - String appended at the end of the query
    * @return {Promise<array>}
    */
-  static async find(conditions, orderBy) {
-    return await this.db.select(this.tableName, conditions, orderBy)
+  static async find(conditions, orderBy, extra) {
+    return await this.db.select(this.tableName, conditions, orderBy, extra)
   }
 
   /**
@@ -53,16 +54,24 @@ export class Model {
   }
 
   /**
-   * Count the rows for the talbe
+   * Count the rows for the table
+   * @param  {object} [conditions] - It returns all rows if empty
+   * @param  {string} [extra]      - String appended at the end of the query
    * @return {Promise<integer>}
    */
-  static async count() {
-    const result = await this.db.query(
-      `SELECT COUNT(*) as count
-        FROM ${this.tableName}`
-    )
-
+  static async count(conditions, extra) {
+    const result = await this.db.count(this.tableName, conditions, extra)
     return result.length ? parseInt(result[0].count, 10) : 0
+  }
+
+  /**
+   * Forward queries to the db client
+   * @param  {string} queryString
+   * @param  {array} [values]
+   * @return {Promise<array>} - Array containing the matched rows
+   */
+  static async query(queryString, values) {
+    return await this.db.query(queryString, values)
   }
 
   /**
