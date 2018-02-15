@@ -34,14 +34,6 @@ export function isEmptyObject(obj) {
 }
 
 /**
- * Object.values polyfill
- * @param {object} obj - Object to get the values from
- */
-export function getObjectValues(obj) {
-  return obj && Object.keys(obj).map(key => obj[key])
-}
-
-/**
  * Return a copy of the object, filtered to omit the blacklisted array of valid keys
  * @param {object} obj
  * @param {array} keys

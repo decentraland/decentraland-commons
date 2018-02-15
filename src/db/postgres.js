@@ -1,7 +1,5 @@
 import pg from 'pg'
 
-import { getObjectValues } from '../utils'
-
 /**
  * Client to query Postgres. Uses `pg` behind the scenes. Check {@link https://node-postgres.com/} for more info.
  * @namespace
@@ -82,7 +80,7 @@ export const postgres = {
     let order = ''
 
     if (conditions) {
-      values = getObjectValues(conditions)
+      values = Object.values(conditions)
       where = `WHERE ${this.toAssignmentFields(conditions).join(' AND ')}`
     }
 
@@ -117,7 +115,7 @@ export const postgres = {
     changes.created_at = changes.created_at || new Date()
     changes.updated_at = changes.updated_at || new Date()
 
-    const values = getObjectValues(changes)
+    const values = Object.values(changes)
 
     return await this.client.query(
       `INSERT INTO ${tableName}(
@@ -152,8 +150,8 @@ export const postgres = {
 
     changes.updated_at = changes.updated_at || new Date()
 
-    const changeValues = getObjectValues(changes)
-    const conditionValues = getObjectValues(conditions)
+    const changeValues = Object.values(changes)
+    const conditionValues = Object.values(conditions)
 
     const whereClauses = this.toAssignmentFields(
       conditions,
@@ -183,7 +181,7 @@ export const postgres = {
       )
     }
 
-    const values = getObjectValues(conditions)
+    const values = Object.values(conditions)
 
     return this.client.query(
       `DELETE FROM ${tableName}
