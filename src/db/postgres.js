@@ -102,10 +102,11 @@ export const postgres = {
    * @example
    * insert('users', { name: 'Name', avatar: 'image.png' }) => INSERT INTO users ("name", "avatar") VALUES ('Name', 'image.png')
    * @param  {string} tableName
-   * @param  {object} changes   - An object describing the insertion. The properties should be the column names and it's values the value to insert
+   * @param  {object} changes           - An object describing the insertion. The properties should be the column names and it's values the value to insert
+   * @param  {string} [primaryKey='id'] - Which primary key return upon insertion
    * @return {Promise<object>}
    */
-  async insert(tableName, changes) {
+  async insert(tableName, changes, primaryKey = 'id') {
     if (!changes) {
       throw new Error(
         `Tried to perform an insert on ${tableName} without any values. Supply a changes object`
@@ -122,7 +123,7 @@ export const postgres = {
       ${this.toColumnFields(changes)}
     ) VALUES(
       ${this.toValuePlaceholders(changes)}
-    ) RETURNING id`,
+    ) RETURNING ${primaryKey}`,
       values
     )
   },
