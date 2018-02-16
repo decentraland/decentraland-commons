@@ -39,3 +39,12 @@ export async function confirm(text = 'Are you sure?', defaultAnswer = false) {
 
   return res.confirm
 }
+
+/**
+ * Uses inquier {@link https://github.com/SBoudrias/Inquirer.js} to launch the prompt interface (inquiry session)
+ * @param {Array} [questions = []] - questions containing Question Object {@link https://github.com/SBoudrias/Inquirer.js#objects}
+ * @param {Promise} answers - A key/value hash containing the client answers in each prompt.
+ */
+export async function prompt(questions = []) {
+  return await inquirer.prompt(questions)
+}
