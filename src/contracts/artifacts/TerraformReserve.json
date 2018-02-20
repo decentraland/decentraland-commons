@@ -1,5 +1,5 @@
 {
-  "contract_name": "TerraformReserve",
+  "contractName": "TerraformReserve",
   "abi": [
     {
       "constant": false,
@@ -12,6 +12,7 @@
       "name": "setTargetContract",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -25,6 +26,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -38,6 +40,7 @@
       "name": "changeContractState",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -55,6 +58,7 @@
       "name": "lockMana",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -68,6 +72,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -81,6 +86,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -94,6 +100,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -112,6 +119,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -125,6 +133,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -138,6 +147,7 @@
       "name": "transferOwnership",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -148,10 +158,12 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "constructor"
     },
     {
       "payable": true,
+      "stateMutability": "payable",
       "type": "fallback"
     },
     {
@@ -219,6 +231,6 @@
     }
   ],
   "networks": {},
-  "schema_version": "0.0.5",
-  "updated_at": 1506660336299
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-02-20T20:47:14.761Z"
 }
