@@ -20,21 +20,13 @@ export class MANAToken extends Contract {
     return this.transaction('approve', spender, eth.utils.toWei(mana))
   }
 
-  async getAllowance(owner, spender) {
-    const assigned = await this.getAllowanceWei(owner, spender)
+  async allowance(owner, spender) {
+    const assigned = await this.call('allowance', owner, spender)
     return eth.utils.fromWei(assigned)
   }
 
-  getAllowanceWei(owner, spender) {
-    return this.call('allowance', owner, spender)
-  }
-
-  async getBalance(owner) {
-    const manaBalance = await this.getBalanceWei(owner)
+  async balanceOf(owner) {
+    const manaBalance = await this.call('balanceOf', owner)
     return eth.utils.fromWei(manaBalance)
-  }
-
-  getBalanceWei(owner) {
-    return this.call('balanceOf', owner)
   }
 }

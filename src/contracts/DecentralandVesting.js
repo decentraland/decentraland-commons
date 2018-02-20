@@ -16,57 +16,33 @@ export class DecentralandVesting extends Contract {
     return abi
   }
 
-  async getDuration() {
+  async duration() {
     const bigNumber = await this.call('duration')
     return bigNumber.toNumber()
   }
 
-  async getCliff() {
+  async cliff() {
     const bigNumber = await this.call('cliff')
     return bigNumber.toNumber()
   }
 
-  getBeneficiary() {
-    return this.call('beneficiary')
-  }
-
-  async getVestedAmount() {
+  async vestedAmount() {
     const bigNumber = await this.call('vestedAmount')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  async getReleasableAmount() {
+  async releasableAmount() {
     const bigNumber = await this.call('releasableAmount')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  isRevoked() {
-    return this.call('revoked')
-  }
-
-  isRevocable() {
-    return this.call('revocable')
-  }
-
-  getOwner() {
-    return this.call('owner')
-  }
-
-  async getReleased() {
+  async released() {
     const bigNumber = await this.call('released')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  async getStart() {
+  async start() {
     const bigNumber = await this.call('start')
     return bigNumber.toNumber()
-  }
-
-  release() {
-    return this.transaction('release')
-  }
-
-  changeBeneficiary(address) {
-    return this.transaction('changeBeneficiary', address)
   }
 }

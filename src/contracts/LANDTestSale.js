@@ -15,8 +15,4 @@ export class LANDTestSale extends Contract {
   static getDefaultAbi() {
     return abi
   }
-
-  buy(x, y) {
-    return this.transaction('buy', x, y, { gas: 120000 })
-  }
 }

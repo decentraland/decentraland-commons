@@ -1,9 +1,6 @@
 import { abi } from './artifacts/LANDTerraformSale.json'
 import { Contract } from '../ethereum'
 import { env } from '../env'
-import { Log } from '../log'
-
-const log = new Log('LANDTerraformSale')
 
 /** LANDTerraformSale contract class */
 export class LANDTerraformSale extends Contract {
@@ -17,26 +14,5 @@ export class LANDTerraformSale extends Contract {
 
   static getDefaultAbi() {
     return abi
-  }
-
-  buyMany(buyer, xList, yList, totalCost) {
-    log.info(`(buyMany) LAND for ${buyer}`)
-    return this.transaction('buyMany', buyer, xList, yList, totalCost, {
-      gas: 120000
-    })
-  }
-
-  transferBackMANA(address, amount) {
-    log.info(`(transferBackMANA) ${amount} to ${address}`)
-    return this.transaction('transferBackMANA', address, amount, {
-      gas: 120000
-    })
-  }
-
-  transferBackMANAMany(addresses, amounts) {
-    log.info(`(transferBackMANAMany) ${amounts} to ${addresses}`)
-    return this.transaction('transferBackMANAMany', addresses, amounts, {
-      gas: 120000
-    })
   }
 }

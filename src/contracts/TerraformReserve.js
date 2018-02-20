@@ -1,9 +1,6 @@
 import { abi } from './artifacts/TerraformReserve.json'
 import { eth, Contract } from '../ethereum'
 import { env } from '../env'
-import { Log } from '../log'
-
-const log = new Log('TerraformReserve')
 
 /** TerraformReserve contract class */
 export class TerraformReserve extends Contract {
@@ -23,9 +20,8 @@ export class TerraformReserve extends Contract {
     return this.lockManaWei(sender, eth.utils.toWei(mana))
   }
 
-  lockManaWei(sender, mana) {
-    log.info(`Locking ${mana}MANA for ${eth.getAddress()}`)
+  lockManaWei(sender, mana, opts = { gas: 1200 }) {
     eth.unlockAccount()
-    return this.transaction('lockMana', sender, mana, { gas: 120000 })
+    return this.transaction('lockMana', sender, mana, opts)
   }
 }
