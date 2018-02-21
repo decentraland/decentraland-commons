@@ -33,9 +33,10 @@ export class ContractFile {
 
       switch (type) {
         case 'function': {
-          const args = [...inputs.map(input => input.name), '...args'].join(
-            ', '
-          )
+          const args = [
+            ...inputs.map((input, index) => input.name || `input${index}`),
+            '...args'
+          ].join(', ')
 
           if (stateMutability === 'view') {
             extensions[name] = `function(${args}) {

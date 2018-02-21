@@ -3,8 +3,6 @@
 
 import { DecentralandVesting } from './DecentralandVesting'
 import { LANDRegistry } from './LANDRegistry'
-import { LANDTerraformSale } from './LANDTerraformSale'
-import { LANDTestSale } from './LANDTestSale'
 import { MANAToken } from './MANAToken'
 import { Marketplace } from './Marketplace'
 import { ReturnMANA } from './ReturnMANA'
@@ -221,11 +219,66 @@ Object.assign(
   LANDRegistry.prototype
 )
 
-Object.assign(LANDTerraformSale.prototype, {}, LANDTerraformSale.prototype)
-
-Object.assign(LANDTestSale.prototype, {}, LANDTestSale.prototype)
-
-Object.assign(MANAToken.prototype, {}, MANAToken.prototype)
+Object.assign(
+  MANAToken.prototype,
+  {
+    mintingFinished: function(...args) {
+      return this.call('mintingFinished', ...args)
+    },
+    name: function(...args) {
+      return this.call('name', ...args)
+    },
+    approve: function(_spender, _value, ...args) {
+      return this.transaction('approve', _spender, _value, ...args)
+    },
+    totalSupply: function(...args) {
+      return this.call('totalSupply', ...args)
+    },
+    transferFrom: function(_from, _to, _value, ...args) {
+      return this.transaction('transferFrom', _from, _to, _value, ...args)
+    },
+    decimals: function(...args) {
+      return this.call('decimals', ...args)
+    },
+    unpause: function(...args) {
+      return this.transaction('unpause', ...args)
+    },
+    mint: function(_to, _amount, ...args) {
+      return this.transaction('mint', _to, _amount, ...args)
+    },
+    burn: function(_value, ...args) {
+      return this.transaction('burn', _value, ...args)
+    },
+    paused: function(...args) {
+      return this.call('paused', ...args)
+    },
+    finishMinting: function(...args) {
+      return this.transaction('finishMinting', ...args)
+    },
+    pause: function(...args) {
+      return this.transaction('pause', ...args)
+    },
+    owner: function(...args) {
+      return this.call('owner', ...args)
+    },
+    symbol: function(...args) {
+      return this.call('symbol', ...args)
+    },
+    allowance: function(_owner, _spender, ...args) {
+      return this.call('allowance', _owner, _spender, ...args)
+    },
+    transferOwnership: function(newOwner, ...args) {
+      return this.transaction('transferOwnership', newOwner, ...args)
+    },
+    balanceOf: function(_owner, ...args) {
+      return this.call('balanceOf', _owner, ...args)
+    },
+    transfer: function(_to, _value, ...args) {
+      return this.transaction('transfer', _to, _value, ...args)
+    }
+  },
+  MANAToken.prototype
+)
 
 Object.assign(Marketplace.prototype, {}, Marketplace.prototype)
 
@@ -265,13 +318,50 @@ Object.assign(
   ReturnMANA.prototype
 )
 
-Object.assign(TerraformReserve.prototype, {}, TerraformReserve.prototype)
+Object.assign(
+  TerraformReserve.prototype,
+  {
+    setTargetContract: function(target, ...args) {
+      return this.transaction('setTargetContract', target, ...args)
+    },
+    totalLocked: function(...args) {
+      return this.call('totalLocked', ...args)
+    },
+    changeContractState: function(_acceptingDeposits, ...args) {
+      return this.transaction(
+        'changeContractState',
+        _acceptingDeposits,
+        ...args
+      )
+    },
+    lockMana: function(_from, mana, ...args) {
+      return this.transaction('lockMana', _from, mana, ...args)
+    },
+    manaToken: function(...args) {
+      return this.call('manaToken', ...args)
+    },
+    owner: function(...args) {
+      return this.call('owner', ...args)
+    },
+    landClaim: function(...args) {
+      return this.call('landClaim', ...args)
+    },
+    lockedBalance: function(input0, ...args) {
+      return this.call('lockedBalance', input0, ...args)
+    },
+    acceptingDeposits: function(...args) {
+      return this.call('acceptingDeposits', ...args)
+    },
+    transferOwnership: function(newOwner, ...args) {
+      return this.transaction('transferOwnership', newOwner, ...args)
+    }
+  },
+  TerraformReserve.prototype
+)
 
 export {
   DecentralandVesting,
   LANDRegistry,
-  LANDTerraformSale,
-  LANDTestSale,
   MANAToken,
   Marketplace,
   ReturnMANA,
