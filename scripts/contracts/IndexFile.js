@@ -19,6 +19,8 @@ export class IndexFile {
 
 ${this.buildImports()}
 
+${this.buildHelpers()}
+
 ${this.buildDefinitions()}
 
 ${this.buildExports()}`
@@ -30,6 +32,12 @@ ${this.buildExports()}`
       .join('\n')
   }
 
+  buildHelpers() {
+    return Object.values(helpers)
+      .map(String)
+      .join('\n')
+  }
+
   buildDefinitions() {
     return this.contracts
       .map(contract => {
@@ -38,12 +46,9 @@ ${this.buildExports()}`
           .map(name => `${name}: ${extensions[name]}`)
           .join(',\n\t\t')
 
-        return `Object.assign(
-            ${contract.name}.prototype, {
-            ${extensionObject}
-          },
-          ${contract.name}.prototype
-        )`
+        return `extend(${contract.name}.prototype, {
+          ${extensionObject}
+        })`
       })
       .join('\n\n')
   }
@@ -52,5 +57,13 @@ ${this.buildExports()}`
     return `export {
       ${this.contracts.map(contract => contract.name)}
     }`
+  }
+}
+
+const helpers = {
+  extend(object, extension) {
+    for (const prop in extension) {
+      if (!(prop in object)) object[prop] = extension[prop]
+    }
   }
 }
