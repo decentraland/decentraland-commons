@@ -141,7 +141,7 @@ export const eth = {
     if (!this.contracts[name]) {
       const contractNames = Object.keys(this.contracts)
       throw new Error(
-        `The contract ${name} not found.\nDid you add it to the '.connect()' call?\nAvailable contracts are ${contractNames}`
+        `The contract ${name} not found.\nDid you add it to the '.connect()' call?\nAvailable contracts are "${contractNames}"`
       )
     }
 

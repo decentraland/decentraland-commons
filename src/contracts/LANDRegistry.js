@@ -68,66 +68,10 @@ export class LANDRegistry extends Contract {
     return abi
   }
 
-  getData(x, y) {
-    return this.call('landData', x, y)
-  }
-
-  updateLandData(x, y, data) {
-    return this.transaction('updateLandData', x, y, data)
-  }
-
-  updateManyLandData(coordinates, data) {
+  updateManyLandData(coordinates, data, opts = {}) {
     const x = coordinates.map(coor => coor.x)
     const y = coordinates.map(coor => coor.y)
-    return this.transaction('updateManyLandData', x, y, data)
-  }
-
-  getOwner(x, y) {
-    return this.call('ownerOfLand', x, y)
-  }
-
-  encodeTokenId(x, y) {
-    return this.call('encodeTokenId', x, y)
-  }
-
-  decodeTokenId(value) {
-    return this.call('decodeTokenId', value)
-  }
-
-  ping(x, y) {
-    return this.transaction('ping', x, y)
-  }
-
-  exists(x, y) {
-    return this.call('exists', x, y)
-  }
-
-  authorizeOperator(operator, isAuthorized) {
-    return this.transaction('authorizeOperator', operator, isAuthorized)
-  }
-
-  isOperatorAuthorizedFor(operator, holder) {
-    return this.transaction('isOperatorAuthorizedFor', operator, holder)
-  }
-
-  transferTo(x, y, newOwner) {
-    return this.transaction('transferLand', x, y, newOwner)
-  }
-
-  assetsOf(address) {
-    return this.transaction('assetsOf', address)
-  }
-
-  ownerOfLand(x, y) {
-    return this.call('ownerOfLand', x, y)
-  }
-
-  ownerOfLandMany(x, y) {
-    return this.call('ownerOfLandMany', x, y)
-  }
-
-  landOf(owner) {
-    return this.call('landOf', owner)
+    return this.transaction('updateManyLandData', x, y, data, opts)
   }
 
   assignNewParcel(x, y, address, opts = {}) {

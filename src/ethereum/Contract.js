@@ -29,6 +29,16 @@ export class Contract {
   }
 
   /**
+   * Get the contract events from the abi
+   * @return {Array<string>} - events
+   */
+  static getEvents() {
+    return this.getDefaultAbi()
+      .filter(method => method.type === 'event')
+      .map(event => event.name)
+  }
+
+  /**
    * Checks if an address is actually 0 in hex or a falsy value
    * @param  {string} address
    * @return {boolean}
