@@ -280,7 +280,48 @@ Object.assign(
   MANAToken.prototype
 )
 
-Object.assign(Marketplace.prototype, {}, Marketplace.prototype)
+Object.assign(
+  Marketplace.prototype,
+  {
+    setOwnerCut: function(ownerCut, ...args) {
+      return this.transaction('setOwnerCut', ownerCut, ...args)
+    },
+    cancelOrder: function(assetId, ...args) {
+      return this.transaction('cancelOrder', assetId, ...args)
+    },
+    auctionList: function(input0, ...args) {
+      return this.call('auctionList', input0, ...args)
+    },
+    ownerCutPercentage: function(...args) {
+      return this.call('ownerCutPercentage', ...args)
+    },
+    owner: function(...args) {
+      return this.call('owner', ...args)
+    },
+    executeOrder: function(assetId, ...args) {
+      return this.transaction('executeOrder', assetId, ...args)
+    },
+    createOrder: function(assetId, priceInWei, expiresAt, ...args) {
+      return this.transaction(
+        'createOrder',
+        assetId,
+        priceInWei,
+        expiresAt,
+        ...args
+      )
+    },
+    publicationFeeInWei: function(...args) {
+      return this.call('publicationFeeInWei', ...args)
+    },
+    setPublicationFee: function(publicationFee, ...args) {
+      return this.transaction('setPublicationFee', publicationFee, ...args)
+    },
+    transferOwnership: function(newOwner, ...args) {
+      return this.transaction('transferOwnership', newOwner, ...args)
+    }
+  },
+  Marketplace.prototype
+)
 
 Object.assign(
   ReturnMANA.prototype,
