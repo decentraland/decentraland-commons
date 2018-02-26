@@ -41,6 +41,8 @@ jobs:
 
       - run: npm run build
 
+      - run: ./docs.sh
+
       - save_cache:
           paths:
             - "."
