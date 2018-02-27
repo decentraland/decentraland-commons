@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: contracts/LANDRegistry.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: contracts/LANDRegistry.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { abi } from './artifacts/LANDRegistry.json'
+import { Contract } from '../ethereum'
+import { env } from '../env'
+import CSV from 'comma-separated-values'
+
+const MAX_NAME_LENGTH = 50
+const MAX_DESCRIPTION_LENGTH = 140
+
+/** LANDToken contract class */
+export class LANDRegistry extends Contract {
+  static getContractName() {
+    return 'LANDRegistry'
+  }
+
+  static decodeLandData(data = '') {
+    const version = data.charAt(0)
+    switch (version) {
+      case '0': {
+        const [version, name, description, ipns] = CSV.parse(data)[0]
+
+        return {
+          version,
+          // when a value is blank, csv.parse returns 0, so we fallback to empty string
+          // to support stuff like `0,,,ipns:link`
+          name: name || '',
+          description: description || '',
+          ipns: ipns || ''
+        }
+      }
+      default:
+        throw new Error(
+          `Unknown version when trying to decode land data: "${data}" (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)`
+        )
+    }
+  }
+
+  static encodeLandData(data = {}) {
+    switch (data.version.toString()) {
+      case '0': {
+        const { version, name, description, ipns } = data
+        if (name.length > MAX_NAME_LENGTH) {
+          throw new Error(
+            `The name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
+          )
+        }
+        if (description.length > MAX_DESCRIPTION_LENGTH) {
+          throw new Error(
+            `The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGTH} chars`
+          )
+        }
+        return CSV.encode([[version, name, description, ipns]])
+      }
+      default:
+        throw new Error(
+          `Unknown version when trying to encode land data: "${JSON.stringify(
+            data
+          )}"
+          (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)`
+        )
+    }
+  }
+
+  static getDefaultAddress() {
+    return env.universalGet('LAND_REGISTRY_CONTRACT_ADDRESS')
+  }
+
+  static getDefaultAbi() {
+    return abi
+  }
+
+  updateManyLandData(coordinates, data, opts = {}) {
+    const x = coordinates.map(coor => coor.x)
+    const y = coordinates.map(coor => coor.y)
+    return this.transaction('updateManyLandData', x, y, data, opts)
+  }
+
+  assignNewParcel(x, y, address, opts = {}) {
+    opts = Object.assign({ gas: 4000000, gasPrice: 28 * 1e9 }, opts)
+    return this.transaction('assignNewParcel', x, y, address, opts)
+  }
+
+  assignMultipleParcels(x, y, address, opts = {}) {
+    opts = Object.assign({ gas: 1000000, gasPrice: 28 * 1e9 }, opts)
+    return this.transaction('assignMultipleParcels', x, y, address, opts)
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Contract.html">Contract</a></li><li><a href="DecentralandVesting.html">DecentralandVesting</a></li><li><a href="Event.html">Event</a></li><li><a href="LANDRegistry.html">LANDRegistry</a></li><li><a href="MANAToken.html">MANAToken</a></li><li><a href="Marketplace.html">Marketplace</a></li><li><a href="ReturnMANA.html">ReturnMANA</a></li><li><a href="SignedMessage.html">SignedMessage</a></li><li><a href="SMTP_SMTP.html">SMTP</a></li><li><a href="TerraformReserve.html">TerraformReserve</a></li></ul><h3>Namespaces</h3><ul><li><a href="eth.html">eth</a></li><li><a href="ethUtils.html">ethUtils</a></li><li><a href="mailchimp.html">mailchimp</a></li><li><a href="mongo.html">mongo</a></li><li><a href="postgres.html">postgres</a></li><li><a href="tunnel.html">tunnel</a></li><li><a href="txUtils.html">txUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#arrayToObject">arrayToObject</a></li><li><a href="global.html#confirm">confirm</a></li><li><a href="global.html#extractFromReq">extractFromReq</a></li><li><a href="global.html#handleRequest">handleRequest</a></li><li><a href="global.html#isEmptyObject">isEmptyObject</a></li><li><a href="global.html#mapOmit">mapOmit</a></li><li><a href="global.html#omit">omit</a></li><li><a href="global.html#pick">pick</a></li><li><a href="global.html#promisify">promisify</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#runProgram">runProgram</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useRollbar">useRollbar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 27 2018 00:03:07 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
