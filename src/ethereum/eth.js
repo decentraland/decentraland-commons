@@ -108,7 +108,7 @@ export const eth = {
         contractName = contractData.getContractName()
       } else if (
         typeof contractData === 'object' &&
-        !contract.constructor !== Object
+        !contractName.constructor !== Object
       ) {
         // contractData is an instance of Contract or of one of its subclasses
         contract = contractData
