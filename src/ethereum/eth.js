@@ -3,6 +3,7 @@ import { Log } from '../log'
 import { NodeWallet } from './NodeWallet'
 import { LedgerWallet } from './LedgerWallet'
 import { Contract } from './Contract'
+import { abi } from './Abi'
 import { ethUtils } from './ethUtils'
 import { promisify } from '../utils/index'
 
@@ -28,6 +29,7 @@ export const eth = {
    * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link eth#setContracts}
    * @param  {string} [options.defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {string} [options.providerUrl] - URL for a provider forwarded to {@link Wallet#getWeb3Provider}
+   * @param  {string} [options.derivationPath] -
    * @return {boolean} - True if the connection was successful
    */
   async connect(options = {}) {
@@ -35,10 +37,19 @@ export const eth = {
       this.disconnect()
     }
 
-    const { contracts = [], defaultAccount, providerUrl } = options
+    const {
+      contracts = [],
+      defaultAccount,
+      providerUrl,
+      derivationPath
+    } = options
 
     try {
-      this.wallet = await this.connectWallet(defaultAccount, providerUrl)
+      this.wallet = await this.connectWallet(
+        defaultAccount,
+        providerUrl,
+        derivationPath
+      )
       web3 = this.wallet.getWeb3()
 
       this.setContracts(contracts)
@@ -50,11 +61,11 @@ export const eth = {
     }
   },
 
-  async connectWallet(defaultAccount, providerUrl) {
+  async connectWallet(defaultAccount, providerUrl, derivationPath = null) {
     let wallet
 
     try {
-      wallet = new LedgerWallet(defaultAccount)
+      wallet = new LedgerWallet(defaultAccount, derivationPath)
       await wallet.connect(providerUrl)
     } catch (error) {
       wallet = new NodeWallet(defaultAccount)
@@ -169,7 +180,7 @@ export const eth = {
     )
 
     if (receipt) {
-      receipt.logs = Contract.decodeLogs(receipt.logs)
+      receipt.logs = abi.decodeLogs(receipt.logs)
     }
 
     return receipt

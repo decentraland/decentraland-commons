@@ -19,9 +19,10 @@ export class LedgerWallet extends Wallet {
     return devices.length > 0
   }
 
-  constructor(account) {
+  constructor(account, derivationPath = LedgerWallet.derivationPath) {
     super(account)
     this.ledger = null
+    this.derivationPath = derivationPath
   }
 
   async connect(providerUrl) {
@@ -54,7 +55,7 @@ export class LedgerWallet extends Wallet {
   async getProvider(providerUrl = 'https://mainnet.infura.io/') {
     let engine = new ProviderEngine()
     let ledgerWalletSubProvider = await LedgerWalletSubprovider(
-      LedgerWallet.derivationPath
+      this.derivationPath
     )
 
     engine.addProvider(ledgerWalletSubProvider)
