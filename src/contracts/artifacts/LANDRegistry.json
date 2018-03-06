@@ -3,6 +3,25 @@
   "abi": [
     {
       "constant": true,
+      "inputs": [
+        {
+          "name": "_interfaceID",
+          "type": "bytes4"
+        }
+      ],
+      "name": "supportsInterface",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [],
       "name": "proxyOwner",
       "outputs": [
@@ -30,6 +49,24 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "totalSupply",
@@ -44,18 +81,44 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [
         {
-          "name": "holder",
+          "name": "operator",
           "type": "address"
+        },
+        {
+          "name": "assetId",
+          "type": "uint256"
         }
       ],
-      "name": "assetsOf",
+      "name": "isAuthorized",
       "outputs": [
         {
           "name": "",
-          "type": "uint256[]"
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -66,19 +129,37 @@
       "constant": true,
       "inputs": [
         {
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "tokenOfOwnerByIndex",
+      "outputs": [
+        {
           "name": "assetId",
           "type": "uint256"
         }
       ],
-      "name": "safeHolderOf",
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "decimals",
       "outputs": [
         {
           "name": "",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "payable": false,
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -101,22 +182,97 @@
       "type": "function"
     },
     {
-      "constant": true,
+      "constant": false,
       "inputs": [
         {
-          "name": "operator",
+          "name": "from",
           "type": "address"
         },
         {
-          "name": "assetHolder",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "safeTransferFrom",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "owner",
           "type": "address"
         }
       ],
-      "name": "isOperatorAuthorizedFor",
+      "name": "tokensOf",
       "outputs": [
         {
           "name": "",
-          "type": "bool"
+          "type": "uint256[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ownerOf",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "tokenMetadata",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -183,43 +339,6 @@
       "constant": false,
       "inputs": [
         {
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "name": "assetId",
-          "type": "uint256"
-        }
-      ],
-      "name": "transfer",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "assetId",
-          "type": "uint256"
-        }
-      ],
-      "name": "assetData",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
           "name": "operator",
           "type": "address"
         },
@@ -228,34 +347,19 @@
           "type": "bool"
         }
       ],
-      "name": "authorizeOperator",
+      "name": "setApprovalForAll",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "assetId",
-          "type": "uint256"
-        }
-      ],
-      "name": "safeAssetData",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [
+        {
+          "name": "from",
+          "type": "address"
+        },
         {
           "name": "to",
           "type": "address"
@@ -269,7 +373,7 @@
           "type": "bytes"
         }
       ],
-      "name": "transfer",
+      "name": "safeTransferFrom",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -279,38 +383,19 @@
       "constant": true,
       "inputs": [
         {
-          "name": "holder",
-          "type": "address"
-        }
-      ],
-      "name": "assetCount",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "holder",
+          "name": "operator",
           "type": "address"
         },
         {
-          "name": "index",
-          "type": "uint256"
+          "name": "assetHolder",
+          "type": "address"
         }
       ],
-      "name": "assetByIndex",
+      "name": "isApprovedForAll",
       "outputs": [
         {
           "name": "",
-          "type": "uint256"
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -325,7 +410,7 @@
           "type": "uint256"
         }
       ],
-      "name": "holderOf",
+      "name": "getApprovedAddress",
       "outputs": [
         {
           "name": "",
@@ -334,32 +419,6 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "name": "assetId",
-          "type": "uint256"
-        },
-        {
-          "name": "userData",
-          "type": "bytes"
-        },
-        {
-          "name": "operatorData",
-          "type": "bytes"
-        }
-      ],
-      "name": "transfer",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -403,41 +462,9 @@
           "indexed": false,
           "name": "userData",
           "type": "bytes"
-        },
-        {
-          "indexed": false,
-          "name": "operatorData",
-          "type": "bytes"
         }
       ],
       "name": "Transfer",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "name": "assetId",
-          "type": "uint256"
-        },
-        {
-          "indexed": true,
-          "name": "holder",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "name": "operator",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "name": "data",
-          "type": "string"
-        }
-      ],
-      "name": "Update",
       "type": "event"
     },
     {
@@ -459,7 +486,29 @@
           "type": "bool"
         }
       ],
-      "name": "AuthorizeOperator",
+      "name": "ApprovalForAll",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
       "type": "event"
     },
     {
@@ -483,7 +532,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "data",
+          "name": "",
           "type": "bytes"
         }
       ],
@@ -491,6 +540,29 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "isUpdateAuthorized",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -670,12 +742,8 @@
       "constant": true,
       "inputs": [
         {
-          "name": "x",
-          "type": "int256"
-        },
-        {
-          "name": "y",
-          "type": "int256"
+          "name": "assetId",
+          "type": "uint256"
         }
       ],
       "name": "exists",
@@ -693,8 +761,12 @@
       "constant": true,
       "inputs": [
         {
-          "name": "assetId",
-          "type": "uint256"
+          "name": "x",
+          "type": "int256"
+        },
+        {
+          "name": "y",
+          "type": "int256"
         }
       ],
       "name": "exists",
@@ -848,6 +920,24 @@
       "constant": false,
       "inputs": [
         {
+          "name": "assetId",
+          "type": "uint256"
+        },
+        {
+          "name": "operator",
+          "type": "address"
+        }
+      ],
+      "name": "allowUpdateOperator",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "name": "x",
           "type": "int256"
         },
@@ -895,5 +985,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-02-08T15:16:20.893Z"
+  "updatedAt": "2018-03-06T13:49:26.842Z"
 }
