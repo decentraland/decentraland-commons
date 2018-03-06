@@ -1,9 +1,11 @@
 import Web3 from 'web3'
 
-import { Contract } from './Contract'
 import { Wallet } from './Wallet'
+import { Contract } from '../Contract'
 
 export class NodeWallet extends Wallet {
+  static type = 'node'
+
   async connect(providerUrl) {
     const provider = await this.getProvider(providerUrl)
     if (!provider) {

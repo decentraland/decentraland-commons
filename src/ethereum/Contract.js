@@ -1,5 +1,5 @@
 import { promisify } from '../utils'
-import { abiDecoder } from './abi-decoder'
+import { Abi } from './abi'
 import { Event } from './Event'
 
 /** Class to work with Ethereum contracts */
@@ -33,9 +33,7 @@ export class Contract {
    * @return {Array<string>} - events
    */
   static getEvents() {
-    return this.getDefaultAbi()
-      .filter(method => method.type === 'event')
-      .map(event => event.name)
+    return new Abi(this.getDefaultAbi()).getEvents()
   }
 
   /**
@@ -62,20 +60,6 @@ export class Contract {
   }
 
   /**
-   * See {@link Contract#decodeMethod}
-   */
-  static decodeMethod(input) {
-    return abiDecoder.decodeMethod(input)
-  }
-
-  /**
-   * See {@link Contract#decodeLogs}
-   */
-  static decodeLogs(logs) {
-    return abiDecoder.decodeLogs(logs)
-  }
-
-  /**
    * @param  {string} [address] - Address of the contract. If it's undefined, it'll use the result of calling {@link Contract#getDefaultAddress}
    * @param  {object} [abi]     - Object describing the contract (compile result). If it's undefined, it'll use the result of calling {@link Contract#getDefaultAbi}
    * @return {Contract} instance
@@ -83,8 +67,9 @@ export class Contract {
   constructor(address, abi) {
     this.setAddress(address || this.constructor.getDefaultAddress())
     this.setAbi(abi || this.constructor.getDefaultAbi())
-
     this.instance = null
+
+    this.abi.extend(this)
   }
 
   /**
@@ -108,8 +93,7 @@ export class Contract {
       throw new Error('Tried to instantiate a Contract without an `abi`')
     }
 
-    this.abi = abi
-    abiDecoder.addABI(abi)
+    this.abi = Abi.new(abi)
   }
 
   setInstance(instance) {
@@ -134,42 +118,6 @@ export class Contract {
    */
   call(prop, ...args) {
     return Contract.call(this.instance[prop], ...args)
-  }
-
-  /**
-   * Gets a transaction result `input` and returns a parsed object with the method execution details.
-   * For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
-   * @param  {string} input - Hex input
-   * @return {object} - Object representing the method execution
-   */
-  decodeMethod(input) {
-    return Contract.decodeMethod(input)
-  }
-
-  /**
-   * Gets a transaction recepeit `logs` and returns a parsed array with the details
-   * For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
-   * @param  {string} logs - Hex logs
-   * @return {array<object>} - An array of logs triggered by the transaction
-   */
-  decodeLogs(logs) {
-    return Contract.decodeLogs(logs)
-  }
-
-  /**
-   * Tries to find the supplied parameter to a *decoded* method [decodedMethod]{@link Contract#decodedMethod}. It returns the Wei value
-   * A method typicaly consist of { "name": "methodName", "params": [{ "name": "paramName", "value": "VALUE_IN_WEI", "type": "uint256" }] }
-   * @param  {object} decodedMethod
-   * @param  {string} paramName
-   * @return {string} - Found result or undefined
-   */
-  findParamValue(decodedMethod, paramName) {
-    const params = decodedMethod.params || []
-    const param = params.find(param => param.name === paramName)
-
-    if (param) {
-      return param.value
-    }
   }
 
   getEvent(eventName) {
