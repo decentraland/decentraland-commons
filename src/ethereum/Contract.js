@@ -1,5 +1,5 @@
 import { promisify } from '../utils'
-import { Abi } from './Abi'
+import { Abi } from './abi'
 import { Event } from './Event'
 
 /** Class to work with Ethereum contracts */

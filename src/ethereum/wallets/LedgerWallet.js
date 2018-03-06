@@ -8,21 +8,23 @@ import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
 import LedgerWalletSubprovider from 'ledger-wallet-provider'
 
 import { Wallet } from './Wallet'
-import { sleep } from '../utils'
+import { sleep } from '../../utils'
 
 export class LedgerWallet extends Wallet {
   // eslint-disable-next-line
   static derivationPath = "44'/60'/0'/0"
+  static type = 'ledger'
 
   static async isSupported() {
     const devices = await TransportU2F.list()
     return devices.length > 0
   }
 
-  constructor(account, derivationPath = LedgerWallet.derivationPath) {
+  constructor(account, derivationPath) {
     super(account)
     this.ledger = null
-    this.derivationPath = derivationPath
+    this.engine = null
+    this.derivationPath = derivationPath || LedgerWallet.derivationPath
   }
 
   async connect(providerUrl) {
@@ -42,9 +44,19 @@ export class LedgerWallet extends Wallet {
     if (!this.account) {
       this.setAccount(accounts[0])
     }
+    this.engine = new ProviderEngine()
 
     const provider = await this.getProvider(providerUrl)
     this.web3 = new Web3(provider)
+  }
+
+  disconnect() {
+    super.disconnect()
+
+    if (this.engine) {
+      this.engine.stop()
+      this.engine = null
+    }
   }
 
   /**
@@ -53,20 +65,19 @@ export class LedgerWallet extends Wallet {
    * @return {object} The web3 provider
    */
   async getProvider(providerUrl = 'https://mainnet.infura.io/') {
-    let engine = new ProviderEngine()
     let ledgerWalletSubProvider = await LedgerWalletSubprovider(
       this.derivationPath
     )
 
-    engine.addProvider(ledgerWalletSubProvider)
-    engine.addProvider(
+    this.engine.addProvider(ledgerWalletSubProvider)
+    this.engine.addProvider(
       new RpcSubprovider({
         rpcUrl: providerUrl
       })
     )
-    engine.start()
+    this.engine.start()
 
-    return engine
+    return this.engine
   }
 
   async getAccounts() {

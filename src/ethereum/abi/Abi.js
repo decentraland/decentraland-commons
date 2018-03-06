@@ -1,14 +1,6 @@
 import { abiDecoder } from './abi-decoder'
 
-export const Abi = {
-  new(abiObject) {
-    const newAbi = Object.create(abiObject)
-    abiDecoder.addABI(abiObject)
-    return Object.assign(newAbi, abi)
-  }
-}
-
-export const abi = {
+const abi = {
   extend(contract) {
     const call = (name, ...args) => contract.call(name, ...args)
     const transaction = (name, ...args) => contract.transaction(name, ...args)
@@ -78,4 +70,13 @@ export const abi = {
       return param.value
     }
   }
+}
+
+export const Abi = {
+  new(abiObject) {
+    const newAbi = Object.create(abiObject)
+    abiDecoder.addABI(abiObject)
+    return Object.assign(newAbi, abi)
+  },
+  ...abi
 }

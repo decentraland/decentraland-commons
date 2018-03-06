@@ -1,8 +1,11 @@
 // Interface
 export class Wallet {
+  static type = ''
+
   constructor(account) {
     this.web3 = null
     this.account = null
+    this.type = this.constructor.type
   }
 
   isConnected() {

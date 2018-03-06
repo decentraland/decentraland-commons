@@ -1,9 +1,8 @@
 import { Log } from '../log'
 
-import { NodeWallet } from './NodeWallet'
-import { LedgerWallet } from './LedgerWallet'
+import { NodeWallet, LedgerWallet } from './wallets'
 import { Contract } from './Contract'
-import { abi } from './Abi'
+import { Abi } from './abi'
 import { ethUtils } from './ethUtils'
 import { promisify } from '../utils/index'
 
@@ -29,7 +28,7 @@ export const eth = {
    * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link eth#setContracts}
    * @param  {string} [options.defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {string} [options.providerUrl] - URL for a provider forwarded to {@link Wallet#getWeb3Provider}
-   * @param  {string} [options.derivationPath] -
+   * @param  {string} [options.derivationPath] - Path to derive the hardware wallet in. Defaults to each wallets most common value
    * @return {boolean} - True if the connection was successful
    */
   async connect(options = {}) {
@@ -94,6 +93,14 @@ export const eth = {
 
   getAccount() {
     return this.wallet.getAccount()
+  },
+
+  getWalletAttributes() {
+    return {
+      account: this.wallet.account,
+      type: this.wallet.type,
+      derivationPath: this.wallet.derivationPath
+    }
   },
 
   /**
@@ -164,8 +171,8 @@ export const eth = {
    * @param  {string} txId - Transaction id/hash
    * @return {object}      - An object describing the transaction (if it exists)
    */
-  fetchTxStatus(txId) {
-    return Contract.transaction(web3.eth.getTransaction, txId)
+  async fetchTxStatus(txId) {
+    return await promisify(web3.eth.getTransaction)(txId)
   },
 
   /**
@@ -174,13 +181,10 @@ export const eth = {
    * @return {object} - An object describing the transaction receipt (if it exists) with it's logs
    */
   async fetchTxReceipt(txId) {
-    const receipt = await Contract.transaction(
-      web3.eth.getTransactionReceipt,
-      txId
-    )
+    const receipt = await promisify(web3.eth.getTransactionReceipt)(txId)
 
     if (receipt) {
-      receipt.logs = abi.decodeLogs(receipt.logs)
+      receipt.logs = Abi.decodeLogs(receipt.logs)
     }
 
     return receipt
