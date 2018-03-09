@@ -440,6 +440,33 @@
       "inputs": [
         {
           "indexed": true,
+          "name": "assetId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "holder",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "data",
+          "type": "string"
+        }
+      ],
+      "name": "Update",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
           "name": "from",
           "type": "address"
         },
@@ -985,5 +1012,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-06T13:49:26.842Z"
+  "updatedAt": "2018-03-09T17:11:02.481Z"
 }
