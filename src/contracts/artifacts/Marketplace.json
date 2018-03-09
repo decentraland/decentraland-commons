@@ -16,6 +16,34 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "nonFungibleRegistry",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "acceptedToken",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -39,6 +67,10 @@
       ],
       "name": "auctionList",
       "outputs": [
+        {
+          "name": "id",
+          "type": "bytes32"
+        },
         {
           "name": "seller",
           "type": "address"
@@ -86,20 +118,6 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "assetId",
-          "type": "uint256"
-        }
-      ],
-      "name": "executeOrder",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -156,6 +174,24 @@
       "constant": false,
       "inputs": [
         {
+          "name": "assetId",
+          "type": "uint256"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        }
+      ],
+      "name": "executeOrder",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "name": "newOwner",
           "type": "address"
         }
@@ -185,13 +221,18 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
           "indexed": true,
           "name": "assetId",
           "type": "uint256"
         },
         {
           "indexed": true,
-          "name": "creator",
+          "name": "seller",
           "type": "address"
         },
         {
@@ -212,9 +253,19 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
           "indexed": true,
           "name": "assetId",
           "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "seller",
+          "type": "address"
         },
         {
           "indexed": false,
@@ -234,9 +285,19 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
           "indexed": true,
           "name": "assetId",
           "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "seller",
+          "type": "address"
         }
       ],
       "name": "AuctionCancelled",
@@ -290,5 +351,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-02-22T03:32:21.886Z"
+  "updatedAt": "2018-03-09T14:52:43.841Z"
 }
