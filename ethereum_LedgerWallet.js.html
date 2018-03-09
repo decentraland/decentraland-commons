@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: email/mailchimp.js</title>
+    <title>JSDoc: Source: ethereum/LedgerWallet.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: email/mailchimp.js</h1>
+    <h1 class="page-title">Source: ethereum/LedgerWallet.js</h1>
 
     
 
@@ -26,66 +26,93 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Mailchimp from 'mailchimp-api-v3'
+            <pre class="prettyprint source linenums"><code>import Web3 from 'web3'
 
-import { Log } from '../log'
+import TransportU2F from '@ledgerhq/hw-transport-u2f'
+import Eth from '@ledgerhq/hw-app-eth'
 
-const log = new Log('Mailchimp')
+import ProviderEngine from 'web3-provider-engine'
+import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
+import LedgerWalletSubprovider from 'ledger-wallet-provider'
 
-/**
- * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
- * @namespace
- */
-export const mailchimp = {
-  client: null, // defined on `.connect()`
+import { Wallet } from './Wallet'
+import { sleep } from '../utils'
 
-  /**
-   * Connect to the Mailchimp client
-   * @param {string} apiKey - Mailchimp api key
-   * @return {object} the Mailchimp object, to allow chaining
-   */
-  connect(apiKey) {
-    if (!apiKey) throw new Error('Missing Mailchimp API key')
+export class LedgerWallet extends Wallet {
+  // eslint-disable-next-line
+  static derivationPath = "44'/60'/0'/0"
 
-    if (!this.client) {
-      this.client = new Mailchimp(apiKey)
+  static async isSupported() {
+    const devices = await TransportU2F.list()
+    return devices.length > 0
+  }
+
+  constructor(account) {
+    super(account)
+    this.ledger = null
+  }
+
+  async connect(providerUrl) {
+    const transport = await TransportU2F.open(null, 2)
+    const ledger = new Eth(transport)
+
+    this.ledger = ledger
+
+    // FireFox hangs on indefinetly on `getAccounts`, so the second promise acts as a timeout
+    const accounts = await Promise.race([
+      this.getAccounts(),
+      sleep(2000).then(() =>
+        Promise.reject({ message: 'Timed out trying to connect to ledger' })
+      )
+    ])
+
+    if (!this.account) {
+      this.setAccount(accounts[0])
     }
 
-    return this
-  },
+    const provider = await this.getProvider(providerUrl)
+    this.web3 = new Web3(provider)
+  }
 
   /**
-   * Register a user to a Mailchimp list.
-   * @param  {string} email  - User email
-   * @param  {string} listId - The list you want to register the user to
-   * @return {Promise&lt;boolean>} - True if the operation was successfull
+   * It'll create a new provider using the providerUrl param for RPC calls
+   * @param  {string} [providerURL="https://mainnet.infura.io/"] - URL for an HTTP provider
+   * @return {object} The web3 provider
    */
-  subscribe: (email, listId) => {
-    if (!listId) {
-      throw new Error('Missing Mailchimp List Id')
-    }
+  async getProvider(providerUrl = 'https://mainnet.infura.io/') {
+    let engine = new ProviderEngine()
+    let ledgerWalletSubProvider = await LedgerWalletSubprovider(
+      LedgerWallet.derivationPath
+    )
 
-    return this.client
-      .post(`/lists/${listId}/members`, {
-        email_address: email,
-        status: 'subscribed'
+    engine.addProvider(ledgerWalletSubProvider)
+    engine.addProvider(
+      new RpcSubprovider({
+        rpcUrl: providerUrl
       })
-      .then(function(response) {
-        if (response.error) {
-          return false
-        }
+    )
+    engine.start()
 
-        log.info(`Subscribed ${email} to list ${listId}`)
-        return true
-      })
-      .catch(error => {
-        if (error.title === 'Member Exists') {
-          return true
-        }
+    return engine
+  }
 
-        log.error(`Error trying to subscribe ${email} to list ${listId}`, error)
-        return false
-      })
+  async getAccounts() {
+    const defaultAccount = await this.ledger.getAddress(
+      LedgerWallet.derivationPath
+    )
+    return [defaultAccount.address] // follow the Wallet interface
+  }
+
+  async sign(message) {
+    let { v, r, s } = await this.ledger.signPersonalMessage(
+      LedgerWallet.derivationPath,
+      message.substring(2)
+    )
+
+    v = (v - 27).toString(16)
+    if (v.length &lt; 2) v = '0' + v
+
+    return '0x' + r + s + v
   }
 }
 </code></pre>

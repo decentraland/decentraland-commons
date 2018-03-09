@@ -293,7 +293,179 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line58">line 58</a>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line60">line 60</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".decodeLogs"><span class="type-signature">(static) </span>decodeLogs<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    See <a href="Contract.html#decodeLogs">Contract#decodeLogs</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".decodeMethod"><span class="type-signature">(static) </span>decodeMethod<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    See <a href="Contract.html#decodeMethod">Contract#decodeMethod</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line67">line 67</a>
     </li></ul></dd>
     
 
@@ -860,7 +1032,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line44">line 44</a>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -964,7 +1136,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line51">line 51</a>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line53">line 53</a>
     </li></ul></dd>
     
 
@@ -1142,7 +1314,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line119">line 119</a>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -1181,6 +1353,503 @@
     <dd>
         
 <span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="decodeLogs"><span class="type-signature"></span>decodeLogs<span class="signature">(logs)</span><span class="type-signature"> &rarr; {array.&lt;object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Gets a transaction recepeit `logs` and returns a parsed array with the details
+For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>logs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Hex logs</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - An array of logs triggered by the transaction
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array.&lt;object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="decodeMethod"><span class="type-signature"></span>decodeMethod<span class="signature">(input)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Gets a transaction result `input` and returns a parsed object with the method execution details.
+For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Hex input</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line145">line 145</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Object representing the method execution
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="findParamValue"><span class="type-signature"></span>findParamValue<span class="signature">(decodedMethod, paramName)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Tries to find the supplied parameter to a *decoded* method decodedMethod. It returns the Wei value
+A method typicaly consist of { "name": "methodName", "params": [{ "name": "paramName", "value": "VALUE_IN_WEI", "type": "uint256" }] }
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>decodedMethod</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>paramName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line166">line 166</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Found result or undefined
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
 
 
     </dd>
@@ -1299,7 +1968,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line91">line 91</a>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -1434,7 +2103,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line79">line 79</a>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -1612,7 +2281,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line109">line 109</a>
+        <a href="ethereum_Contract.js.html">ethereum/Contract.js</a>, <a href="ethereum_Contract.js.html#line125">line 125</a>
     </li></ul></dd>
     
 
@@ -1684,7 +2353,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Mar 06 2018 19:58:59 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 09 2018 15:55:37 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

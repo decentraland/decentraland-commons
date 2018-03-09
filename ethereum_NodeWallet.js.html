@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: email/mailchimp.js</title>
+    <title>JSDoc: Source: ethereum/NodeWallet.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: email/mailchimp.js</h1>
+    <h1 class="page-title">Source: ethereum/NodeWallet.js</h1>
 
     
 
@@ -26,66 +26,52 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Mailchimp from 'mailchimp-api-v3'
+            <pre class="prettyprint source linenums"><code>import Web3 from 'web3'
 
-import { Log } from '../log'
+import { Contract } from './Contract'
+import { Wallet } from './Wallet'
 
-const log = new Log('Mailchimp')
-
-/**
- * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
- * @namespace
- */
-export const mailchimp = {
-  client: null, // defined on `.connect()`
-
-  /**
-   * Connect to the Mailchimp client
-   * @param {string} apiKey - Mailchimp api key
-   * @return {object} the Mailchimp object, to allow chaining
-   */
-  connect(apiKey) {
-    if (!apiKey) throw new Error('Missing Mailchimp API key')
-
-    if (!this.client) {
-      this.client = new Mailchimp(apiKey)
+export class NodeWallet extends Wallet {
+  async connect(providerUrl) {
+    const provider = await this.getProvider(providerUrl)
+    if (!provider) {
+      throw new Error('Could not get a valid provider for web3')
     }
 
-    return this
-  },
+    this.web3 = new Web3(provider)
+
+    if (!this.account) {
+      const accounts = await this.getAccounts()
+      if (accounts.length === 0) {
+        throw new Error('Could not connect to web3')
+      }
+
+      this.setAccount(accounts[0])
+    }
+  }
 
   /**
-   * Register a user to a Mailchimp list.
-   * @param  {string} email  - User email
-   * @param  {string} listId - The list you want to register the user to
-   * @return {Promise&lt;boolean>} - True if the operation was successfull
+   * It'll fetch the provider from the `window` object or default to a new HttpProvider instance
+   * @param  {string} [providerURL="http://localhost:8545"] - URL for an HTTP provider in case the browser provider is not present
+   * @return {object} The web3 provider
    */
-  subscribe: (email, listId) => {
-    if (!listId) {
-      throw new Error('Missing Mailchimp List Id')
-    }
+  getProvider(providerUrl = 'http://localhost:8545') {
+    return typeof window === 'undefined'
+      ? new Web3.providers.HttpProvider(providerUrl)
+      : window.web3 &amp;&amp; window.web3.currentProvider
+  }
 
-    return this.client
-      .post(`/lists/${listId}/members`, {
-        email_address: email,
-        status: 'subscribed'
-      })
-      .then(function(response) {
-        if (response.error) {
-          return false
-        }
+  async getAccounts() {
+    return await Contract.transaction(this.web3.eth.getAccounts)
+  }
 
-        log.info(`Subscribed ${email} to list ${listId}`)
-        return true
-      })
-      .catch(error => {
-        if (error.title === 'Member Exists') {
-          return true
-        }
+  async sign(message) {
+    const sign = this.web3.personal.sign.bind(this.web3.personal)
+    return await Contract.transaction(sign, message, this.account)
+  }
 
-        log.error(`Error trying to subscribe ${email} to list ${listId}`, error)
-        return false
-      })
+  async recover(message, signature) {
+    return await this.web3.personal.ecRecover(message, signature)
   }
 }
 </code></pre>
