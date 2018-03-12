@@ -1,18 +1,18 @@
 import { abi } from './artifacts/ServiceLocator.json'
-import { eth, Contract } from 'decentraland-commons'
+import { Contract } from '../ethereum'
+import { env } from '../env'
 
 /** ServiceLocator contract class */
 export class ServiceLocator extends Contract {
-  
   static getContractName() {
     return 'ServiceLocator'
   }
-  
+
   static getDefaultAddress() {
     // Default ServiceLocator
-    return '0x151b11892dd6ab1f91055dcd01d23d03a2c47570'
+    return env.universalGet('SERVICE_LOCATOR_CONTRACT_ADDRESS')
   }
-  
+
   static getDefaultAbi() {
     return abi
   }
@@ -24,5 +24,4 @@ export class ServiceLocator extends Contract {
   async getNamespace(address) {
     return this.transaction('getNamespace', address)
   }
-
 }
