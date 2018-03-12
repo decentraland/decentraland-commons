@@ -1,17 +1,12 @@
 import { abi } from './artifacts/ERC20Token.json'
-import { eth, Contract } from 'decentraland-commons'
+import { eth, Contract } from '../ethereum'
 
 /** ERC20Token contract class */
 export class ERC20Token extends Contract {
-
   static getContractName() {
     return 'ERC20Token'
   }
-  
-  static getDefaultAddress() {
-    return ''
-  }
-  
+
   static getDefaultAbi() {
     return abi
   }
