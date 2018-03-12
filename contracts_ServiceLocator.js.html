@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: DecentralandVesting</title>
+    <title>JSDoc: Source: contracts/ServiceLocator.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,135 +17,45 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: DecentralandVesting</h1>
+    <h1 class="page-title">Source: contracts/ServiceLocator.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>DecentralandVesting<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description">DecentralandVesting contract class</div>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-    <h2>Constructor</h2>
-    
-
-    
-    <h4 class="name" id="DecentralandVesting"><span class="type-signature"></span>new DecentralandVesting<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="contracts_DecentralandVesting.js.html">contracts/DecentralandVesting.js</a>, <a href="contracts_DecentralandVesting.js.html#line6">line 6</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { abi } from './artifacts/ServiceLocator.json'
+import { Contract } from '../ethereum'
+import { env } from '../env'
+
+/** ServiceLocator contract class */
+export class ServiceLocator extends Contract {
+  static getContractName() {
+    return 'ServiceLocator'
+  }
+
+  static getDefaultAddress() {
+    // Default ServiceLocator
+    return env.universalGet('SERVICE_LOCATOR_CONTRACT_ADDRESS')
+  }
+
+  static getDefaultAbi() {
+    return abi
+  }
+
+  async get(namespace) {
+    return this.transaction('get', namespace)
+  }
+
+  async getNamespace(address) {
+    return this.transaction('getNamespace', address)
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 
