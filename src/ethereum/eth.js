@@ -1,9 +1,10 @@
 import { Log } from '../log'
 
-import { NodeWallet } from './NodeWallet'
-import { LedgerWallet } from './LedgerWallet'
+import { NodeWallet, LedgerWallet } from './wallets'
 import { Contract } from './Contract'
+import { Abi } from './abi'
 import { ethUtils } from './ethUtils'
+import { promisify } from '../utils/index'
 
 const log = new Log('Ethereum')
 let web3 = null
@@ -27,17 +28,27 @@ export const eth = {
    * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link eth#setContracts}
    * @param  {string} [options.defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {string} [options.providerUrl] - URL for a provider forwarded to {@link Wallet#getWeb3Provider}
+   * @param  {string} [options.derivationPath] - Path to derive the hardware wallet in. Defaults to each wallets most common value
    * @return {boolean} - True if the connection was successful
    */
   async connect(options = {}) {
-    if (this.wallet && this.wallet.isConnected()) {
+    if (this.isConnected()) {
       this.disconnect()
     }
 
-    const { contracts = [], defaultAccount, providerUrl } = options
+    const {
+      contracts = [],
+      defaultAccount,
+      providerUrl,
+      derivationPath
+    } = options
 
     try {
-      this.wallet = await this.createWallet(defaultAccount, providerUrl)
+      this.wallet = await this.connectWallet(
+        defaultAccount,
+        providerUrl,
+        derivationPath
+      )
       web3 = this.wallet.getWeb3()
 
       this.setContracts(contracts)
@@ -49,11 +60,11 @@ export const eth = {
     }
   },
 
-  async createWallet(defaultAccount, providerUrl) {
+  async connectWallet(defaultAccount, providerUrl, derivationPath = null) {
     let wallet
 
     try {
-      wallet = new LedgerWallet(defaultAccount)
+      wallet = new LedgerWallet(defaultAccount, derivationPath)
       await wallet.connect(providerUrl)
     } catch (error) {
       wallet = new NodeWallet(defaultAccount)
@@ -61,6 +72,10 @@ export const eth = {
     }
 
     return wallet
+  },
+
+  isConnected() {
+    return (this.wallet && this.wallet.isConnected()) || !!web3
   },
 
   disconnect() {
@@ -80,30 +95,27 @@ export const eth = {
     return this.wallet.getAccount()
   },
 
-  /**
-   * Get a contract instance built on {@link eth#setContracts}
-   * It'll throw if the contract is not found on the `contracts` mapping
-   * @param  {string} name - Contract name
-   * @return {object} contract
-   */
-  getContract(name) {
-    if (!this.contracts[name]) {
-      const contractNames = Object.keys(this.contracts)
-      throw new Error(
-        `The contract ${name} not found.\nDid you add it to the '.connect()' call?\nAvailable contracts are ${contractNames}`
-      )
+  getWalletAttributes() {
+    return {
+      account: this.wallet.account,
+      type: this.wallet.type,
+      derivationPath: this.wallet.derivationPath
     }
-
-    return this.contracts[name]
   },
 
   /**
    * Set the Ethereum contracts to use on the `contracts` property. It builds a map of
    *   { [Contract Name]: Contract instance }
    * usable later via `.getContract`. Check {@link https://github.com/decentraland/commons/tree/master/src/ethereum} for more info
-   * @param  {array<Contract|object>} [contracts] - An array comprised of a a wide of options: objects defining contracts, Contract subclasses or Contract instances.
+   * @param  {array<Contract|object>} contracts - An array comprised of a wide variety of options: objects defining contracts, Contract subclasses or Contract instances.
    */
   setContracts(contracts) {
+    if (!this.isConnected()) {
+      throw new Error(
+        'Tried to set eth contracts without connecting successfully first'
+      )
+    }
+
     for (const contractData of contracts) {
       let contract = null
       let contractName = null
@@ -114,9 +126,9 @@ export const eth = {
         contractName = contractData.getContractName()
       } else if (
         typeof contractData === 'object' &&
-        !this.isContractOptions(contractData)
+        contractData.constructor !== Object
       ) {
-        // contractData is an instance of Contract or of one of its children
+        // contractData is an instance of Contract or of one of its subclasses
         contract = contractData
         contractName = contractData.constructor.getContractName()
       } else {
@@ -137,12 +149,21 @@ export const eth = {
     }
   },
 
-  isContractOptions(contractData) {
-    return (
-      'name' in contractData &&
-      'address' in contractData &&
-      'abi' in contractData
-    )
+  /**
+   * Get a contract instance built on {@link eth#setContracts}
+   * It'll throw if the contract is not found on the `contracts` mapping
+   * @param  {string} name - Contract name
+   * @return {object} contract
+   */
+  getContract(name) {
+    if (!this.contracts[name]) {
+      const contractNames = Object.keys(this.contracts)
+      throw new Error(
+        `The contract ${name} not found.\nDid you add it to the '.connect()' call?\nAvailable contracts are "${contractNames}"`
+      )
+    }
+
+    return this.contracts[name]
   },
 
   /**
@@ -150,8 +171,8 @@ export const eth = {
    * @param  {string} txId - Transaction id/hash
    * @return {object}      - An object describing the transaction (if it exists)
    */
-  fetchTxStatus(txId) {
-    return Contract.transaction(web3.eth.getTransaction, txId)
+  async fetchTxStatus(txId) {
+    return await promisify(web3.eth.getTransaction)(txId)
   },
 
   /**
@@ -160,13 +181,10 @@ export const eth = {
    * @return {object} - An object describing the transaction receipt (if it exists) with it's logs
    */
   async fetchTxReceipt(txId) {
-    const receipt = await Contract.transaction(
-      web3.eth.getTransactionReceipt,
-      txId
-    )
+    const receipt = await promisify(web3.eth.getTransactionReceipt)(txId)
 
     if (receipt) {
-      receipt.logs = Contract.decodeLogs(receipt.logs)
+      receipt.logs = Abi.decodeLogs(receipt.logs)
     }
 
     return receipt
@@ -180,5 +198,53 @@ export const eth = {
 
   async recover(message, signature) {
     return await this.wallet.recover(message, signature)
+  },
+
+  /**
+   * Get a list of known networks
+   * @return {array} - An array of objects describing each network: { id, name, label }
+   */
+  getNetworks() {
+    return [
+      {
+        id: '1',
+        name: 'mainnet',
+        label: 'Main Ethereum Network'
+      },
+      {
+        id: '2',
+        name: 'morden',
+        label: 'Morden Test Network'
+      },
+      {
+        id: '3',
+        name: 'ropsten',
+        label: 'Ropsten Test Network'
+      },
+      {
+        id: '4',
+        name: 'rinkeby',
+        label: 'Rinkeby Test Network'
+      },
+      {
+        id: '42',
+        name: 'kovan',
+        label: 'Kovan Test Network'
+      }
+    ]
+  },
+
+  /**
+   * Interface for the web3 `getNetwork` method (it adds the network name and label).
+   * @return {object} - An object describing the current network: { id, name, label }
+   */
+  async getNetwork() {
+    const id = await promisify(web3.version.getNetwork)()
+    const networks = this.getNetworks()
+    const network = networks.find(network => network.id === id)
+    if (!network) {
+      throw new Error('Unknown Network')
+    }
+    return network
   }
 }

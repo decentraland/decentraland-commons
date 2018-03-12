@@ -1,9 +1,11 @@
 import Web3 from 'web3'
 
-import { Contract } from './Contract'
 import { Wallet } from './Wallet'
+import { Contract } from '../Contract'
 
 export class NodeWallet extends Wallet {
+  static type = 'node'
+
   async connect(providerUrl) {
     const provider = await this.getProvider(providerUrl)
     if (!provider) {
@@ -14,6 +16,10 @@ export class NodeWallet extends Wallet {
 
     if (!this.account) {
       const accounts = await this.getAccounts()
+      if (accounts.length === 0) {
+        throw new Error('Could not connect to web3')
+      }
+
       this.setAccount(accounts[0])
     }
   }

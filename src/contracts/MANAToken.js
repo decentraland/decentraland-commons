@@ -1,5 +1,4 @@
 import { abi } from './artifacts/MANAToken.json'
-import { TerraformReserve } from './TerraformReserve'
 import { eth, Contract } from '../ethereum'
 import { env } from '../env'
 
@@ -17,21 +16,17 @@ export class MANAToken extends Contract {
     return abi
   }
 
-  async getAllowance(sender) {
-    const assigned = await this.getAllowanceWei(sender)
+  async approve(spender, mana) {
+    return this.transaction('approve', spender, eth.utils.toWei(mana))
+  }
+
+  async allowance(owner, spender) {
+    const assigned = await this.call('allowance', owner, spender)
     return eth.utils.fromWei(assigned)
   }
 
-  getAllowanceWei(sender) {
-    return this.call('allowance', sender, TerraformReserve.getDefaultAddress())
-  }
-
-  async getBalance(sender) {
-    const manaBalance = await this.getBalanceWei(sender)
+  async balanceOf(owner) {
+    const manaBalance = await this.call('balanceOf', owner)
     return eth.utils.fromWei(manaBalance)
-  }
-
-  getBalanceWei(sender) {
-    return this.call('balanceOf', sender)
   }
 }

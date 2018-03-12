@@ -1,122 +1,15 @@
 {
-  "contractName": "DecentralandVesting",
+  "contractName": "Marketplace",
   "abi": [
     {
-      "constant": true,
-      "inputs": [],
-      "name": "duration",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "cliff",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "beneficiary",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "terraformReserve",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "returnVesting",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "vestedAmount",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "releasableAmount",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "revoked",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "constant": false,
-      "inputs": [],
-      "name": "release",
+      "inputs": [
+        {
+          "name": "ownerCut",
+          "type": "uint8"
+        }
+      ],
+      "name": "setOwnerCut",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -125,11 +18,88 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "revocable",
+      "name": "nonFungibleRegistry",
       "outputs": [
         {
           "name": "",
-          "type": "bool"
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "acceptedToken",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelOrder",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "auctionList",
+      "outputs": [
+        {
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "name": "startedAt",
+          "type": "uint256"
+        },
+        {
+          "name": "expiresAt",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ownerCutPercentage",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -151,41 +121,22 @@
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [],
-      "name": "released",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [
         {
-          "name": "_token",
-          "type": "address"
+          "name": "assetId",
+          "type": "uint256"
         },
         {
-          "name": "amount",
+          "name": "priceInWei",
+          "type": "uint256"
+        },
+        {
+          "name": "expiresAt",
           "type": "uint256"
         }
       ],
-      "name": "releaseForeignToken",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "revoke",
+      "name": "createOrder",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -194,7 +145,7 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "start",
+      "name": "publicationFeeInWei",
       "outputs": [
         {
           "name": "",
@@ -209,11 +160,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "amount",
+          "name": "publicationFee",
           "type": "uint256"
         }
       ],
-      "name": "lockMana",
+      "name": "setPublicationFee",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -223,25 +174,15 @@
       "constant": false,
       "inputs": [
         {
-          "name": "target",
-          "type": "address"
-        }
-      ],
-      "name": "releaseTo",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
+          "name": "assetId",
+          "type": "uint256"
+        },
         {
-          "name": "target",
-          "type": "address"
+          "name": "price",
+          "type": "uint256"
         }
       ],
-      "name": "changeBeneficiary",
+      "name": "executeOrder",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -262,51 +203,13 @@
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [],
-      "name": "token",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
-          "name": "_beneficiary",
+          "name": "_acceptedToken",
           "type": "address"
         },
         {
-          "name": "_start",
-          "type": "uint256"
-        },
-        {
-          "name": "_cliff",
-          "type": "uint256"
-        },
-        {
-          "name": "_duration",
-          "type": "uint256"
-        },
-        {
-          "name": "_revocable",
-          "type": "bool"
-        },
-        {
-          "name": "_token",
-          "type": "address"
-        },
-        {
-          "name": "_returnVesting",
-          "type": "address"
-        },
-        {
-          "name": "_terraformReserve",
+          "name": "_nonFungibleRegistry",
           "type": "address"
         }
       ],
@@ -319,11 +222,31 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "amount",
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "name": "assetId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "priceInWei",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "expiresAt",
           "type": "uint256"
         }
       ],
-      "name": "LockedMANA",
+      "name": "AuctionCreated",
       "type": "event"
     },
     {
@@ -331,17 +254,77 @@
       "inputs": [
         {
           "indexed": false,
-          "name": "amount",
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "name": "assetId",
           "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "totalPrice",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "winner",
+          "type": "address"
         }
       ],
-      "name": "Released",
+      "name": "AuctionSuccessful",
       "type": "event"
     },
     {
       "anonymous": false,
-      "inputs": [],
-      "name": "Revoked",
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "name": "assetId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "seller",
+          "type": "address"
+        }
+      ],
+      "name": "AuctionCancelled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "publicationFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChangedPublicationFee",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "ownerCut",
+          "type": "uint256"
+        }
+      ],
+      "name": "ChangedOwnerCut",
       "type": "event"
     },
     {
@@ -364,9 +347,9 @@
   ],
   "compiler": {
     "name": "solc",
-    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+    "version": "0.4.19+commit.c4cbbb05.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-01-20T20:59:16.190Z"
+  "updatedAt": "2018-03-09T14:52:43.841Z"
 }

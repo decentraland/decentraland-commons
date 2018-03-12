@@ -16,53 +16,33 @@ export class DecentralandVesting extends Contract {
     return abi
   }
 
-  async getDuration(address) {
-    const bigNumber = await this.call('duration', address)
+  async duration() {
+    const bigNumber = await this.call('duration')
     return bigNumber.toNumber()
   }
 
-  async getCliff(address) {
-    const bigNumber = await this.call('cliff', address)
+  async cliff() {
+    const bigNumber = await this.call('cliff')
     return bigNumber.toNumber()
   }
 
-  getBeneficiary(address) {
-    return this.call('beneficiary', address)
-  }
-
-  async getVestedAmount(address) {
-    const bigNumber = await this.call('vestedAmount', address)
+  async vestedAmount() {
+    const bigNumber = await this.call('vestedAmount')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  async getReleasableAmount(address) {
-    const bigNumber = await this.call('releasableAmount', address)
+  async releasableAmount() {
+    const bigNumber = await this.call('releasableAmount')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  isRevoked(address) {
-    return this.call('revoked', address)
-  }
-
-  isRevocable(address) {
-    return this.call('revocable', address)
-  }
-
-  getOwner(address) {
-    return this.call('owner', address)
-  }
-
-  async getReleased(address) {
-    const bigNumber = await this.call('released', address)
+  async released() {
+    const bigNumber = await this.call('released')
     return eth.utils.fromWei(bigNumber.toNumber())
   }
 
-  async getStart(address) {
-    const bigNumber = await this.call('start', address)
+  async start() {
+    const bigNumber = await this.call('start')
     return bigNumber.toNumber()
-  }
-
-  release(address) {
-    return this.transaction('release', address)
   }
 }

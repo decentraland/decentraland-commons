@@ -19,6 +19,12 @@ jobs:
     steps:
       - checkout
 
+      # The `ledger-wallet-provider` lib has `node-hid` as a dependency, which won't build on certain
+      # Linux systems without installing libusb first
+      - type: shell
+        name: Install System Dependencies
+        command: sudo apt-get update && sudo apt install -y libusb-1.0-0 libusb-1.0-0-dev
+
       - restore_cache:
           keys:
           - v2-dependencies-{{ checksum "package-lock.json" }}
@@ -34,6 +40,8 @@ jobs:
       - run: npm run prebuild && npm test
 
       - run: npm run build
+
+      - run: ./docs.sh
 
       - save_cache:
           paths:

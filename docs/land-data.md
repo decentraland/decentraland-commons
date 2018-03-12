@@ -23,5 +23,5 @@ version,name,description,ipns
 Example:
 
 ```
-0,My Parcel,This is my awesome parcel,ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY
+0,"My Parcel","This is my awesome parcel","ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY"
 ```
