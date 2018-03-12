@@ -1,5 +1,5 @@
 import { abi } from './artifacts/Marketplace.json'
-import { Contract } from '../ethereum'
+import { eth, Contract } from '../ethereum'
 import { env } from '../env'
 
 /** Marketplace contract class */
@@ -14,5 +14,9 @@ export class Marketplace extends Contract {
 
   static getDefaultAbi() {
     return abi
+  }
+
+  async executeOrder(assetId, amount) {
+    return this.transaction('executeOrder', assetId, eth.utils.toWei(amount))
   }
 }
