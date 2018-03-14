@@ -27,14 +27,14 @@ jobs:
 
       - restore_cache:
           keys:
-          - v2-dependencies-{{ checksum "package-lock.json" }}
+          - v3-dependencies-{{ checksum "package-lock.json" }}
 
       - run: npm install
 
       - save_cache:
           paths:
             - node_modules
-          key: v2-dependencies-{{ checksum "package-lock.json" }}
+          key: v3-dependencies-{{ checksum "package-lock.json" }}
 
       # run tests!
       - run: npm run prebuild && npm test
