@@ -27,7 +27,7 @@ export class LedgerWallet extends Wallet {
     this.derivationPath = derivationPath || LedgerWallet.derivationPath
   }
 
-  async connect(providerUrl) {
+  async connect(providerUrl, networkId) {
     const transport = await TransportU2F.open(null, 2)
     const ledger = new Eth(transport)
 
@@ -41,13 +41,14 @@ export class LedgerWallet extends Wallet {
       )
     ])
 
+    this.engine = new ProviderEngine()
+
+    const provider = await this.getProvider(providerUrl, networkId)
+    this.web3 = new Web3(provider)
+
     if (!this.account) {
       this.setAccount(accounts[0])
     }
-    this.engine = new ProviderEngine()
-
-    const provider = await this.getProvider(providerUrl)
-    this.web3 = new Web3(provider)
   }
 
   disconnect() {
@@ -62,10 +63,15 @@ export class LedgerWallet extends Wallet {
   /**
    * It'll create a new provider using the providerUrl param for RPC calls
    * @param  {string} [providerURL="https://mainnet.infura.io/"] - URL for an HTTP provider
+   * @param  {string} [networkId="1"] - The id of the network we're connecting to. 1 means mainnet, check {@link eth#getNetworks}
    * @return {object} The web3 provider
    */
-  async getProvider(providerUrl = 'https://mainnet.infura.io/') {
+  async getProvider(
+    providerUrl = 'https://mainnet.infura.io/',
+    networkId = '1'
+  ) {
     let ledgerWalletSubProvider = await LedgerWalletSubprovider(
+      () => networkId,
       this.derivationPath
     )
 
