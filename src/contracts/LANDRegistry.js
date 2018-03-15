@@ -1,16 +1,14 @@
+import CSV from 'comma-separated-values'
 import { abi } from './artifacts/LANDRegistry.json'
 import { Contract } from '../ethereum'
 import { env } from '../env'
-import CSV from 'comma-separated-values'
 
 const MAX_NAME_LENGTH = 50
 const MAX_DESCRIPTION_LENGTH = 140
 
 /** LANDToken contract class */
 export class LANDRegistry extends Contract {
-  static getContractName() {
-    return 'LANDRegistry'
-  }
+  static DataError = DataError
 
   static decodeLandData(data = '') {
     const version = data.charAt(0)
@@ -28,7 +26,7 @@ export class LANDRegistry extends Contract {
         }
       }
       default:
-        throw new Error(
+        throw new DataError(
           `Unknown version when trying to decode land data: "${data}" (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)`
         )
     }
@@ -39,25 +37,29 @@ export class LANDRegistry extends Contract {
       case '0': {
         const { version, name, description, ipns } = data
         if (name.length > MAX_NAME_LENGTH) {
-          throw new Error(
+          throw new DataError(
             `The name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
           )
         }
         if (description.length > MAX_DESCRIPTION_LENGTH) {
-          throw new Error(
+          throw new DataError(
             `The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGTH} chars`
           )
         }
         return CSV.encode([[version, name, description, ipns]])
       }
       default:
-        throw new Error(
+        throw new DataError(
           `Unknown version when trying to encode land data: "${JSON.stringify(
             data
           )}"
           (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)`
         )
     }
+  }
+
+  static getContractName() {
+    return 'LANDRegistry'
   }
 
   static getDefaultAddress() {
@@ -82,5 +84,12 @@ export class LANDRegistry extends Contract {
   assignMultipleParcels(x, y, address, opts = {}) {
     opts = Object.assign({ gas: 1000000, gasPrice: 28 * 1e9 }, opts)
     return this.transaction('assignMultipleParcels', x, y, address, opts)
+  }
+}
+
+class DataError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'DataError'
   }
 }
