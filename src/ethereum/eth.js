@@ -62,10 +62,15 @@ export const eth = {
 
   async connectWallet(defaultAccount, providerUrl, derivationPath = null) {
     let wallet
+    const networks = this.getNetworks()
 
     try {
+      const network =
+        networks.find(network => providerUrl.includes(network.name)) ||
+        networks[0]
+
       wallet = new LedgerWallet(defaultAccount, derivationPath)
-      await wallet.connect(providerUrl)
+      await wallet.connect(providerUrl, network.id)
     } catch (error) {
       wallet = new NodeWallet(defaultAccount)
       await wallet.connect(providerUrl)

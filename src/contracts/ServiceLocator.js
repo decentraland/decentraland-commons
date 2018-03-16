@@ -9,19 +9,10 @@ export class ServiceLocator extends Contract {
   }
 
   static getDefaultAddress() {
-    // Default ServiceLocator
     return env.universalGet('SERVICE_LOCATOR_CONTRACT_ADDRESS')
   }
 
   static getDefaultAbi() {
     return abi
-  }
-
-  async get(namespace) {
-    return this.transaction('get', namespace)
-  }
-
-  async getNamespace(address) {
-    return this.transaction('getNamespace', address)
   }
 }
