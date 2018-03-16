@@ -52,11 +52,10 @@
     "nodemailer": "^4.1.3",
     "pg": "^7.3.0",
     "rollbar": "^2.3.6",
-    "semantic-release": "^12.2.5",
     "tunnel-ssh": "^4.1.3",
     "validate-commit-msg": "^2.14.0",
     "web3": "^0.20.6",
-    "web3-provider-engine": "https://github.com/decentraland/provider-engine.git#releases"
+    "web3-provider-engine": "^13.6.6"
   },
   "peerDependencies": {
     "babel-polyfill": "^6.26.0"
