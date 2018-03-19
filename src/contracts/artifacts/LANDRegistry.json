@@ -81,6 +81,25 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "latestPing",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -115,6 +134,25 @@
         }
       ],
       "name": "isAuthorized",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "authorizedDeploy",
       "outputs": [
         {
           "name": "",
@@ -329,6 +367,25 @@
         {
           "name": "",
           "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateOperator",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -666,20 +723,6 @@
     },
     {
       "constant": false,
-      "inputs": [
-        {
-          "name": "assetId",
-          "type": "uint256"
-        }
-      ],
-      "name": "destroy",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
       "inputs": [],
       "name": "ping",
       "outputs": [],
@@ -769,8 +812,12 @@
       "constant": true,
       "inputs": [
         {
-          "name": "assetId",
-          "type": "uint256"
+          "name": "x",
+          "type": "int256"
+        },
+        {
+          "name": "y",
+          "type": "int256"
         }
       ],
       "name": "exists",
@@ -788,12 +835,8 @@
       "constant": true,
       "inputs": [
         {
-          "name": "x",
-          "type": "int256"
-        },
-        {
-          "name": "y",
-          "type": "int256"
+          "name": "assetId",
+          "type": "uint256"
         }
       ],
       "name": "exists",
@@ -955,7 +998,7 @@
           "type": "address"
         }
       ],
-      "name": "allowUpdateOperator",
+      "name": "setUpdateOperator",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -1005,12 +1048,5 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ],
-  "compiler": {
-    "name": "solc",
-    "version": "0.4.19+commit.c4cbbb05.Emscripten.clang"
-  },
-  "networks": {},
-  "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-09T17:11:02.481Z"
+  ]
 }
