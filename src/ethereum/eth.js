@@ -60,7 +60,7 @@ export const eth = {
     }
   },
 
-  async connectWallet(defaultAccount, providerUrl, derivationPath = null) {
+  async connectWallet(defaultAccount, providerUrl = '', derivationPath = null) {
     let wallet
     const networks = this.getNetworks()
 
