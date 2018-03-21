@@ -46,6 +46,6 @@ export class Event {
   getAll(options, callback) {
     const { args, opts } = typeof options === 'function' ? {} : options
     const func = typeof options === 'function' ? options : callback
-    this.instance(args, opts).watch(func)
+    this.instance(args, opts).get(func)
   }
 }
