@@ -2,20 +2,6 @@
   "contractName": "Marketplace",
   "abi": [
     {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "ownerCut",
-          "type": "uint8"
-        }
-      ],
-      "name": "setOwnerCut",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "constant": true,
       "inputs": [],
       "name": "nonFungibleRegistry",
@@ -27,6 +13,15 @@
       ],
       "payable": false,
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "unpause",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -44,48 +39,13 @@
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "assetId",
-          "type": "uint256"
-        }
-      ],
-      "name": "cancelOrder",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "auctionList",
+      "inputs": [],
+      "name": "paused",
       "outputs": [
         {
-          "name": "id",
-          "type": "bytes32"
-        },
-        {
-          "name": "seller",
-          "type": "address"
-        },
-        {
-          "name": "price",
-          "type": "uint256"
-        },
-        {
-          "name": "startedAt",
-          "type": "uint256"
-        },
-        {
-          "name": "expiresAt",
-          "type": "uint256"
+          "name": "",
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -107,6 +67,24 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [],
+      "name": "destroy",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "pause",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "owner",
@@ -118,28 +96,6 @@
       ],
       "payable": false,
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "assetId",
-          "type": "uint256"
-        },
-        {
-          "name": "priceInWei",
-          "type": "uint256"
-        },
-        {
-          "name": "expiresAt",
-          "type": "uint256"
-        }
-      ],
-      "name": "createOrder",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -157,35 +113,34 @@
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [
         {
-          "name": "publicationFee",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "setPublicationFee",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
+      "name": "auctionByAssetId",
+      "outputs": [
         {
-          "name": "assetId",
-          "type": "uint256"
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "name": "seller",
+          "type": "address"
         },
         {
           "name": "price",
           "type": "uint256"
+        },
+        {
+          "name": "expiresAt",
+          "type": "uint256"
         }
       ],
-      "name": "executeOrder",
-      "outputs": [],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -197,6 +152,20 @@
         }
       ],
       "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_recipient",
+          "type": "address"
+        }
+      ],
+      "name": "destroyAndSend",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -329,6 +298,18 @@
     },
     {
       "anonymous": false,
+      "inputs": [],
+      "name": "Pause",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "Unpause",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
       "inputs": [
         {
           "indexed": true,
@@ -343,13 +324,88 @@
       ],
       "name": "OwnershipTransferred",
       "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "publicationFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "setPublicationFee",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "ownerCut",
+          "type": "uint8"
+        }
+      ],
+      "name": "setOwnerCut",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "assetId",
+          "type": "uint256"
+        },
+        {
+          "name": "priceInWei",
+          "type": "uint256"
+        },
+        {
+          "name": "expiresAt",
+          "type": "uint256"
+        }
+      ],
+      "name": "createOrder",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "assetId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelOrder",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "assetId",
+          "type": "uint256"
+        },
+        {
+          "name": "price",
+          "type": "uint256"
+        }
+      ],
+      "name": "executeOrder",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
-  ],
-  "compiler": {
-    "name": "solc",
-    "version": "0.4.19+commit.c4cbbb05.Emscripten.clang"
-  },
-  "networks": {},
-  "schemaVersion": "1.0.1",
-  "updatedAt": "2018-03-09T14:52:43.841Z"
+  ]
 }
