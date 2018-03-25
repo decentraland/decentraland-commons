@@ -13,16 +13,17 @@
     "lint:fix": "tslint --project tsconfig.json --fix",
     "lint": "tslint --project tsconfig.json",
     "init": "mkdir -p dist",
-    "trim-artifacts": "./scripts/contracts/index.js trim-artifacts --write",
+    "trim-artifacts":
+      "node ./scripts/contracts/index.js trim-artifacts --write",
     "copy-contracts":
       "mkdir -p dist/contracts/artifacts && cp -r src/contracts/artifacts dist/contracts",
     "contracts-manifest":
-      "./scripts/contracts/index.js generate-manifest --write",
+      "node ./scripts/contracts/index.js generate-manifest --write",
     "contracts": "npm run trim-artifacts && npm run copy-contracts",
     "clean": "rimraf -rf dist",
     "prebuild":
       "npm run clean && npm run lint && npm run contracts && npm run test && npm run init",
-    "build": "tsc -p src/tsconfig.json",
+    "build": "tsc -p scripts/tsconfig.json && tsc -p src/tsconfig.json",
     "fastbuild": "npm run clean && npm run init && tsc -p tsconfig.json",
     "test":
       "npm run build && tsc -p specs/tsconfig.json && mocha dist/**/*.spec.js",
@@ -58,12 +59,13 @@
       "https://github.com/decentraland/provider-engine.git#releases"
   },
   "prettier": {
-    "printWidth": 80,
+    "printWidth": 120,
     "singleQuote": true,
     "semi": false
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
+    "@types/glob": "^5.0.35",
     "@types/mocha": "^5.0.0",
     "@types/node": "^9.6.0",
     "chai": "^4.1.2",

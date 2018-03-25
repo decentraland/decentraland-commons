@@ -1,6 +1,6 @@
-import fs from 'fs'
-import path from 'path'
-import glob from 'glob'
+import * as fs from 'fs'
+import * as path from 'path'
+import * as glob from 'glob'
 
 export function findFolderPath(destination) {
   let folderPath = null
@@ -16,7 +16,7 @@ export function findFolderPath(destination) {
   return folderPath
 }
 
-export function walkUp(destination, callback) {
+export function walkUp(destination: string, callback: (a: string) => any) {
   let destinationPath = ''
   let parents = []
 
@@ -33,11 +33,11 @@ export function walkUp(destination, callback) {
   return destinationPath
 }
 
-export function globPromise(pattern, options) {
-  return new Promise((resolve, reject) => {
+export function globPromise(pattern: string, options?: any) {
+  return new Promise<string[]>((resolve, reject) => {
     glob(pattern, options, function(error, paths) {
       if (error || paths.length === 0) {
-        error = error || `Could not find any contracts for "${pattern}"`
+        error = error || new Error(`Could not find any contracts for "${pattern}"`)
         reject(error)
       } else {
         resolve(paths)
@@ -47,7 +47,7 @@ export function globPromise(pattern, options) {
 }
 
 export function fsReadFilePromise(path) {
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     fs.readFile(path, 'utf8', function(error, text) {
       if (error) {
         reject(error)
@@ -59,7 +59,7 @@ export function fsReadFilePromise(path) {
 }
 
 export function fsWriteFilePromise(path, text) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     fs.writeFile(path, text, 'utf8', function(error) {
       if (error) {
         reject(error)

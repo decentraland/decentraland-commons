@@ -1,10 +1,12 @@
-import path from 'path'
+import * as path from 'path'
 import { findFolderPath, globPromise, fsWriteFilePromise } from './utils'
 
 const DEFAULT_FOLDER_PATH = 'src/contracts'
 
 export class Manifest {
-  constructor(folderPath) {
+  folderPath: string
+
+  constructor(folderPath: string) {
     folderPath = folderPath || findFolderPath(DEFAULT_FOLDER_PATH)
     this.folderPath = folderPath
   }

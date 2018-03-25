@@ -1,4 +1,4 @@
-import path from 'path'
+import * as path from 'path'
 import { fsReadFilePromise } from './utils'
 
 export class Artifact {
@@ -11,7 +11,10 @@ export class Artifact {
     'compiler'
   ]
 
-  constructor(filePath) {
+  path: string
+  name: string
+
+  constructor(filePath: string) {
     this.path = filePath
     this.name = path.basename(filePath, path.extname(filePath))
   }

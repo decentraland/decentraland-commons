@@ -1,10 +1,10 @@
-import fs from 'fs'
+import * as fs from 'fs'
 import prettier from 'prettier'
 
 import { walkUp } from './utils'
 
 export class Formatter {
-  format(text) {
+  format(text: string) {
     return prettier.format(text, this.getPrettierOptions())
   }
 

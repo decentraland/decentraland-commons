@@ -1,8 +1,17 @@
 import { ContractFile } from './ContractFile'
 
+const helpers = {
+  extend(object, extension) {
+    for (const prop in extension) {
+      if (!(prop in object)) object[prop] = extension[prop]
+    }
+  }
+}
+
 export class IndexFile {
-  constructor(contractPaths) {
-    this.contractPaths = contractPaths
+  contracts: ContractFile[]
+
+  constructor(public contractPaths: string[]) {
     this.contracts = this.instantiateContracts()
   }
 
@@ -57,13 +66,5 @@ ${this.buildExports()}`
     return `export {
       ${this.contracts.map(contract => contract.name)}
     }`
-  }
-}
-
-const helpers = {
-  extend(object, extension) {
-    for (const prop in extension) {
-      if (!(prop in object)) object[prop] = extension[prop]
-    }
   }
 }

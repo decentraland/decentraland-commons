@@ -1,7 +1,11 @@
-import path from 'path'
+import * as path from 'path'
 
 export class ContractFile {
-  constructor(filePath) {
+  path: string
+  name: string
+  abi: any
+
+  constructor(filePath: string) {
     this.path = filePath
     this.name = path.basename(filePath, path.extname(filePath))
     this.abi = this.getAbi()
@@ -15,6 +19,7 @@ export class ContractFile {
     if (this.isIndex()) return
 
     try {
+      // TODO: avoid use of require as a function
       const Contract = require(this.path)[this.name]
       return Contract.getDefaultAbi()
     } catch (error) {
