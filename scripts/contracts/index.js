@@ -1,6 +1,6 @@
-#!/usr/bin/env babel-node
+#!/usr/bin/env node
 
-import program from 'commander'
+import * as program from 'commander'
 
 import { Manifest } from './Manifest'
 import { Artifacts } from './Artifacts'

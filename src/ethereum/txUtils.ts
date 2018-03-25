@@ -27,7 +27,7 @@ export namespace txUtils {
    * @return {object} data - Current transaction data. See {@link txUtils#getTransaction}
    */
   export async function getConfirmedTransaction(txId, events) {
-    const tx = await txUtils.waitForCompletion(txId)
+    const tx = await waitForCompletion(txId)
 
     if (this.isFailure(tx)) {
       throw new Error(`Transaction "${txId}" failed`)

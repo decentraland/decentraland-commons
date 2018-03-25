@@ -102,7 +102,8 @@ function _decodeMethod(data) {
 }
 
 function padZeros(address) {
-  var formatted = address
+  let formatted = address
+
   if (address.indexOf('0x') !== -1) {
     formatted = address.slice(2)
   }
@@ -138,7 +139,7 @@ function _decodeLogs(logs) {
       )
       // Loop topic and data to get the params
       method.inputs.forEach(function(param) {
-        var decodedP = {
+        let decodedP = {
           name: param.name,
           type: param.type,
           value: void 0

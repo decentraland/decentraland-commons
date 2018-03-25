@@ -211,7 +211,7 @@ export namespace eth {
   }
 
   export async function recover(message, signature) {
-    return await wallet.recover(message, signature)
+    return wallet.recover(message, signature)
   }
 
   /**

@@ -4,6 +4,50 @@ import { Event } from './Event'
 
 /** Class to work with Ethereum contracts */
 export abstract class Contract {
+  instance: any
+  abi: any
+  address: string
+
+  /**
+   * @param  {string} [address] - Address of the contract. If it's undefined, it'll use the result of calling {@link Contract#getDefaultAddress}
+   * @param  {object} [abi]     - Object describing the contract (compile result). If it's undefined, it'll use the result of calling {@link Contract#getDefaultAbi}
+   * @return {Contract} instance
+   */
+  constructor(address, abi?) {
+    this.setAddress(address || this.getDefaultAddress())
+    this.setAbi(abi || this.getDefaultAbi())
+    this.instance = null
+
+    this.abi.extend(this)
+  }
+
+  /**
+   * Checks if an address is actually 0 in hex or a falsy value
+   * @param  {string} address
+   * @return {boolean}
+   */
+  static isEmptyAddress(address) {
+    return (
+      !address ||
+      address === '0x0000000000000000000000000000000000000000' ||
+      address === '0x'
+    )
+  }
+
+  /**
+   * See {@link Contract#transaction}
+   */
+  static async transaction(method, ...args): Promise<any> {
+    return promisify(method)(...args)
+  }
+
+  /**
+   * See {@link Contract#call}
+   */
+  static async call(prop, ...args): Promise<any> {
+    return promisify(prop.call)(...args)
+  }
+
   /**
    * Get the contract name
    * @return {string} - contract name
@@ -28,50 +72,6 @@ export abstract class Contract {
    */
   getEvents() {
     return Abi.new(this.getDefaultAbi()).getEvents()
-  }
-
-  /**
-   * Checks if an address is actually 0 in hex or a falsy value
-   * @param  {string} address
-   * @return {boolean}
-   */
-  static isEmptyAddress(address) {
-    return (
-      !address ||
-      address === '0x0000000000000000000000000000000000000000' ||
-      address === '0x'
-    )
-  }
-
-  /**
-   * See {@link Contract#transaction}
-   */
-  static async transaction(method, ...args) {
-    return await promisify(method)(...args)
-  }
-
-  /**
-   * See {@link Contract#call}
-   */
-  static async call(prop, ...args): Promise<any> {
-    return await promisify(prop.call)(...args)
-  }
-
-  instance: any
-  abi: any
-  address: string
-
-  /**
-   * @param  {string} [address] - Address of the contract. If it's undefined, it'll use the result of calling {@link Contract#getDefaultAddress}
-   * @param  {object} [abi]     - Object describing the contract (compile result). If it's undefined, it'll use the result of calling {@link Contract#getDefaultAbi}
-   * @return {Contract} instance
-   */
-  constructor(address, abi?) {
-    this.setAddress(address || this.getDefaultAddress())
-    this.setAbi(abi || this.getDefaultAbi())
-    this.instance = null
-
-    this.abi.extend(this)
   }
 
   /**

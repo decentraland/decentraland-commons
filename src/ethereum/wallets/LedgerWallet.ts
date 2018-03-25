@@ -12,22 +12,31 @@ import { sleep } from '../../utils'
 
 export class LedgerWallet extends Wallet {
   // eslint-disable-next-line
-  static derivationPath = "44'/60'/0'/0"
-  static type = 'ledger'
+
+  ledger = null
+  engine = null
+  derivationPath = "44'/60'/0'/0"
+
+  constructor(account, derivationPath) {
+    super(account)
+
+    this.derivationPath = derivationPath || "44'/60'/0'/0"
+  }
 
   static async isSupported() {
     const devices = await TransportU2F.list()
     return devices.length > 0
   }
 
-  constructor(account, derivationPath) {
-    super(account)
-    this.ledger = null
-    this.engine = null
-    this.derivationPath = derivationPath || LedgerWallet.derivationPath
+  getType() {
+    return 'ledger'
   }
 
-  async connect(providerUrl, networkId) {
+  async connect(providerUrl?: string, networkId?: string) {
+    if (!providerUrl || !networkId) {
+      throw new Error('You must provide both providerUrl and networkId')
+    }
+
     const transport = await TransportU2F.open(null, 2)
     const ledger = new Eth(transport)
 
@@ -87,15 +96,13 @@ export class LedgerWallet extends Wallet {
   }
 
   async getAccounts() {
-    const defaultAccount = await this.ledger.getAddress(
-      LedgerWallet.derivationPath
-    )
+    const defaultAccount = await this.ledger.getAddress(this.derivationPath)
     return [defaultAccount.address] // follow the Wallet interface
   }
 
-  async sign(message) {
+  async sign(message: string): Promise<string> {
     let { v, r, s } = await this.ledger.signPersonalMessage(
-      LedgerWallet.derivationPath,
+      this.derivationPath,
       message.substring(2)
     )
 

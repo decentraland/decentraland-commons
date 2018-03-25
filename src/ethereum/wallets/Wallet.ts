@@ -1,12 +1,15 @@
 // Interface
-export class Wallet {
-  static type = ''
+export abstract class Wallet {
+  type = this.getType()
+  web3 = null
+  account: any
 
   constructor(account) {
     this.web3 = null
     this.account = null
-    this.type = this.constructor.type
   }
+
+  abstract getType(): string
 
   isConnected() {
     return this.web3 && !!this.web3.eth
@@ -42,7 +45,7 @@ export class Wallet {
    * @param  {string} [providerURL] - URL for a provider.
    * @return {object} The web3 provider
    */
-  async getProvider(providerUrl) {
+  async getProvider(providerUrl: string): Promise<any> {
     throw new Error('Not implemented. Check wallet support')
   }
 
@@ -50,7 +53,7 @@ export class Wallet {
    * Return available accounts for the current wallet
    * @return {Promise<array<string>>} accounts
    */
-  async getAccounts() {
+  async getAccounts(): Promise<any[]> {
     throw new Error('Not implemented. Check wallet support')
   }
 
@@ -60,7 +63,7 @@ export class Wallet {
    * @param  {string} address - Contract address
    * @return {object} instance
    */
-  createContractInstance(abi, address) {
+  createContractInstance(abi, address: string) {
     return this.web3.eth.contract(abi).at(address)
   }
 
@@ -69,7 +72,7 @@ export class Wallet {
    * @param  {string} password - Account password
    * @return {boolean} Whether the operation was successfull or not
    */
-  unlockAccount(password) {
+  unlockAccount(password: string) {
     return this.web3.personal.unlockAccount(this.account, password)
   }
 
@@ -78,7 +81,7 @@ export class Wallet {
    * @param  {string} message - Message to sign, ussually in Hex
    * @return {Promise<string>} signature
    */
-  async sign(message) {
+  async sign(message: string): Promise<string> {
     throw new Error('Not implemented. Check wallet support')
   }
 
@@ -88,7 +91,7 @@ export class Wallet {
    * @param  {string} signature
    * @return {Promise<string>} account
    */
-  async recover(message, signature) {
+  async recover(message: string, signature: string): Promise<string> {
     throw new Error('Not implemented. Check wallet support')
   }
 }

@@ -78,14 +78,14 @@ export const mongo = {
     const collection = this.client.collection(collectionName)
     const exists = await this.exists(collectionName, { _id })
 
-    if (exists && !row) return // Nothing to do here
+    if (exists && !row) return undefined // Nothing to do here
 
     if (exists) {
       row.updated_at = new Date()
-      return await collection.update({ _id }, { $set: row })
+      return collection.update({ _id }, { $set: row })
     } else {
       row = Object.assign({ _id, created_at: new Date() }, row)
-      return await collection.insertOne(row)
+      return collection.insertOne(row)
     }
   },
 
@@ -117,7 +117,7 @@ export const mongo = {
       )
     }
 
-    return await this.client
+    return this.client
       .collection(collectionName)
       .find(query)
       .toArray()
@@ -136,7 +136,7 @@ export const mongo = {
       )
     }
 
-    return await this.client.collection(collectionName).findOne(query)
+    return this.client.collection(collectionName).findOne(query)
   },
 
   /**
@@ -152,7 +152,7 @@ export const mongo = {
       )
     }
 
-    return await this.client
+    return this.client
       .collection(collectionName)
       .aggregate(query)
       .toArray()

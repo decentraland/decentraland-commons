@@ -3,10 +3,17 @@ import Web3 from 'web3'
 import { Wallet } from './Wallet'
 import { Contract } from '../Contract'
 
-export class NodeWallet extends Wallet {
-  static type = 'node'
+declare var window
 
-  async connect(providerUrl) {
+export class NodeWallet extends Wallet {
+  web3: any
+  account: any
+
+  getType(): string {
+    return 'node'
+  }
+
+  async connect(providerUrl?: string) {
     const provider = await this.getProvider(providerUrl)
     if (!provider) {
       throw new Error('Could not get a valid provider for web3')
@@ -35,16 +42,16 @@ export class NodeWallet extends Wallet {
       : window.web3 && window.web3.currentProvider
   }
 
-  async getAccounts() {
-    return await Contract.transaction(this.web3.eth.getAccounts)
+  async getAccounts(): Promise<any[]> {
+    return Contract.transaction(this.web3.eth.getAccounts)
   }
 
-  async sign(message) {
+  async sign(message: string) {
     const sign = this.web3.personal.sign.bind(this.web3.personal)
-    return await Contract.transaction(sign, message, this.account)
+    return Contract.transaction(sign, message, this.account)
   }
 
-  async recover(message, signature) {
-    return await this.web3.personal.ecRecover(message, signature)
+  async recover(message: string, signature: string) {
+    return this.web3.personal.ecRecover(message, signature)
   }
 }

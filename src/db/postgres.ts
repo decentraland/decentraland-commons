@@ -138,7 +138,7 @@ export const postgres = {
 
     const values = Object.values(changes)
 
-    return await this.client.query(
+    return this.client.query(
       `INSERT INTO ${tableName}(
       ${this.toColumnFields(changes)}
     ) VALUES(
@@ -181,7 +181,7 @@ export const postgres = {
 
     const values = changeValues.concat(conditionValues)
 
-    return await this.client.query(
+    return this.client.query(
       `UPDATE ${tableName}
       SET   ${this.toAssignmentFields(changes)}
       WHERE ${whereClauses.join(' AND ')}`,
@@ -288,7 +288,7 @@ export const postgres = {
    * @return {Promise} Query result
    */
   async truncate(tableName) {
-    return await this.client.query(`TRUNCATE ${tableName} RESTART IDENTITY;`)
+    return this.client.query(`TRUNCATE ${tableName} RESTART IDENTITY;`)
   },
 
   /*
@@ -345,6 +345,6 @@ export const postgres = {
    * @return {Promise}
    */
   async close() {
-    return await this.client.end()
+    return this.client.end()
   }
 }

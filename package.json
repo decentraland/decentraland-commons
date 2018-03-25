@@ -1,7 +1,8 @@
 {
   "name": "decentraland-commons",
   "version": "0.0.0-development",
-  "description": "Common functionality between the different Decentraland projects",
+  "description":
+    "Common functionality between the different Decentraland projects",
   "main": "./dist/index.js",
   "browser": {
     "./src/index.js": "./src/browser.js",
@@ -13,14 +14,18 @@
     "lint": "tslint --project tsconfig.json",
     "init": "mkdir -p dist",
     "trim-artifacts": "./scripts/contracts/index.js trim-artifacts --write",
-    "copy-contracts": "mkdir -p dist/contracts/artifacts && cp -r src/contracts/artifacts dist/contracts",
-    "contracts-manifest": "./scripts/contracts/index.js generate-manifest --write",
+    "copy-contracts":
+      "mkdir -p dist/contracts/artifacts && cp -r src/contracts/artifacts dist/contracts",
+    "contracts-manifest":
+      "./scripts/contracts/index.js generate-manifest --write",
     "contracts": "npm run trim-artifacts && npm run copy-contracts",
     "clean": "rimraf -rf dist",
-    "prebuild": "npm run clean && npm run lint && npm run contracts && npm run test && npm run init",
-    "build": "tsc -p tsconfig.json",
+    "prebuild":
+      "npm run clean && npm run lint && npm run contracts && npm run test && npm run init",
+    "build": "tsc -p src/tsconfig.json",
     "fastbuild": "npm run clean && npm run init && tsc -p tsconfig.json",
-    "test": "npm run build && mocha dist/**/*.spec.js",
+    "test":
+      "npm run build && tsc -p specs/tsconfig.json && mocha dist/**/*.spec.js",
     "semantic-release": "semantic-release",
     "commitmsg": "validate-commit-msg"
   },
@@ -28,14 +33,8 @@
     "type": "git",
     "url": "https://github.com/decentraland/commons.git"
   },
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "common",
-    "modules",
-    "decentraland"
-  ],
+  "files": ["dist"],
+  "keywords": ["common", "modules", "decentraland"],
   "author": "Decentraland",
   "license": "ISC",
   "dependencies": {
@@ -55,7 +54,8 @@
     "tunnel-ssh": "^4.1.3",
     "validate-commit-msg": "^2.14.0",
     "web3": "^0.20.6",
-    "web3-provider-engine": "https://github.com/decentraland/provider-engine.git#releases"
+    "web3-provider-engine":
+      "https://github.com/decentraland/provider-engine.git#releases"
   },
   "prettier": {
     "printWidth": 80,
@@ -76,6 +76,7 @@
     "rimraf": "^2.6.2",
     "semantic-release": "^12.2.5",
     "tslint": "^5.9.1",
-    "tslint-language-service": "^0.9.8"
+    "tslint-language-service": "^0.9.8",
+    "typescript": "^2.7.2"
   }
 }

@@ -29,7 +29,7 @@ export namespace tunnel {
     let currentTunnel = null
 
     return new Promise((resolve, reject) =>
-      sshTunnel(tunnelConfig, (error, _tunnel) => {
+      sshTunnel(tunnelConfig, (_, _tunnel) => {
         currentTunnel = _tunnel
         resolve(tunnelConfig.localPort)
       }).on('error', async (error, tunnel) => {

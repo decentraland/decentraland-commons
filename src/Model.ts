@@ -18,6 +18,13 @@ export class Model {
   db = dbClients['postgres']
 
   /**
+   * Creates a new instance storing the attributes for later use
+   * @param  {object} attributes
+   * @return {Model<instance>}
+   */
+  constructor(public attributes = {}) {}
+
+  /**
    * Change the current DB client
    * @param {string|object} dbClient - The name of an available db client (from /db) or an object with the same API
    */
@@ -37,7 +44,7 @@ export class Model {
    * @return {Promise<array>}
    */
   async find(conditions, orderBy: OrderBy, extra: string) {
-    return await this.db.select(this.tableName, conditions, orderBy, extra)
+    return this.db.select(this.tableName, conditions, orderBy, extra)
   }
 
   /**
@@ -51,7 +58,7 @@ export class Model {
         ? primaryKeyOrCond
         : { [this.primaryKey]: primaryKeyOrCond }
 
-    return await this.db.selectOne(this.tableName, conditions, orderBy)
+    return this.db.selectOne(this.tableName, conditions, orderBy)
   }
 
   /**
@@ -72,45 +79,7 @@ export class Model {
    * @return {Promise<array>} - Array containing the matched rows
    */
   async query(queryString, values) {
-    return await this.db.query(queryString, values)
-  }
-
-  /**
-   * Insert the row filtering the Model.columnNames to the Model.tableName table
-   * @param  {object} row
-   * @return {Promise<object>} the row argument with the inserted primaryKey
-   */
-  private async _insert(row) {
-    const insertion = await this.db.insert(
-      this.tableName,
-      utils.pick(row, this.columnNames),
-      this.primaryKey
-    )
-    row[this.primaryKey] = insertion.rows[0][this.primaryKey]
-    return row
-  }
-
-  /**
-   * Update the row on the Model.tableName table.
-   * @param  {object} changes    - An object describing the updates.
-   * @param  {object} conditions - An object describing the WHERE clause.
-   * @return {Promise<object>}
-   */
-  private async _update(changes, conditions) {
-    return await this.db.update(
-      this.tableName,
-      utils.pick(changes, this.columnNames),
-      conditions
-    )
-  }
-
-  /**
-   * Delete the row on the Model.tableName table.
-   * @param  {object} conditions - An object describing the WHERE clause.
-   * @return {Promise<object>}
-   */
-  private _delete(conditions: Conditions) {
-    return this.db.delete(this.tableName, conditions)
+    return this.db.query(queryString, values)
   }
 
   /**
@@ -122,13 +91,6 @@ export class Model {
   isIncomplete(attributes) {
     return this.columnNames.some(column => !attributes.hasOwnProperty(column))
   }
-
-  /**
-   * Creates a new instance storing the attributes for later use
-   * @param  {object} attributes
-   * @return {Model<instance>}
-   */
-  constructor(public attributes = {}) {}
 
   /**
    * Return the row for the this.attributes primaryKey property, forwards to Model.findOne
@@ -144,7 +106,7 @@ export class Model {
    * Forwards to Mode.insert using this.attributes
    */
   async insert() {
-    return await this._insert(this.attributes)
+    return this._insert(this.attributes)
   }
 
   /**
@@ -156,7 +118,7 @@ export class Model {
       const primaryKey = this.primaryKey
       conditions = { [primaryKey]: this.attributes[primaryKey] }
     }
-    return await this._update(this.attributes, conditions)
+    return this._update(this.attributes, conditions)
   }
 
   /**
@@ -168,7 +130,7 @@ export class Model {
       const primaryKey = this.primaryKey
       conditions = { [primaryKey]: this.attributes[primaryKey] }
     }
-    return await this._delete(conditions)
+    return this._delete(conditions)
   }
 
   /**
@@ -238,5 +200,43 @@ export class Model {
     }
 
     return this
+  }
+
+  /**
+   * Insert the row filtering the Model.columnNames to the Model.tableName table
+   * @param  {object} row
+   * @return {Promise<object>} the row argument with the inserted primaryKey
+   */
+  private async _insert(row) {
+    const insertion = await this.db.insert(
+      this.tableName,
+      utils.pick(row, this.columnNames),
+      this.primaryKey
+    )
+    row[this.primaryKey] = insertion.rows[0][this.primaryKey]
+    return row
+  }
+
+  /**
+   * Update the row on the Model.tableName table.
+   * @param  {object} changes    - An object describing the updates.
+   * @param  {object} conditions - An object describing the WHERE clause.
+   * @return {Promise<object>}
+   */
+  private async _update(changes, conditions) {
+    return this.db.update(
+      this.tableName,
+      utils.pick(changes, this.columnNames),
+      conditions
+    )
+  }
+
+  /**
+   * Delete the row on the Model.tableName table.
+   * @param  {object} conditions - An object describing the WHERE clause.
+   * @return {Promise<object>}
+   */
+  private _delete(conditions: Conditions) {
+    return this.db.delete(this.tableName, conditions)
   }
 }
