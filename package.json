@@ -2,25 +2,26 @@
   "name": "decentraland-commons",
   "version": "0.0.0-development",
   "description": "Common functionality between the different Decentraland projects",
+  "typings": "./dist/index.d.ts",
   "main": "./dist/index.js",
   "browser": {
     "./src/index.js": "./src/browser.js",
     "./dist/index.js": "./dist/browser.js"
   },
   "scripts": {
-    "docs": "npx jsdoc -c conf.json -r src/**/*.js",
-    "lint": "npx eslint .",
-    "lint:fix": "npx eslint --fix .",
+    "docs": "npx typedoc --out out src/index.ts",
+    "lint:fix": "tslint --project tsconfig.json --fix",
+    "lint": "tslint --project tsconfig.json",
     "init": "mkdir -p dist",
-    "trim-artifacts": "./scripts/contracts/index.js trim-artifacts --write",
+    "trim-artifacts": "node ./scripts/contracts/index.js trim-artifacts --write",
     "copy-contracts": "mkdir -p dist/contracts/artifacts && cp -r src/contracts/artifacts dist/contracts",
-    "contracts-manifest": "./scripts/contracts/index.js generate-manifest --write",
+    "contracts-manifest": "node ./scripts/contracts/index.js generate-manifest --write",
     "contracts": "npm run trim-artifacts && npm run copy-contracts",
-    "clean": "rm -rf dist",
-    "prebuild": "npm run clean && npm run lint && npm run contracts && npm run test && npm run init",
-    "build": "babel ./src -d ./dist --ignore specs",
-    "fastbuild": "npm run clean && npm run init && babel ./src -d ./dist --ignore specs",
-    "test": "npx mocha -r babel-register -r specs/spec_utils.js specs/*.spec.js",
+    "clean": "(rm -r dist || true)",
+    "prebuild": "npm run clean && npm run lint && tsc -p scripts/tsconfig.json && npm run contracts",
+    "build": "tsc -p src/tsconfig.json",
+    "fastbuild": "npm run clean && tsc -p tsconfig.json",
+    "test": "npm run build && tsc -p specs/tsconfig.json && mocha specs/**/*.spec.js",
     "semantic-release": "semantic-release",
     "commitmsg": "validate-commit-msg"
   },
@@ -28,14 +29,8 @@
     "type": "git",
     "url": "https://github.com/decentraland/commons.git"
   },
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "common",
-    "modules",
-    "decentraland"
-  ],
+  "files": ["dist"],
+  "keywords": ["common", "modules", "decentraland"],
   "author": "Decentraland",
   "license": "ISC",
   "dependencies": {
@@ -55,28 +50,29 @@
     "tunnel-ssh": "^4.1.3",
     "validate-commit-msg": "^2.14.0",
     "web3": "^0.20.6",
-    "web3-provider-engine": "https://github.com/decentraland/provider-engine.git#releases"
+    "web3-provider-engine": "^13.6.6"
   },
-  "peerDependencies": {
-    "babel-polyfill": "^6.26.0"
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "semi": false
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.0.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0",
+    "@types/chai": "^4.1.2",
+    "@types/glob": "^5.0.35",
+    "@types/mocha": "^5.0.0",
+    "@types/node": "^9.6.0",
     "chai": "^4.1.2",
-    "eslint": "^4.11.0",
-    "eslint-config-prettier": "^2.7.0",
-    "eslint-plugin-prettier": "^2.3.1",
+    "dcl-tslint-config-standard": "^1.0.1",
     "husky": "^0.14.3",
     "jsdoc": "^3.5.5",
     "mocha": "^4.0.1",
     "npx": "^9.7.1",
     "prettier": "^1.8.2",
-    "semantic-release": "^12.2.5"
+    "rimraf": "^2.6.2",
+    "semantic-release": "^12.2.5",
+    "tslint": "^5.9.1",
+    "tslint-language-service": "^0.9.8",
+    "typescript": "^2.7.2"
   }
 }

@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "outDir": "./contracts",
+    "declaration": false,
+    "sourceMap": false
+  },
+  "extends": "../tsconfig.json"
+}

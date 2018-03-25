@@ -10,32 +10,26 @@ An example usage migth be:
 **index.js**
 
 ```javascript
-#!/usr/bin/env babel-node
+#!/usr/bin/env node
 
 import { runProgram } from 'decentraland-commons/cli'
 
 import itemsCli from './itemsCli'
 import locationsCli from './locationsCli'
 
-db.connect()
-    .then(() =>
-      runProgram([
-        itemsCli,
-        locationsCli
-      ])
-    )
+db.connect().then(() => runProgram([itemsCli, locationsCli]))
 ```
 
 **itemsCli.js**
 
 ```javascript
 export default {
-    addCommands(program) {
-        program
-            .command(/* something */)
-            .description(/* something */)
-            .action(() => {})
-    }
+  addCommands(program) {
+    program
+      .command(/* something */)
+      .description(/* something */)
+      .action(() => {})
+  }
 }
 ```
 
