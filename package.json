@@ -9,7 +9,7 @@
     "./dist/index.js": "./dist/browser.js"
   },
   "scripts": {
-    "docs": "npx jsdoc -c conf.json -r src/**/*.js",
+    "docs": "npx typedoc --out out src/index.ts",
     "lint:fix": "tslint --project tsconfig.json --fix",
     "lint": "tslint --project tsconfig.json",
     "init": "mkdir -p dist",
@@ -29,14 +29,8 @@
     "type": "git",
     "url": "https://github.com/decentraland/commons.git"
   },
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "common",
-    "modules",
-    "decentraland"
-  ],
+  "files": ["dist"],
+  "keywords": ["common", "modules", "decentraland"],
   "author": "Decentraland",
   "license": "ISC",
   "dependencies": {
