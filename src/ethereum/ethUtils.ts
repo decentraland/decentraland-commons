@@ -1,4 +1,4 @@
-import Web3 from 'web3'
+import Web3 = require('web3')
 import ethereumJsUtil from 'ethereumjs-util'
 
 const web3utils = new Web3()

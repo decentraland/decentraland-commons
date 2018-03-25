@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { LANDRegistry } from '../src/contracts/LANDRegistry'
+import { LANDRegistry } from '../dist/contracts/LANDRegistry'
 
 describe('LANDRegistry', function() {
   describe('Version 0', function() {
@@ -23,8 +23,7 @@ describe('LANDRegistry', function() {
           description: '',
           ipns: 'ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY'
         }
-        const expected =
-          '0,"","","ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY"'
+        const expected = '0,"","","ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY"'
         expect(LANDRegistry.encodeLandData(data)).to.equal(expected)
       })
 
@@ -89,8 +88,7 @@ has a line break","ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY"`
     })
     describe('.decodeLandData', function() {
       it('should return an object with { version, name, description, ipns }', function() {
-        const data =
-          '0,"My Parcel","This is my awesome parcel","ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY"'
+        const data = '0,"My Parcel","This is my awesome parcel","ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY"'
         const expected = {
           version: 0,
           name: 'My Parcel',
@@ -149,8 +147,7 @@ has a line break`,
       })
 
       it('should work if ipns link is not surrounded by quotes', function() {
-        const data =
-          '0,"My Parcel","This is my awesome parcel",ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY'
+        const data = '0,"My Parcel","This is my awesome parcel",ipns:QmVP3WAkJRcc9AkS83r5fwaWAxpgtP7cpDupVWRos9qStY'
         const expected = {
           version: 0,
           name: 'My Parcel',

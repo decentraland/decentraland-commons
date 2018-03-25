@@ -2,8 +2,8 @@
 // It fixes https://github.com/ConsenSys/abi-decoder
 // which is not correctly published and can't be minified by webpack as an npm module
 
-const SolidityCoder = require('web3/lib/solidity/coder.js')
-const Web3 = require('web3')
+import SolidityCoder = require('web3/lib/solidity/coder.js')
+import Web3 = require('web3')
 
 const state = {
   savedABIs: [],
@@ -133,10 +133,7 @@ function _decodeLogs(logs) {
           dataTypes.push(input.type)
         }
       })
-      const decodedData = SolidityCoder.decodeParams(
-        dataTypes,
-        logData.slice(2)
-      )
+      const decodedData = SolidityCoder.decodeParams(dataTypes, logData.slice(2))
       // Loop topic and data to get the params
       method.inputs.forEach(function(param) {
         let decodedP = {
@@ -154,14 +151,8 @@ function _decodeLogs(logs) {
         }
 
         if (param.type === 'address') {
-          decodedP.value = padZeros(
-            new Web3().toBigNumber(decodedP.value).toString(16)
-          )
-        } else if (
-          param.type === 'uint256' ||
-          param.type === 'uint8' ||
-          param.type === 'int'
-        ) {
+          decodedP.value = padZeros(new Web3().toBigNumber(decodedP.value).toString(16))
+        } else if (param.type === 'uint256' || param.type === 'uint8' || param.type === 'int') {
           decodedP.value = new Web3().toBigNumber(decodedP.value).toString(10)
         }
 

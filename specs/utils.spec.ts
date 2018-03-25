@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { omit, pick } from '../src/utils'
+import { omit, pick } from '../dist/utils'
 
 describe('Utils', function() {
   describe('#omit', function() {

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es2017",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -25,5 +25,5 @@
     ],
     "lib": ["es2017"]
   },
-  "exclude": ["node_modules", "specs"]
+  "exclude": ["node_modules"]
 }

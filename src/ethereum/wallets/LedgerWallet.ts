@@ -1,4 +1,4 @@
-import Web3 from 'web3'
+import Web3 = require('web3')
 
 import TransportU2F from '@ledgerhq/hw-transport-u2f'
 import Eth from '@ledgerhq/hw-app-eth'
@@ -45,9 +45,7 @@ export class LedgerWallet extends Wallet {
     // FireFox hangs on indefinetly on `getAccounts`, so the second promise acts as a timeout
     const accounts = await Promise.race([
       this.getAccounts(),
-      sleep(2000).then(() =>
-        Promise.reject({ message: 'Timed out trying to connect to ledger' })
-      )
+      sleep(2000).then(() => Promise.reject({ message: 'Timed out trying to connect to ledger' }))
     ])
 
     this.engine = new ProviderEngine()
@@ -75,14 +73,8 @@ export class LedgerWallet extends Wallet {
    * @param  {string} [networkId="1"] - The id of the network we're connecting to. 1 means mainnet, check {@link eth#getNetworks}
    * @return {object} The web3 provider
    */
-  async getProvider(
-    providerUrl = 'https://mainnet.infura.io/',
-    networkId = '1'
-  ) {
-    let ledgerWalletSubProvider = await LedgerWalletSubprovider(
-      () => networkId,
-      this.derivationPath
-    )
+  async getProvider(providerUrl = 'https://mainnet.infura.io/', networkId = '1') {
+    let ledgerWalletSubProvider = await LedgerWalletSubprovider(() => networkId, this.derivationPath)
 
     this.engine.addProvider(ledgerWalletSubProvider)
     this.engine.addProvider(
@@ -101,10 +93,7 @@ export class LedgerWallet extends Wallet {
   }
 
   async sign(message: string): Promise<string> {
-    let { v, r, s } = await this.ledger.signPersonalMessage(
-      this.derivationPath,
-      message.substring(2)
-    )
+    let { v, r, s } = await this.ledger.signPersonalMessage(this.derivationPath, message.substring(2))
 
     v = (v - 27).toString(16)
     if (v.length < 2) v = '0' + v

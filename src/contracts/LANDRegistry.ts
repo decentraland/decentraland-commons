@@ -1,4 +1,4 @@
-import CSV from 'comma-separated-values'
+import * as CSV from 'comma-separated-values'
 import { Contract } from '../ethereum'
 import { env } from '../env'
 
@@ -45,22 +45,16 @@ export class LANDRegistry extends Contract {
       case '0': {
         const { version, name, description, ipns } = data
         if (name.length > MAX_NAME_LENGTH) {
-          throw new DataError(
-            `The name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`
-          )
+          throw new DataError(`The name is too long, max length allowed is ${MAX_NAME_LENGTH} chars`)
         }
         if (description.length > MAX_DESCRIPTION_LENGTH) {
-          throw new DataError(
-            `The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGTH} chars`
-          )
+          throw new DataError(`The description is too long, max length allowed is ${MAX_DESCRIPTION_LENGTH} chars`)
         }
         return CSV.encode([[version, name, description, ipns]])
       }
       default:
         throw new DataError(
-          `Unknown version when trying to encode land data: "${JSON.stringify(
-            data
-          )}"
+          `Unknown version when trying to encode land data: "${JSON.stringify(data)}"
           (see https://github.com/decentraland/commons/blob/master/docs/land-data.md)`
         )
     }
