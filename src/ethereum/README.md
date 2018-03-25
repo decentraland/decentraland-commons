@@ -1,4 +1,3 @@
-
 # Ethereum
 
 Set of utility functions to work with the Ethereum blockchain.
@@ -56,7 +55,6 @@ await contract.call('allowance', sender, receiver)
 await contract.transaction('lockMana', manaValue)
 ```
 
-
 ### txUtils.js
 
 A set of common utility functions to work with transactions
@@ -67,7 +65,7 @@ import { txUtils } from 'txUtils'
 const status = eth.fetchTxStatus('TX_HASH')
 
 if (txUtils.isPending(status)) {
-    // something
+  // something
 }
 ```
 
@@ -83,24 +81,21 @@ import { eth } from 'decentraland-commons'
 import { abi } from './artifacts/MANAToken.json'
 
 class MANAToken extends eth.Contract {
-    static getDefaultAddress() {
-      return '0xdeadbeef'
-    }
+  static getDefaultAddress() {
+    return '0xdeadbeef'
+  }
 
-    static getDefaultAbi() {
-      return abi
-    }
+  static getDefaultAbi() {
+    return abi
+  }
 
-    async lockMana(sender, mana) {
-     return await this.transaction(
-          'lockMana', sender, mana, { gas: 120000 }
-      )
-    }
+  async lockMana(sender, mana) {
+    return await this.transaction('lockMana', sender, mana, { gas: 120000 })
+  }
 }
 
 export default MANAToken
 ```
-
 
 _On the start of your app, maybe server.js_
 
@@ -129,4 +124,3 @@ eth.connect({
 })
 manaToken.lockMana()
 ```
-

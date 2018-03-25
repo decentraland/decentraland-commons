@@ -21,12 +21,7 @@ export const mongo = {
    * @param  {string} [password]
    * @return {Promise} - Resolves on connection
    */
-  connect: function(
-    port: number,
-    dbname: string,
-    username: string,
-    password: string
-  ) {
+  connect: function(port: number, dbname: string, username: string, password: string) {
     const url = `mongodb://localhost:${port}/${dbname}`
 
     log.info(`Connecting to ${url}`)
@@ -112,9 +107,7 @@ export const mongo = {
    */
   async find(collectionName, query) {
     if (!this.client) {
-      throw new Error(
-        'Connection to database not found, have you called `.connect()` already?'
-      )
+      throw new Error('Connection to database not found, have you called `.connect()` already?')
     }
 
     return this.client
@@ -131,9 +124,7 @@ export const mongo = {
    */
   async findOne(collectionName, query) {
     if (!this.client) {
-      throw new Error(
-        'Connection to database not found, have you called `.connect()` already?'
-      )
+      throw new Error('Connection to database not found, have you called `.connect()` already?')
     }
 
     return this.client.collection(collectionName).findOne(query)
@@ -147,9 +138,7 @@ export const mongo = {
    */
   async aggregate(collectionName, query) {
     if (!this.client) {
-      throw new Error(
-        'Connection to database not found, have you called `.connect()` already?'
-      )
+      throw new Error('Connection to database not found, have you called `.connect()` already?')
     }
 
     return this.client

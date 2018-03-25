@@ -14,11 +14,7 @@ export function main() {
       '--folderPath [folderPath]',
       'Folder containing the contract files. By default it will try to find the nearest src/contracts folder'
     )
-    .option(
-      '--write',
-      'Whether write the file or just print it. Defaults to false',
-      false
-    )
+    .option('--write', 'Whether write the file or just print it. Defaults to false', false)
     .action(async options => {
       const manifest = new Manifest(options.folderPath)
       const indexFile = await generateIndex(manifest)
@@ -37,11 +33,7 @@ export function main() {
       '--folderPath [folderPath]',
       'Folder containing the contract files. By default it will try to find the nearest src/contracts folder'
     )
-    .option(
-      '--write',
-      'Whether write the file or just print it. Defaults to false',
-      false
-    )
+    .option('--write', 'Whether write the file or just print it. Defaults to false', false)
     .action(async options => {
       const artifacts = new Artifacts(options.folderPath)
       await artifacts.buildCollection()

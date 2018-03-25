@@ -18,10 +18,7 @@ export class SMTP {
    * @param  {object} [templates={}]      - A mapping of `name` => `func` describing the templates to use. {@link SMPT#setTemplate}
    * @return {STMP}
    */
-  constructor(
-    { hostname, port, username, password },
-    public templates: { [name: string]: Function } = {}
-  ) {
+  constructor({ hostname, port, username, password }, public templates: { [name: string]: Function } = {}) {
     this.transport = this.getTransport(hostname, port, username, password)
   }
 
@@ -59,25 +56,17 @@ export class SMTP {
 
     let content = this.templates[template](opts)
 
-    return new Promise(resolve =>
-      this._sendMailWithRetry(email, content, resolve)
-    )
+    return new Promise(resolve => this._sendMailWithRetry(email, content, resolve))
   }
 
   // internal
   _sendMailWithRetry(email, opts, callback) {
     this.transport.sendMail(opts, (error, info) => {
       if (error) {
-        log.error(
-          `Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN /
-            1000}seconds`
-        )
+        log.error(`Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN / 1000}seconds`)
         log.error(error, error.stack)
 
-        return setTimeout(
-          () => this._sendMailWithRetry(email, opts, callback),
-          EMAIL_COOLDOWN
-        )
+        return setTimeout(() => this._sendMailWithRetry(email, opts, callback), EMAIL_COOLDOWN)
       }
       log.info(`Email ${info.messageId} sent: ${info.response}`)
       callback(info.response)
@@ -92,12 +81,7 @@ export class SMTP {
    * @param  {string} [password]  - Password to perform auth.
    * @return {object} - transport, see @{link https://nodemailer.com/usage/}
    */
-  getTransport(
-    hostname: string,
-    port: number | string,
-    username?: string,
-    password?: string
-  ) {
+  getTransport(hostname: string, port: number | string, username?: string, password?: string) {
     if (typeof port === 'string') {
       port = parseInt(port, 10)
     }

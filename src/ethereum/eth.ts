@@ -45,12 +45,7 @@ export namespace eth {
       disconnect()
     }
 
-    const {
-      contracts = [],
-      defaultAccount,
-      providerUrl,
-      derivationPath
-    } = options
+    const { contracts = [], defaultAccount, providerUrl, derivationPath } = options
 
     try {
       wallet = await connectWallet(defaultAccount, providerUrl, derivationPath)
@@ -65,18 +60,12 @@ export namespace eth {
     }
   }
 
-  export async function connectWallet(
-    defaultAccount,
-    providerUrl = '',
-    derivationPath = null
-  ) {
+  export async function connectWallet(defaultAccount, providerUrl = '', derivationPath = null) {
     let wallet
     const networks = getNetworks()
 
     try {
-      const network =
-        networks.find(network => providerUrl.includes(network.name)) ||
-        networks[0]
+      const network = networks.find(network => providerUrl.includes(network.name)) || networks[0]
 
       wallet = new LedgerWallet(defaultAccount, derivationPath)
       await wallet.connect(providerUrl, network.id)
@@ -125,9 +114,7 @@ export namespace eth {
    */
   export function setContracts(contracts) {
     if (!isConnected()) {
-      throw new Error(
-        'Tried to set eth contracts without connecting successfully first'
-      )
+      throw new Error('Tried to set eth contracts without connecting successfully first')
     }
 
     for (const contractData of contracts) {
@@ -138,10 +125,7 @@ export namespace eth {
         // contractData is subclass of Contract
         contract = new contractData()
         contractName = contractData.getContractName()
-      } else if (
-        typeof contractData === 'object' &&
-        contractData.constructor !== Object
-      ) {
+      } else if (typeof contractData === 'object' && contractData.constructor !== Object) {
         // contractData is an instance of Contract or of one of its subclasses
         contract = contractData
         contractName = contractData.constructor.getContractName()
@@ -153,10 +137,7 @@ export namespace eth {
 
       if (!contractName) continue // skip
 
-      const instance = wallet.createContractInstance(
-        contract.abi,
-        contract.address
-      )
+      const instance = wallet.createContractInstance(contract.abi, contract.address)
       contract.setInstance(instance)
 
       contracts[contractName] = contract

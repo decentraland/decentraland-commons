@@ -27,11 +27,7 @@ export abstract class Contract {
    * @return {boolean}
    */
   static isEmptyAddress(address) {
-    return (
-      !address ||
-      address === '0x0000000000000000000000000000000000000000' ||
-      address === '0x'
-    )
+    return !address || address === '0x0000000000000000000000000000000000000000' || address === '0x'
   }
 
   /**

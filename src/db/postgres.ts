@@ -15,7 +15,7 @@ export type CreateTableOptions = {
  * @namespace
  */
 export const postgres = {
-  client: null, // defined in `.connect()`
+  client: null /** defined in `.connect()` */,
 
   /**
    * Connect to the Postgres database
@@ -60,12 +60,7 @@ export const postgres = {
    * @param  {string} [extra]      - String appended at the end of the query
    * @return {Promise<array>} - Rows
    */
-  select(
-    tableName: string,
-    conditions: Conditions,
-    orderBy: OrderBy,
-    extra: string
-  ) {
+  select(tableName: string, conditions: Conditions, orderBy: OrderBy, extra: string) {
     return this._query('SELECT *', tableName, conditions, orderBy, extra)
   },
 
@@ -77,25 +72,13 @@ export const postgres = {
    * @return {Promise<object>} - Row
    */
   async selectOne(tableName: string, conditions: Conditions, orderBy: OrderBy) {
-    const rows = await this._query(
-      'SELECT *',
-      tableName,
-      conditions,
-      orderBy,
-      'LIMIT 1'
-    )
+    const rows = await this._query('SELECT *', tableName, conditions, orderBy, 'LIMIT 1')
 
     return rows[0]
   },
 
   // Internal
-  async _query(
-    method: string,
-    tableName: string,
-    conditions: Conditions,
-    orderBy: OrderBy,
-    extra: string = ''
-  ) {
+  async _query(method: string, tableName: string, conditions: Conditions, orderBy: OrderBy, extra: string = '') {
     let values = []
     let where = ''
     let order = ''
@@ -109,10 +92,7 @@ export const postgres = {
       order = `ORDER BY ${this.getOrderValues(orderBy)}`
     }
 
-    const result = await this.client.query(
-      `${method} FROM ${tableName} ${where} ${order} ${extra}`,
-      values
-    )
+    const result = await this.client.query(`${method} FROM ${tableName} ${where} ${order} ${extra}`, values)
 
     return result.rows
   },
@@ -128,9 +108,7 @@ export const postgres = {
    */
   async insert(tableName: string, changes: Changes, primaryKey: string = 'id') {
     if (!changes) {
-      throw new Error(
-        `Tried to perform an insert on ${tableName} without any values. Supply a changes object`
-      )
+      throw new Error(`Tried to perform an insert on ${tableName} without any values. Supply a changes object`)
     }
 
     changes.created_at = changes.created_at || new Date()
@@ -159,14 +137,10 @@ export const postgres = {
    */
   async update(tableName, changes, conditions) {
     if (!changes) {
-      throw new Error(
-        `Tried to update ${tableName} without any values. Supply a changes object`
-      )
+      throw new Error(`Tried to update ${tableName} without any values. Supply a changes object`)
     }
     if (!conditions) {
-      throw new Error(
-        `Tried to update ${tableName} without a WHERE clause. Supply a conditions object`
-      )
+      throw new Error(`Tried to update ${tableName} without a WHERE clause. Supply a conditions object`)
     }
 
     changes.updated_at = changes.updated_at || new Date()
@@ -174,10 +148,7 @@ export const postgres = {
     const changeValues = Object.values(changes)
     const conditionValues = Object.values(conditions)
 
-    const whereClauses = this.toAssignmentFields(
-      conditions,
-      changeValues.length
-    )
+    const whereClauses = this.toAssignmentFields(conditions, changeValues.length)
 
     const values = changeValues.concat(conditionValues)
 
@@ -197,9 +168,7 @@ export const postgres = {
    */
   delete(tableName, conditions) {
     if (!conditions) {
-      throw new Error(
-        `Tried to update ${tableName} without a WHERE clause. Supply a conditions object`
-      )
+      throw new Error(`Tried to update ${tableName} without a WHERE clause. Supply a conditions object`)
     }
 
     const values = Object.values(conditions)
@@ -256,9 +225,7 @@ export const postgres = {
     const uniqueKeyword = unique === true ? 'UNIQUE' : ''
 
     return this.client.query(
-      `CREATE ${uniqueKeyword} INDEX IF NOT EXISTS ${name} ON ${tableName} (${fields.join(
-        ','
-      )})`
+      `CREATE ${uniqueKeyword} INDEX IF NOT EXISTS ${name} ON ${tableName} (${fields.join(',')})`
     )
   },
 
@@ -277,9 +244,7 @@ export const postgres = {
   },
 
   alterSequenceOwnership(name, owner, columnName = 'id') {
-    return this.client.query(
-      `ALTER SEQUENCE ${name} OWNED BY ${owner}.${columnName};`
-    )
+    return this.client.query(`ALTER SEQUENCE ${name} OWNED BY ${owner}.${columnName};`)
   },
 
   /**
@@ -312,9 +277,7 @@ export const postgres = {
    */
   toAssignmentFields(columns, start = 0) {
     const columnNames = Object.keys(columns)
-    return columnNames.map(
-      (column, index) => `"${column}" = $${index + start + 1}`
-    )
+    return columnNames.map((column, index) => `"${column}" = $${index + start + 1}`)
   },
 
   /*

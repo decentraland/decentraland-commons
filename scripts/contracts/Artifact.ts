@@ -2,14 +2,7 @@ import * as path from 'path'
 import { fsReadFilePromise } from './utils'
 
 export class Artifact {
-  static PROPERTY_BLACKLIST = [
-    'bytecode',
-    'sourceMap',
-    'deployedSourceMap',
-    'sourcePath',
-    'ast',
-    'compiler'
-  ]
+  static PROPERTY_BLACKLIST = ['bytecode', 'sourceMap', 'deployedSourceMap', 'sourcePath', 'ast', 'compiler']
 
   path: string
   name: string

@@ -23,13 +23,7 @@ export namespace env {
    * @param {string} [config.path] - Path to the .env file
    * @param {boolean} [config.override] - Override the current ENV with the value found on the .env file. `config.path` is required if this is true
    */
-  export function load({
-    path,
-    override
-  }: {
-    path: string
-    override?: boolean
-  }) {
+  export function load({ path, override }: { path: string; override?: boolean }) {
     if (loaded) return
 
     const dotenv = require('dotenv')
@@ -105,11 +99,7 @@ export namespace env {
         }
 
         if (!cache.hasOwnProperty(name)) {
-          console.log(
-            `Warning: No ${name} environment variable set, defaulting to ${
-              cache[name]
-            }`
-          )
+          console.log(`Warning: No ${name} environment variable set, defaulting to ${cache[name]}`)
         }
       } else {
         cache[name] = value

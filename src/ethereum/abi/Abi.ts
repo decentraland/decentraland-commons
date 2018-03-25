@@ -30,9 +30,7 @@ const abi = {
    * @return {Array<string>} - events
    */
   getEvents() {
-    return this.filter(method => method.type === 'event').map(
-      event => event.name
-    )
+    return this.filter(method => method.type === 'event').map(event => event.name)
   },
 
   /**

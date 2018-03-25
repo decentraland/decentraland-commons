@@ -23,10 +23,7 @@ export class ContractFile {
       const Contract = require(this.path)[this.name]
       return Contract.getDefaultAbi()
     } catch (error) {
-      console.log(
-        `Could not find an artifact for "${this.path}"`,
-        error.message
-      )
+      console.log(`Could not find an artifact for "${this.path}"`, error.message)
     }
   }
 
@@ -38,10 +35,7 @@ export class ContractFile {
 
       switch (type) {
         case 'function': {
-          const args = [
-            ...inputs.map((input, index) => input.name || `input${index}`),
-            '...args'
-          ].join(', ')
+          const args = [...inputs.map((input, index) => input.name || `input${index}`), '...args'].join(', ')
 
           if (stateMutability === 'view') {
             extensions[name] = `function(${args}) {

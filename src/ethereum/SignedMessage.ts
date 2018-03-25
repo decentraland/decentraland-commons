@@ -18,12 +18,7 @@ export class SignedMessage {
     const decodedMessage = this.decodeMessage()
     const { v, r, s } = this.decodeSignature()
 
-    const pubkey = eth.utils.ecrecover(
-      eth.utils.hashPersonalMessage(decodedMessage),
-      v,
-      r,
-      s
-    )
+    const pubkey = eth.utils.ecrecover(eth.utils.hashPersonalMessage(decodedMessage), v, r, s)
 
     return '0x' + eth.utils.pubToAddressHex(pubkey)
   }

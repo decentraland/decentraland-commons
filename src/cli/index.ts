@@ -8,9 +8,7 @@ import inquirer from 'inquirer'
 export function runProgram(clients) {
   for (const client of clients) {
     if (typeof client.addCommands !== 'function') {
-      throw new Error(
-        'Each client supplied to `runProgram` must implement the `addCommands` function'
-      )
+      throw new Error('Each client supplied to `runProgram` must implement the `addCommands` function')
     }
 
     client.addCommands(program)
@@ -29,10 +27,7 @@ export function runProgram(clients) {
  * @param {string} [text=Are you sure?]  - The text to show to the user
  * @param {boolean} [defaultAnswer=true] - The value for the default answer
  */
-export async function confirm(
-  text: string = 'Are you sure?',
-  defaultAnswer = false
-) {
+export async function confirm(text: string = 'Are you sure?', defaultAnswer = false) {
   const res = await inquirer.prompt({
     type: 'confirm',
     name: 'confirm',

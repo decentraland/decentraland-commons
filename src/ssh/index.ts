@@ -20,9 +20,7 @@ export namespace tunnel {
     let tunnelConfig = readTunnelConfig(configOrPath)
 
     if (!tunnelConfig) {
-      throw new Error(
-        'Tried to connect to ssh tunnel without a valid configuration'
-      )
+      throw new Error('Tried to connect to ssh tunnel without a valid configuration')
     }
 
     log.info('Connecting to SSH tunnel')

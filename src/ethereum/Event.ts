@@ -9,9 +9,7 @@ export type WatchOptions = {
 export class Event {
   constructor(public contract, public name) {
     if (!this.instance) {
-      throw new Error(
-        `Could not find event "${name}" for ${contract.constructor.getContractName()} contract`
-      )
+      throw new Error(`Could not find event "${name}" for ${contract.constructor.getContractName()} contract`)
     }
   }
 
@@ -33,8 +31,7 @@ export class Event {
   watch(callback: Function)
   watch(options: WatchOptions, callback?: Function)
   watch(options: WatchOptions | Function, callback?: Function) {
-    const { args, opts } =
-      typeof options === 'function' ? ({} as WatchOptions) : options
+    const { args, opts } = typeof options === 'function' ? ({} as WatchOptions) : options
     const func = typeof options === 'function' ? options : callback
     this.instance(args, opts).watch(func)
   }
@@ -53,8 +50,7 @@ export class Event {
   getAll(callback?: Function)
   getAll(options: WatchOptions, callback?: Function)
   getAll(options: WatchOptions | Function, callback?: Function) {
-    const { args, opts } =
-      typeof options === 'function' ? ({} as WatchOptions) : options
+    const { args, opts } = typeof options === 'function' ? ({} as WatchOptions) : options
     const func = typeof options === 'function' ? options : callback
     this.instance(args, opts).get(func)
   }

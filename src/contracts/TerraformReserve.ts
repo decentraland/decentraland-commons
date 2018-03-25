@@ -22,8 +22,7 @@ export class TerraformReserve extends Contract {
   }
 
   lockManaWei(sender, mana, opts = { gas: 1200 }) {
-    // TODO: this unlock account method doesnt exist
-    // eth.unlockAccount()
+    // TODO: this unlock account method doesnt exist eth.unlockAccount()
     return this.transaction('lockMana', sender, mana, opts)
   }
 }

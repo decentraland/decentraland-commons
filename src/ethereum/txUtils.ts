@@ -65,10 +65,7 @@ export namespace txUtils {
    * @return {object.recepeit} transaction - Transaction recepeit
    */
   export async function getTransaction(txId) {
-    const [tx, recepeit] = await Promise.all([
-      eth.fetchTxStatus(txId),
-      eth.fetchTxReceipt(txId)
-    ])
+    const [tx, recepeit] = await Promise.all([eth.fetchTxStatus(txId), eth.fetchTxReceipt(txId)])
 
     return { ...tx, recepeit }
   }
@@ -80,10 +77,7 @@ export namespace txUtils {
    * @return boolean
    */
   export async function isPending(tx) {
-    return (
-      tx &&
-      (tx.blockNumber === null || tx.status === this.TRANSACTION_STATUS.pending)
-    )
+    return tx && (tx.blockNumber === null || tx.status === this.TRANSACTION_STATUS.pending)
   }
 
   /**
@@ -93,12 +87,7 @@ export namespace txUtils {
    * @return boolean
    */
   export async function isFailure(tx) {
-    return (
-      tx &&
-      (!tx.recepeit ||
-        tx.recepeit.status === '0x0' ||
-        tx.status === this.TRANSACTION_STATUS.failed)
-    )
+    return tx && (!tx.recepeit || tx.recepeit.status === '0x0' || tx.status === this.TRANSACTION_STATUS.failed)
   }
 
   /**
@@ -113,8 +102,6 @@ export namespace txUtils {
 
     if (!Array.isArray(eventNames)) eventNames = [eventNames]
 
-    return tx.recepeit
-      .filter(log => log && log.name)
-      .every(log => eventNames.includes(log.name))
+    return tx.recepeit.filter(log => log && log.name).every(log => eventNames.includes(log.name))
   }
 }

@@ -16,9 +16,7 @@ export class IndexFile {
   }
 
   instantiateContracts() {
-    return this.contractPaths
-      .map(path => new ContractFile(path))
-      .filter(contract => !!contract.abi)
+    return this.contractPaths.map(path => new ContractFile(path)).filter(contract => !!contract.abi)
   }
 
   build() {
@@ -36,9 +34,7 @@ ${this.buildExports()}`
   }
 
   buildImports() {
-    return this.contracts
-      .map(contract => `import { ${contract.name} } from './${contract.name}'`)
-      .join('\n')
+    return this.contracts.map(contract => `import { ${contract.name} } from './${contract.name}'`).join('\n')
   }
 
   buildHelpers() {

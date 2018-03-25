@@ -5,14 +5,7 @@ import { findFolderPath, globPromise, fsWriteFilePromise } from './utils'
 const DEFAULT_FOLDER_PATH = 'src/contracts/artifacts'
 
 export class Artifacts {
-  static PROPERTY_BLACKLIST = [
-    'bytecode',
-    'sourceMap',
-    'deployedSourceMap',
-    'sourcePath',
-    'ast',
-    'compiler'
-  ]
+  static PROPERTY_BLACKLIST = ['bytecode', 'sourceMap', 'deployedSourceMap', 'sourcePath', 'ast', 'compiler']
 
   folderPath: string
   collection: Artifact[] = []

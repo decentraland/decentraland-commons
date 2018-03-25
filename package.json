@@ -29,8 +29,14 @@
     "type": "git",
     "url": "https://github.com/decentraland/commons.git"
   },
-  "files": ["dist"],
-  "keywords": ["common", "modules", "decentraland"],
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "common",
+    "modules",
+    "decentraland"
+  ],
   "author": "Decentraland",
   "license": "ISC",
   "dependencies": {
@@ -63,7 +69,7 @@
     "@types/mocha": "^5.0.0",
     "@types/node": "^9.6.0",
     "chai": "^4.1.2",
-    "dcl-tslint-config-standard": "^1.0.0",
+    "dcl-tslint-config-standard": "^1.0.1",
     "husky": "^0.14.3",
     "jsdoc": "^3.5.5",
     "mocha": "^4.0.1",

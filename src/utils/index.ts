@@ -57,10 +57,7 @@ export function mapOmit(array, keys) {
  * @param {object} obj
  * @param {array} keys
  */
-export function pick<T extends object, K extends keyof T>(
-  obj: T,
-  keys: K[]
-): Pick<T, K> {
+export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
   const result: any = {}
 
   for (const key of keys) {
@@ -78,20 +75,13 @@ export function pick<T extends object, K extends keyof T>(
  * @param {string} key
  * @param {string} (optional) value - use only one field of object as value
  */
-export function arrayToObject<T, K extends keyof T>(
-  arr: T[],
-  key: K
-): { [P in K]: T }
+export function arrayToObject<T, K extends keyof T>(arr: T[], key: K): { [P in K]: T }
 export function arrayToObject<T, K extends keyof T, V extends keyof T>(
   arr: T[],
   key: K,
   valueKey: V
 ): { [P in K]: T[V] }
-export function arrayToObject<T>(
-  arr: T[],
-  key: keyof T,
-  value: keyof T | null = null
-) {
+export function arrayToObject<T>(arr: T[], key: keyof T, value: keyof T | null = null) {
   return arr.reduce(
     (map, obj) => {
       map[obj[key]] = value != null ? obj[value] : obj

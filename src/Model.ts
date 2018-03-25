@@ -53,10 +53,7 @@ export class Model {
    * @return {Promise<object>}
    */
   async findOne(primaryKeyOrCond: string | number | object, orderBy?: OrderBy) {
-    const conditions =
-      typeof primaryKeyOrCond === 'object'
-        ? primaryKeyOrCond
-        : { [this.primaryKey]: primaryKeyOrCond }
+    const conditions = typeof primaryKeyOrCond === 'object' ? primaryKeyOrCond : { [this.primaryKey]: primaryKeyOrCond }
 
     return this.db.selectOne(this.tableName, conditions, orderBy)
   }
@@ -208,11 +205,7 @@ export class Model {
    * @return {Promise<object>} the row argument with the inserted primaryKey
    */
   private async _insert(row) {
-    const insertion = await this.db.insert(
-      this.tableName,
-      utils.pick(row, this.columnNames),
-      this.primaryKey
-    )
+    const insertion = await this.db.insert(this.tableName, utils.pick(row, this.columnNames), this.primaryKey)
     row[this.primaryKey] = insertion.rows[0][this.primaryKey]
     return row
   }
@@ -224,11 +217,7 @@ export class Model {
    * @return {Promise<object>}
    */
   private async _update(changes, conditions) {
-    return this.db.update(
-      this.tableName,
-      utils.pick(changes, this.columnNames),
-      conditions
-    )
+    return this.db.update(this.tableName, utils.pick(changes, this.columnNames), conditions)
   }
 
   /**
