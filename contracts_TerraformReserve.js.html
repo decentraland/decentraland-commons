@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: contracts/TerraformReserve.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,45 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: contracts/TerraformReserve.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { abi } from './artifacts/TerraformReserve.json'
+import { eth, Contract } from '../ethereum'
+import { env } from '../env'
 
+/** TerraformReserve contract class */
+export class TerraformReserve extends Contract {
+  static getContractName() {
+    return 'TerraformReserve'
+  }
 
-    <h3> </h3>
+  static getDefaultAddress() {
+    return env.universalGet('TERRAFORM_RESERVE_CONTRACT_ADDRESS')
+  }
 
+  static getDefaultAbi() {
+    return abi
+  }
 
+  lockMana(sender, mana) {
+    return this.lockManaWei(sender, eth.utils.toWei(mana))
+  }
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
+  lockManaWei(sender, mana, opts = { gas: 1200 }) {
+    eth.unlockAccount()
+    return this.transaction('lockMana', sender, mana, opts)
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Namespace: tunnel</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Namespace: tunnel</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>tunnel</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Connect via an SSH tunnel. It uses tunnel-ssh behind the scenes. Check <a href="https://github.com/agebrock/tunnel-ssh">https://github.com/agebrock/tunnel-ssh</a> for more info.</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ssh_index.js.html">ssh/index.js</a>, <a href="ssh_index.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".connect"><span class="type-signature">(static) </span>connect<span class="signature">(configOrPath)</span><span class="type-signature"> &rarr; {Promise.&lt;number>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Connect using an SSH tunnel
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>configOrPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Object or path to JSON file which describes the connection. See tunnel#readTunnelConfig</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ssh_index.js.html">ssh/index.js</a>, <a href="ssh_index.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Fires when the tunnel connection has been stablished. It receives the tunnel port as a parameter
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;number></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".readTunnelConfig"><span class="type-signature">(static) </span>readTunnelConfig<span class="signature">(configOrPath)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Uses an object or reads one from the file system describing the connection.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>configOrPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The manifest for the tunnel configuration. It can be the filesystem path to the json file or the object itself.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ssh_index.js.html">ssh/index.js</a>, <a href="ssh_index.js.html#line64">line 64</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The parsed configuration
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+        <p class="code-caption">A minimal example contains</p>
+    
+    <pre class="prettyprint"><code>{
+  'username': 'remote_username',
+  'host': 'remote_host',
+  'privateKey': 'path_to_private_key',
+  'port': 22024,
+  'dstPort': 27017,
+  'localPort': ''
+}</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Contract.html">Contract</a></li><li><a href="DecentralandVesting.html">DecentralandVesting</a></li><li><a href="ERC20Token.html">ERC20Token</a></li><li><a href="ERC721Token.html">ERC721Token</a></li><li><a href="Event.html">Event</a></li><li><a href="LANDRegistry.html">LANDRegistry</a></li><li><a href="MANAToken.html">MANAToken</a></li><li><a href="Marketplace.html">Marketplace</a></li><li><a href="ReturnMANA.html">ReturnMANA</a></li><li><a href="ServiceLocator.html">ServiceLocator</a></li><li><a href="SignedMessage.html">SignedMessage</a></li><li><a href="SMTP_SMTP.html">SMTP</a></li><li><a href="TerraformReserve.html">TerraformReserve</a></li></ul><h3>Namespaces</h3><ul><li><a href="eth.html">eth</a></li><li><a href="ethUtils.html">ethUtils</a></li><li><a href="mailchimp.html">mailchimp</a></li><li><a href="mongo.html">mongo</a></li><li><a href="postgres.html">postgres</a></li><li><a href="tunnel.html">tunnel</a></li><li><a href="txUtils.html">txUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#arrayToObject">arrayToObject</a></li><li><a href="global.html#confirm">confirm</a></li><li><a href="global.html#extractFromReq">extractFromReq</a></li><li><a href="global.html#handleRequest">handleRequest</a></li><li><a href="global.html#isEmptyObject">isEmptyObject</a></li><li><a href="global.html#mapOmit">mapOmit</a></li><li><a href="global.html#omit">omit</a></li><li><a href="global.html#pick">pick</a></li><li><a href="global.html#promisify">promisify</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#runProgram">runProgram</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useRollbar">useRollbar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Mar 25 2018 21:16:07 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
