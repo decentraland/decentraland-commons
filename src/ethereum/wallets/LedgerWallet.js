@@ -10,6 +10,10 @@ import LedgerWalletSubprovider from 'ledger-wallet-provider'
 import { Wallet } from './Wallet'
 import { sleep } from '../../utils'
 
+/**
+ * Ledger Wallet class
+ * @extends Wallet
+ */
 export class LedgerWallet extends Wallet {
   // eslint-disable-next-line
   static derivationPath = "44'/60'/0'/0"

@@ -26,6 +26,7 @@ export const eth = {
    * Connect to web3
    * @param  {object} [options] - Options for the ETH connection
    * @param  {array<Contract>} [options.contracts=[]] - An array of objects defining contracts or Contract subclasses to use. Check {@link eth#setContracts}
+   * @param  {array<Wallet>} [options.wallets=[Ledger, Node]] - An array of Wallet classes. It'll use the first successful connection. Check {@link wallets}
    * @param  {string} [options.defaultAccount=web3.eth.accounts[0]] - Override the default account address
    * @param  {string} [options.providerUrl] - URL for a provider forwarded to {@link Wallet#getWeb3Provider}
    * @param  {string} [options.derivationPath] - Path to derive the hardware wallet in. Defaults to each wallets most common value
@@ -38,45 +39,50 @@ export const eth = {
 
     const {
       contracts = [],
+      wallets = [LedgerWallet, NodeWallet],
       defaultAccount,
       providerUrl,
       derivationPath
     } = options
 
     try {
-      this.wallet = await this.connectWallet(
+      this.wallet = await this.connectWallet(wallets, {
         defaultAccount,
         providerUrl,
         derivationPath
-      )
+      })
       web3 = this.wallet.getWeb3()
 
       this.setContracts(contracts)
 
       return true
     } catch (error) {
-      log.info(`Error trying to connect Ethereum wallet: ${error.message}`)
+      log.info(`Error trying to connect Ethereum wallet:\n${error.message}`)
       return false
     }
   },
 
-  async connectWallet(defaultAccount, providerUrl = '', derivationPath = null) {
-    let wallet
+  async connectWallet(wallets, options = {}) {
+    const { defaultAccount, providerUrl = '', derivationPath = null } = options
+
     const networks = this.getNetworks()
+    const network =
+      networks.find(network => providerUrl.includes(network.name)) ||
+      networks[0]
 
-    try {
-      const network =
-        networks.find(network => providerUrl.includes(network.name)) ||
-        networks[0]
+    const errors = []
 
-      wallet = new LedgerWallet(defaultAccount, derivationPath)
-      await wallet.connect(providerUrl, network.id)
-    } catch (error) {
-      wallet = new NodeWallet(defaultAccount)
-      await wallet.connect(providerUrl)
+    for (const Wallet of wallets) {
+      try {
+        const wallet = new Wallet(defaultAccount, derivationPath)
+        await wallet.connect(providerUrl, network.id)
+        return wallet
+      } catch (error) {
+        errors.push(error.message)
+      }
     }
 
-    return wallet
+    throw new Error(errors.join('\n'))
   },
 
   isConnected() {
