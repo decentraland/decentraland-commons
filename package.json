@@ -74,7 +74,9 @@
     "husky": "^0.14.3",
     "jsdoc": "^3.5.5",
     "mocha": "^4.0.1",
+    "mongodb": "^3.0.5",
     "npx": "^9.7.1",
+    "pg": "^7.4.1",
     "prettier": "^1.8.2",
     "semantic-release": "^12.2.5",
     "validate-commit-msg": "^2.14.0"
