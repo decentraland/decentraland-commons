@@ -12,7 +12,7 @@ Build the lib for use
 
 **lint**
 
-Lint js files with `eslint`
+Lint TS files with `tslint` and DCL linter rules
 
 **docs**
 
