@@ -63,39 +63,61 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<h1 id="cli">Cli</h1>
-				<p>Simple helper functions for creating a cli interface. It leverages <a href="https://github.com/SBoudrias/Inquirer.js/">inquirer</a> and <a href="https://github.com/tj/commander.js/">commander</a>.</p>
-				<h3 id="runprogram-usage"><code>runProgram</code> Usage</h3>
-				<p><code>runProgram</code> allows for reduced boilerplate code and better separation of concerns between the cli functions.
-				An example usage migth be:</p>
-				<p><strong>index.js</strong></p>
-				<pre><code class="lang-javascript"><span class="hljs-meta">#!/usr/bin/env node</span>
-
-<span class="hljs-keyword">import</span> { runProgram } <span class="hljs-keyword">from</span> <span class="hljs-string">'decentraland-commons/cli'</span>
-
-<span class="hljs-keyword">import</span> itemsCli <span class="hljs-keyword">from</span> <span class="hljs-string">'./itemsCli'</span>
-<span class="hljs-keyword">import</span> locationsCli <span class="hljs-keyword">from</span> <span class="hljs-string">'./locationsCli'</span>
-
-db.connect().then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> runProgram([itemsCli, locationsCli]))
-</code></pre>
-				<p><strong>itemsCli.js</strong></p>
-				<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
-  addCommands(program) {
-    program
-      .command(<span class="hljs-comment">/* something */</span>)
-      .description(<span class="hljs-comment">/* something */</span>)
-      .action(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {})
-  }
-}
-</code></pre>
-				<p>and a similar situation for <strong>locationsCli.js</strong></p>
-			</div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>External modules</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_model_.html" class="tsd-kind-icon">"<wbr>Model"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_cli_index_.html" class="tsd-kind-icon">"cli/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_decentralandvesting_.html" class="tsd-kind-icon">"contracts/<wbr>Decentraland<wbr>Vesting"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_erc20token_.html" class="tsd-kind-icon">"contracts/ERC20<wbr>Token"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_erc721token_.html" class="tsd-kind-icon">"contracts/ERC721<wbr>Token"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_landregistry_.html" class="tsd-kind-icon">"contracts/LANDRegistry"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_manatoken_.html" class="tsd-kind-icon">"contracts/MANAToken"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_marketplace_.html" class="tsd-kind-icon">"contracts/<wbr>Marketplace"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_returnmana_.html" class="tsd-kind-icon">"contracts/<wbr>ReturnMANA"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_servicelocator_.html" class="tsd-kind-icon">"contracts/<wbr>Service<wbr>Locator"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_terraformreserve_.html" class="tsd-kind-icon">"contracts/<wbr>Terraform<wbr>Reserve"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_contracts_index_.html" class="tsd-kind-icon">"contracts/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_db_index_.html" class="tsd-kind-icon">"db/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_db_mongo_.html" class="tsd-kind-icon">"db/mongo"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_db_postgres_.html" class="tsd-kind-icon">"db/postgres"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_email_smtp_.html" class="tsd-kind-icon">"email/SMTP"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_email_index_.html" class="tsd-kind-icon">"email/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_email_mailchimp_.html" class="tsd-kind-icon">"email/mailchimp"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_env_.html" class="tsd-kind-icon">"env"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_contract_.html" class="tsd-kind-icon">"ethereum/<wbr>Contract"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_event_.html" class="tsd-kind-icon">"ethereum/<wbr>Event"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_signedmessage_.html" class="tsd-kind-icon">"ethereum/<wbr>Signed<wbr>Message"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_abi_abi_.html" class="tsd-kind-icon">"ethereum/abi/<wbr>Abi"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_abi_abi_decoder_.html" class="tsd-kind-icon">"ethereum/abi/abi-<wbr>decoder"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_abi_index_.html" class="tsd-kind-icon">"ethereum/abi/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_eth_.html" class="tsd-kind-icon">"ethereum/eth"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_ethutils_.html" class="tsd-kind-icon">"ethereum/eth<wbr>Utils"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_index_.html" class="tsd-kind-icon">"ethereum/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_txutils_.html" class="tsd-kind-icon">"ethereum/tx<wbr>Utils"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_wallets_ledgerwallet_.html" class="tsd-kind-icon">"ethereum/wallets/<wbr>Ledger<wbr>Wallet"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_wallets_nodewallet_.html" class="tsd-kind-icon">"ethereum/wallets/<wbr>Node<wbr>Wallet"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_wallets_wallet_.html" class="tsd-kind-icon">"ethereum/wallets/<wbr>Wallet"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ethereum_wallets_index_.html" class="tsd-kind-icon">"ethereum/wallets/index"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_index_.html" class="tsd-kind-icon">"index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_log_.html" class="tsd-kind-icon">"log"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_server_index_.html" class="tsd-kind-icon">"server/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_ssh_index_.html" class="tsd-kind-icon">"ssh/index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_utils_index_.html" class="tsd-kind-icon">"utils/index"</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
+					<li class="globals current ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class="label tsd-is-external">
