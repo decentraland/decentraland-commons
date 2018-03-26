@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: email/mailchimp.js</title>
+    <title>JSDoc: Source: ethereum/wallets/Wallet.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: email/mailchimp.js</h1>
+    <h1 class="page-title">Source: ethereum/wallets/Wallet.js</h1>
 
     
 
@@ -26,66 +26,108 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Mailchimp from 'mailchimp-api-v3'
-
-import { Log } from '../log'
-
-const log = new Log('Mailchimp')
-
-/**
- * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
- * @namespace
+            <pre class="prettyprint source linenums"><code>/**
+ * Wallet class
  */
-export const mailchimp = {
-  client: null, // defined on `.connect()`
+export class Wallet {
+  static type = ''
+
+  constructor(account) {
+    this.web3 = null
+    this.account = null
+    this.type = this.constructor.type
+  }
+
+  isConnected() {
+    return this.web3 &amp;&amp; !!this.web3.eth
+  }
+
+  getWeb3() {
+    return this.web3
+  }
+
+  getAccount() {
+    return this.account
+  }
+
+  setAccount(account) {
+    if (this.isConnected()) {
+      this.web3.eth.defaultAccount = account
+    }
+    this.account = account
+  }
 
   /**
-   * Connect to the Mailchimp client
-   * @param {string} apiKey - Mailchimp api key
-   * @return {object} the Mailchimp object, to allow chaining
+   * Connect to the Ethereum Wallet
+   * @abstract
    */
-  connect(apiKey) {
-    if (!apiKey) throw new Error('Missing Mailchimp API key')
+  async connect() {
+    throw new Error('Not implemented. Check wallet support')
+  }
 
-    if (!this.client) {
-      this.client = new Mailchimp(apiKey)
-    }
-
-    return this
-  },
+  disconnect() {
+    this.web3 = null
+    this.setAccount(null)
+  }
 
   /**
-   * Register a user to a Mailchimp list.
-   * @param  {string} email  - User email
-   * @param  {string} listId - The list you want to register the user to
-   * @return {Promise&lt;boolean>} - True if the operation was successfull
+   * Gets the appropiate Web3 provider for the given environment.
+   * Check each implementation for in detail information
+   * @abstract
+   * @param  {string} [providerURL] - URL for a provider.
+   * @return {object} The web3 provider
    */
-  subscribe: (email, listId) => {
-    if (!listId) {
-      throw new Error('Missing Mailchimp List Id')
-    }
+  async getProvider(providerUrl) {
+    throw new Error('Not implemented. Check wallet support')
+  }
 
-    return this.client
-      .post(`/lists/${listId}/members`, {
-        email_address: email,
-        status: 'subscribed'
-      })
-      .then(function(response) {
-        if (response.error) {
-          return false
-        }
+  /**
+   * Return available accounts for the current wallet
+   * @abstract
+   * @return {Promise&lt;array&lt;string>>} accounts
+   */
+  async getAccounts() {
+    throw new Error('Not implemented. Check wallet support')
+  }
 
-        log.info(`Subscribed ${email} to list ${listId}`)
-        return true
-      })
-      .catch(error => {
-        if (error.title === 'Member Exists') {
-          return true
-        }
+  /**
+   * Creates a new contract instance with all its methods and events defined in its json interface object (abi).
+   * @param  {object} abi     - Application Binary Interface.
+   * @param  {string} address - Contract address
+   * @return {object} contract instance
+   */
+  createContractInstance(abi, address) {
+    return this.web3.eth.contract(abi).at(address)
+  }
 
-        log.error(`Error trying to subscribe ${email} to list ${listId}`, error)
-        return false
-      })
+  /**
+   * Unlocks the current account with the given password
+   * @param  {string} password - Account password
+   * @return {boolean} Whether the operation was successfull or not
+   */
+  unlockAccount(password) {
+    return this.web3.personal.unlockAccount(this.account, password)
+  }
+
+  /**
+   * Signs data from the default account
+   * @abstract
+   * @param  {string} message - Message to sign, ussually in Hex
+   * @return {Promise&lt;string>} signature
+   */
+  async sign(message) {
+    throw new Error('Not implemented. Check wallet support')
+  }
+
+  /**
+   * Recovers the account that signed the data
+   * @abstract
+   * @param  {string} message   - Data that was signed
+   * @param  {string} signature
+   * @return {Promise&lt;string>} account
+   */
+  async recover(message, signature) {
+    throw new Error('Not implemented. Check wallet support')
   }
 }
 </code></pre>

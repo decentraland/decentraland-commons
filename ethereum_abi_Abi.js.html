@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: email/mailchimp.js</title>
+    <title>JSDoc: Source: ethereum/abi/Abi.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: email/mailchimp.js</h1>
+    <h1 class="page-title">Source: ethereum/abi/Abi.js</h1>
 
     
 
@@ -26,67 +26,88 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Mailchimp from 'mailchimp-api-v3'
+            <pre class="prettyprint source linenums"><code>import { abiDecoder } from './abi-decoder'
 
-import { Log } from '../log'
+const abi = {
+  extend(contract) {
+    const call = (name, ...args) => contract.call(name, ...args)
+    const transaction = (name, ...args) => contract.transaction(name, ...args)
 
-const log = new Log('Mailchimp')
+    for (const method of this) {
+      const { name, stateMutability, type } = method
 
-/**
- * Mailchimp client, uses `mailchimp-api-v3` behind the scenes. Check {@link https://developer.mailchimp.com/} for more info.
- * @namespace
- */
-export const mailchimp = {
-  client: null, // defined on `.connect()`
+      if (typeof contract[name] !== 'undefined') continue
 
-  /**
-   * Connect to the Mailchimp client
-   * @param {string} apiKey - Mailchimp api key
-   * @return {object} the Mailchimp object, to allow chaining
-   */
-  connect(apiKey) {
-    if (!apiKey) throw new Error('Missing Mailchimp API key')
-
-    if (!this.client) {
-      this.client = new Mailchimp(apiKey)
+      switch (type) {
+        case 'function': {
+          if (stateMutability === 'view') {
+            contract[name] = call.bind(null, name)
+          } else if (stateMutability === 'nonpayable') {
+            contract[name] = transaction.bind(null, name)
+          }
+          break
+        }
+        default:
+          break
+      }
     }
-
-    return this
   },
 
   /**
-   * Register a user to a Mailchimp list.
-   * @param  {string} email  - User email
-   * @param  {string} listId - The list you want to register the user to
-   * @return {Promise&lt;boolean>} - True if the operation was successfull
+   * Get the contract events
+   * @return {Array&lt;string>} - events
    */
-  subscribe: (email, listId) => {
-    if (!listId) {
-      throw new Error('Missing Mailchimp List Id')
+  getEvents() {
+    return this.filter(method => method.type === 'event').map(
+      event => event.name
+    )
+  },
+
+  /**
+   * Gets a transaction result `input` and returns a parsed object with the method execution details.
+   * For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
+   * @param  {string} input - Hex input
+   * @return {object} - Object representing the method execution
+   */
+  decodeMethod(input) {
+    return abiDecoder.decodeMethod(input)
+  },
+
+  /**
+   * Gets a transaction recepeit `logs` and returns a parsed array with the details
+   * For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
+   * @param  {string} logs - Hex logs
+   * @return {array&lt;object>} - An array of logs triggered by the transaction
+   */
+  decodeLogs(logs) {
+    return abiDecoder.decodeLogs(logs)
+  },
+
+  /**
+   * Tries to find the supplied parameter to a *decoded* method {@link abi#decodeMethod}. It returns the Wei value
+   * A method typicaly consist of { "name": "methodName", "params": [{ "name": "paramName", "value": "VALUE_IN_WEI", "type": "uint256" }] }
+   * @param  {object} decodedMethod
+   * @param  {string} paramName
+   * @return {string} - Found result or undefined
+   */
+  findParamValue(decodedMethod, paramName) {
+    const params = decodedMethod.params || []
+    const param = params.find(param => param.name === paramName)
+
+    if (param) {
+      return param.value
     }
-
-    return this.client
-      .post(`/lists/${listId}/members`, {
-        email_address: email,
-        status: 'subscribed'
-      })
-      .then(function(response) {
-        if (response.error) {
-          return false
-        }
-
-        log.info(`Subscribed ${email} to list ${listId}`)
-        return true
-      })
-      .catch(error => {
-        if (error.title === 'Member Exists') {
-          return true
-        }
-
-        log.error(`Error trying to subscribe ${email} to list ${listId}`, error)
-        return false
-      })
   }
+}
+
+/** Abi decorator, extends abi objects with useful methods */
+export const Abi = {
+  new(abiObject) {
+    const newAbi = Object.create(abiObject)
+    abiDecoder.addABI(abiObject)
+    return Object.assign(newAbi, abi)
+  },
+  ...abi
 }
 </code></pre>
         </article>
