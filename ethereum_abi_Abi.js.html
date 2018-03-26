@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: server/index.js</title>
+    <title>JSDoc: Source: ethereum/abi/Abi.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: server/index.js</h1>
+    <h1 class="page-title">Source: ethereum/abi/Abi.js</h1>
 
     
 
@@ -26,85 +26,88 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Rollbar from 'rollbar'
-import { Log } from '../log'
+            <pre class="prettyprint source linenums"><code>import { abiDecoder } from './abi-decoder'
 
-const log = new Log('Server')
-let rollbar = null
+const abi = {
+  extend(contract) {
+    const call = (name, ...args) => contract.call(name, ...args)
+    const transaction = (name, ...args) => contract.transaction(name, ...args)
 
-/**
- * Set up rollbar integration to report server errors raised while using {@link server#handleRequest}
- * @param  {string} accessToken - Rollbar access token
- */
-export function useRollbar(accessToken) {
-  if (!accessToken) return
-  rollbar = new Rollbar(accessToken)
-}
+    for (const method of this) {
+      const { name, stateMutability, type } = method
 
-/**
- * Wrapper for the request handler. It creates the appropiate response object and catches errors. For example:
- *     app.post('/api/path', handleRequest(async (req, res) => {
- *        const param = extractFromReq(req, 'param')
- *        return 'Success'
- *    }))
- * @param  {function} callback - Actual handler, the return value will be used as response to the client. It will receive (req, res) as parameters
- * @return {function} - Wrapper function
- */
-export function handleRequest(callback) {
-  return async (req, res) => {
-    log.info('Handling request to', req.path)
+      if (typeof contract[name] !== 'undefined') continue
 
-    try {
-      const data = await callback(req, res)
+      switch (type) {
+        case 'function': {
+          if (stateMutability === 'view') {
+            contract[name] = call.bind(null, name)
+          } else if (stateMutability === 'nonpayable') {
+            contract[name] = transaction.bind(null, name)
+          }
+          break
+        }
+        default:
+          break
+      }
+    }
+  },
 
-      return res.json(sendOk(data))
-    } catch (error) {
-      log.error('Error handling request', req.path, error)
+  /**
+   * Get the contract events
+   * @return {Array&lt;string>} - events
+   */
+  getEvents() {
+    return this.filter(method => method.type === 'event').map(
+      event => event.name
+    )
+  },
 
-      const data = error.data || {}
-      const message = error.message
+  /**
+   * Gets a transaction result `input` and returns a parsed object with the method execution details.
+   * For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
+   * @param  {string} input - Hex input
+   * @return {object} - Object representing the method execution
+   */
+  decodeMethod(input) {
+    return abiDecoder.decodeMethod(input)
+  },
 
-      if (rollbar) rollbar.error(error, req)
+  /**
+   * Gets a transaction recepeit `logs` and returns a parsed array with the details
+   * For this to work, `abiDecoder.addABI` needs to be called beforehand, which is done by the constructor
+   * @param  {string} logs - Hex logs
+   * @return {array&lt;object>} - An array of logs triggered by the transaction
+   */
+  decodeLogs(logs) {
+    return abiDecoder.decodeLogs(logs)
+  },
 
-      return res.json(sendError(data, message))
+  /**
+   * Tries to find the supplied parameter to a *decoded* method {@link abi#decodeMethod}. It returns the Wei value
+   * A method typicaly consist of { "name": "methodName", "params": [{ "name": "paramName", "value": "VALUE_IN_WEI", "type": "uint256" }] }
+   * @param  {object} decodedMethod
+   * @param  {string} paramName
+   * @return {string} - Found result or undefined
+   */
+  findParamValue(decodedMethod, paramName) {
+    const params = decodedMethod.params || []
+    const param = params.find(param => param.name === paramName)
+
+    if (param) {
+      return param.value
     }
   }
 }
 
-/**
- * Get a named parameter from a request object. It leverages GET and POST requests and parses JSON objects
- * @param  {object} req   - Express js request object. Check {@link https://expressjs.com} for more info.
- * @param  {string} param - Searched param
- * @return {object} - The param value, it throws if it's not present
- */
-export function extractFromReq(req, param) {
-  let value = null
-
-  if (req.query[param]) {
-    value = req.query[param]
-  } else if (req.body[param]) {
-    value = req.body[param]
-  } else if (req.params[param]) {
-    value = req.params[param]
-  }
-
-  if (req.headers['content-type'] === 'application/json') {
-    value = JSON.parse(value)
-  }
-
-  if (!value) {
-    throw new Error(`Could not get ${param} from request`)
-  }
-
-  return value
-}
-
-function sendOk(data) {
-  return { ok: true, data }
-}
-
-function sendError(data, error) {
-  return { ok: false, data, error }
+/** Abi decorator, extends abi objects with useful methods */
+export const Abi = {
+  new(abiObject) {
+    const newAbi = Object.create(abiObject)
+    abiDecoder.addABI(abiObject)
+    return Object.assign(newAbi, abi)
+  },
+  ...abi
 }
 </code></pre>
         </article>

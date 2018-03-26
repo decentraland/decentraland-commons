@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ethereum/wallets/LedgerWallet.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ethereum/wallets/LedgerWallet.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Web3 from 'web3'
+
+import TransportU2F from '@ledgerhq/hw-transport-u2f'
+import Eth from '@ledgerhq/hw-app-eth'
+
+import ProviderEngine from 'web3-provider-engine'
+import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
+import LedgerWalletSubprovider from 'ledger-wallet-provider'
+
+import { Wallet } from './Wallet'
+import { sleep } from '../../utils'
+
+/**
+ * Ledger Wallet class
+ * @extends Wallet
+ */
+export class LedgerWallet extends Wallet {
+  // eslint-disable-next-line
+  static derivationPath = "44'/60'/0'/0"
+  static type = 'ledger'
+
+  static async isSupported() {
+    const devices = await TransportU2F.list()
+    return devices.length > 0
+  }
+
+  constructor(account, derivationPath) {
+    super(account)
+    this.ledger = null
+    this.engine = null
+    this.derivationPath = derivationPath || LedgerWallet.derivationPath
+  }
+
+  async connect(providerUrl, networkId) {
+    const transport = await TransportU2F.open(null, 2)
+    const ledger = new Eth(transport)
+
+    this.ledger = ledger
+
+    // FireFox hangs on indefinetly on `getAccounts`, so the second promise acts as a timeout
+    const accounts = await Promise.race([
+      this.getAccounts(),
+      sleep(2000).then(() =>
+        Promise.reject({ message: 'Timed out trying to connect to ledger' })
+      )
+    ])
+
+    this.engine = new ProviderEngine()
+
+    const provider = await this.getProvider(providerUrl, networkId)
+    this.web3 = new Web3(provider)
+
+    if (!this.account) {
+      this.setAccount(accounts[0])
+    }
+  }
+
+  disconnect() {
+    super.disconnect()
+
+    if (this.engine) {
+      this.engine.stop()
+      this.engine = null
+    }
+  }
+
+  /**
+   * It'll create a new provider using the providerUrl param for RPC calls
+   * @param  {string} [providerURL="https://mainnet.infura.io/"] - URL for an HTTP provider
+   * @param  {string} [networkId="1"] - The id of the network we're connecting to. 1 means mainnet, check {@link eth#getNetworks}
+   * @return {object} The web3 provider
+   */
+  async getProvider(
+    providerUrl = 'https://mainnet.infura.io/',
+    networkId = '1'
+  ) {
+    let ledgerWalletSubProvider = await LedgerWalletSubprovider(
+      () => networkId,
+      this.derivationPath
+    )
+
+    this.engine.addProvider(ledgerWalletSubProvider)
+    this.engine.addProvider(
+      new RpcSubprovider({
+        rpcUrl: providerUrl
+      })
+    )
+    this.engine.start()
+
+    return this.engine
+  }
+
+  async getAccounts() {
+    const defaultAccount = await this.ledger.getAddress(
+      LedgerWallet.derivationPath
+    )
+    return [defaultAccount.address] // follow the Wallet interface
+  }
+
+  async sign(message) {
+    let { v, r, s } = await this.ledger.signPersonalMessage(
+      LedgerWallet.derivationPath,
+      message.substring(2)
+    )
+
+    v = (v - 27).toString(16)
+    if (v.length &lt; 2) v = '0' + v
+
+    return '0x' + r + s + v
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Contract.html">Contract</a></li><li><a href="DecentralandVesting.html">DecentralandVesting</a></li><li><a href="ERC20Token.html">ERC20Token</a></li><li><a href="ERC721Token.html">ERC721Token</a></li><li><a href="Event.html">Event</a></li><li><a href="LANDRegistry.html">LANDRegistry</a></li><li><a href="LedgerWallet.html">LedgerWallet</a></li><li><a href="MANAToken.html">MANAToken</a></li><li><a href="Marketplace.html">Marketplace</a></li><li><a href="NodeWallet.html">NodeWallet</a></li><li><a href="ReturnMANA.html">ReturnMANA</a></li><li><a href="ServiceLocator.html">ServiceLocator</a></li><li><a href="SignedMessage.html">SignedMessage</a></li><li><a href="SMTP_SMTP.html">SMTP</a></li><li><a href="TerraformReserve.html">TerraformReserve</a></li><li><a href="Wallet.html">Wallet</a></li></ul><h3>Namespaces</h3><ul><li><a href="eth.html">eth</a></li><li><a href="ethUtils.html">ethUtils</a></li><li><a href="mailchimp.html">mailchimp</a></li><li><a href="mongo.html">mongo</a></li><li><a href="postgres.html">postgres</a></li><li><a href="tunnel.html">tunnel</a></li><li><a href="txUtils.html">txUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Abi">Abi</a></li><li><a href="global.html#arrayToObject">arrayToObject</a></li><li><a href="global.html#confirm">confirm</a></li><li><a href="global.html#extractFromReq">extractFromReq</a></li><li><a href="global.html#handleRequest">handleRequest</a></li><li><a href="global.html#isEmptyObject">isEmptyObject</a></li><li><a href="global.html#mapOmit">mapOmit</a></li><li><a href="global.html#omit">omit</a></li><li><a href="global.html#pick">pick</a></li><li><a href="global.html#promisify">promisify</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#runProgram">runProgram</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useRollbar">useRollbar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Mar 26 2018 11:49:26 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

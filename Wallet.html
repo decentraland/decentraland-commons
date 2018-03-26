@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: ethUtils</title>
+    <title>JSDoc: Class: Wallet</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: ethUtils</h1>
+    <h1 class="page-title">Class: Wallet</h1>
 
     
 
@@ -28,7 +28,9 @@
 
 <header>
     
-        <h2>ethUtils</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Wallet<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">Wallet class</div>
         
     
 </header>
@@ -37,11 +39,29 @@
     <div class="container-overview">
     
         
-            <div class="description">Some utility functions to work with Ethereum dapps.
-It also provides a reference to the <a href="https://github.com/ethereumjs/ethereumjs-util">ethereumjs-util lib</a></div>
-        
 
-        
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="Wallet"><span class="type-signature"></span>new Wallet<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -73,7 +93,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line11">line 11</a>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -85,7 +105,22 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 </dl>
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     </div>
 
@@ -102,18 +137,32 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
-<h4 class="name" id=".toBigNumber"><span class="type-signature">(static) </span>toBigNumber<span class="type-signature"></span></h4>
 
+    
+
+    
+    <h4 class="name" id="connect"><span class="type-signature">(async, abstract) </span>connect<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
 
 
 
 <div class="description">
-    Converts a given number into a BigNumber instance. Check <a href="https://github.com/ethereum/wiki/wiki/JavaScript-API#web3tobignumber">https://github.com/ethereum/wiki/wiki/JavaScript-API#web3tobignumber</a> for more info.
+    Connect to the Ethereum Wallet
 </div>
+
+
+
+
+
+
 
 
 
@@ -150,7 +199,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line20">line 20</a>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -166,11 +215,17 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
 
 
-        
-    
 
-    
-        <h3 class="subsection-title">Methods</h3>
+
+
+
+
+
+
+
+
+
+
 
         
             
@@ -178,7 +233,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
 
     
-    <h4 class="name" id=".fromWei"><span class="type-signature">(static) </span>fromWei<span class="signature">(amount, unit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="createContractInstance"><span class="type-signature"></span>createContractInstance<span class="signature">(abi, address)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -186,7 +241,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
 
 <div class="description">
-    Converts a number of wei into the desired unit
+    Creates a new contract instance with all its methods and events defined in its json interface object (abi).
 </div>
 
 
@@ -210,11 +265,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
-        
-        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -226,45 +277,30 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         <tr>
             
-                <td class="name"><code>amount</code></td>
+                <td class="name"><code>abi</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
-|
-
-<span class="param-type">BigNumber</span>
+<span class="param-type">object</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
-                <td class="default">
-                
-                </td>
-            
 
-            <td class="description last">Amount to parse</td>
+            <td class="description last">Application Binary Interface.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>unit</code></td>
+                <td class="name"><code>address</code></td>
             
 
             <td class="type">
@@ -277,26 +313,10 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
-                <td class="default">
-                
-                    ether
-                
-                </td>
-            
 
-            <td class="description last">Which unit to use. <a href="https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei">https://github.com/ethereum/wiki/wiki/JavaScript-API#web3fromwei</a> for more info</td>
+            <td class="description last">Contract address</td>
         </tr>
 
     
@@ -337,7 +357,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line28">line 28</a>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -364,7 +384,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         
 <div class="param-desc">
-    - Parsed result
+    contract instance
 </div>
 
 
@@ -375,7 +395,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">object</span>
 
 
     </dd>
@@ -393,7 +413,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
 
     
-    <h4 class="name" id=".localRecover"><span class="type-signature">(static) </span>localRecover<span class="signature">(data, signature)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="getAccounts"><span class="type-signature">(async, abstract) </span>getAccounts<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;array.&lt;string>>}</span></h4>
     
 
     
@@ -401,7 +421,285 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
 
 <div class="description">
-    ECDSA public key recovery from signature
+    Return available accounts for the current wallet
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    accounts
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;array.&lt;string>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getProvider"><span class="type-signature">(async, abstract) </span>getProvider<span class="signature">(providerURL<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Gets the appropiate Web3 provider for the given environment.
+Check each implementation for in detail information
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>providerURL</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">URL for a provider.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The web3 provider
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="recover"><span class="type-signature">(async, abstract) </span>recover<span class="signature">(message, signature)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Recovers the account that signed the data
 </div>
 
 
@@ -437,15 +735,12 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Buffer</span>
-|
-
 <span class="param-type">string</span>
 
 
@@ -456,7 +751,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
             
 
-            <td class="description last">Signed data. If it's a string, it'll be converted to a Buffer using sha3</td>
+            <td class="description last">Data that was signed</td>
         </tr>
 
     
@@ -479,7 +774,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
             
 
-            <td class="description last">The result of calling `localSign`. Concatenated string of vrs sign</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -520,7 +815,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line73">line 73</a>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -547,7 +842,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         
 <div class="param-desc">
-    public key hex value
+    account
 </div>
 
 
@@ -558,7 +853,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise.&lt;string></span>
 
 
     </dd>
@@ -576,7 +871,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
 
     
-    <h4 class="name" id=".localSign"><span class="type-signature">(static) </span>localSign<span class="signature">(data, privKey)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="sign"><span class="type-signature">(async, abstract) </span>sign<span class="signature">(message)</span><span class="type-signature"> &rarr; {Promise.&lt;string>}</span></h4>
     
 
     
@@ -584,7 +879,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
 
 <div class="description">
-    ECDSA sign some data
+    Signs data from the default account
 </div>
 
 
@@ -620,15 +915,12 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Buffer</span>
-|
-
 <span class="param-type">string</span>
 
 
@@ -639,33 +931,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
             
 
-            <td class="description last">Data to sign. If it's a string, it'll be converted to a Buffer using sha3</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>privKey</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Buffer</span>
-|
-
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">private key to sign with. If it's a string, it'll converted to an hex Buffer</td>
+            <td class="description last">Message to sign, ussually in Hex</td>
         </tr>
 
     
@@ -706,7 +972,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line58">line 58</a>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -733,7 +999,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         
 <div class="param-desc">
-    vrs sign result concatenated as a string
+    signature
 </div>
 
 
@@ -744,7 +1010,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">Promise.&lt;string></span>
 
 
     </dd>
@@ -762,7 +1028,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
 
     
-    <h4 class="name" id=".privateToPublicHex"><span class="type-signature">(static) </span>privateToPublicHex<span class="signature">(privKey)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="unlockAccount"><span class="type-signature"></span>unlockAccount<span class="signature">(password)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -770,7 +1036,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
 
 <div class="description">
-    Returns the ethereum public key of a given private key
+    Unlocks the current account with the given password
 </div>
 
 
@@ -806,15 +1072,12 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         <tr>
             
-                <td class="name"><code>privKey</code></td>
+                <td class="name"><code>password</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Buffer</span>
-|
-
 <span class="param-type">string</span>
 
 
@@ -825,7 +1088,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
             
 
-            <td class="description last">private key from where to derive the public key</td>
+            <td class="description last">Account password</td>
         </tr>
 
     
@@ -866,7 +1129,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line93">line 93</a>
+        <a href="ethereum_wallets_Wallet.js.html">ethereum/wallets/Wallet.js</a>, <a href="ethereum_wallets_Wallet.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -893,7 +1156,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 
         
 <div class="param-desc">
-    Hex public key
+    Whether the operation was successfull or not
 </div>
 
 
@@ -904,379 +1167,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
     </dt>
     <dd>
         
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".pubToAddressHex"><span class="type-signature">(static) </span>pubToAddressHex<span class="signature">(pubKey)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Returns the ethereum address for a given public key
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pubKey</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">public key from where to derive the address</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line103">line 103</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Hex address
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".toWei"><span class="type-signature">(static) </span>toWei<span class="signature">(amount, unit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Converts an ethereum unit into wei
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>amount</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-|
-
-<span class="param-type">BigNumber</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">Amount to convert</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>unit</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    ether
-                
-                </td>
-            
-
-            <td class="description last">Which unit to use. <a href="https://github.com/ethereum/wiki/wiki/JavaScript-API#web3towei">https://github.com/ethereum/wiki/wiki/JavaScript-API#web3towei</a> for more info</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ethereum_ethUtils.js.html">ethereum/ethUtils.js</a>, <a href="ethereum_ethUtils.js.html#line39">line 39</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    - Parsed result
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
+<span class="param-type">boolean</span>
 
 
     </dd>
@@ -1310,7 +1201,7 @@ It also provides a reference to the <a href="https://github.com/ethereumjs/ether
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Mar 26 2018 11:49:26 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Mar 26 2018 11:49:27 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

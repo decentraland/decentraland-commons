@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: server/index.js</title>
+    <title>JSDoc: Source: ethereum/wallets/Wallet.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: server/index.js</h1>
+    <h1 class="page-title">Source: ethereum/wallets/Wallet.js</h1>
 
     
 
@@ -26,85 +26,109 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Rollbar from 'rollbar'
-import { Log } from '../log'
-
-const log = new Log('Server')
-let rollbar = null
-
-/**
- * Set up rollbar integration to report server errors raised while using {@link server#handleRequest}
- * @param  {string} accessToken - Rollbar access token
+            <pre class="prettyprint source linenums"><code>/**
+ * Wallet class
  */
-export function useRollbar(accessToken) {
-  if (!accessToken) return
-  rollbar = new Rollbar(accessToken)
-}
+export class Wallet {
+  static type = ''
 
-/**
- * Wrapper for the request handler. It creates the appropiate response object and catches errors. For example:
- *     app.post('/api/path', handleRequest(async (req, res) => {
- *        const param = extractFromReq(req, 'param')
- *        return 'Success'
- *    }))
- * @param  {function} callback - Actual handler, the return value will be used as response to the client. It will receive (req, res) as parameters
- * @return {function} - Wrapper function
- */
-export function handleRequest(callback) {
-  return async (req, res) => {
-    log.info('Handling request to', req.path)
+  constructor(account) {
+    this.web3 = null
+    this.account = null
+    this.type = this.constructor.type
+  }
 
-    try {
-      const data = await callback(req, res)
+  isConnected() {
+    return this.web3 &amp;&amp; !!this.web3.eth
+  }
 
-      return res.json(sendOk(data))
-    } catch (error) {
-      log.error('Error handling request', req.path, error)
+  getWeb3() {
+    return this.web3
+  }
 
-      const data = error.data || {}
-      const message = error.message
+  getAccount() {
+    return this.account
+  }
 
-      if (rollbar) rollbar.error(error, req)
-
-      return res.json(sendError(data, message))
+  setAccount(account) {
+    if (this.isConnected()) {
+      this.web3.eth.defaultAccount = account
     }
-  }
-}
-
-/**
- * Get a named parameter from a request object. It leverages GET and POST requests and parses JSON objects
- * @param  {object} req   - Express js request object. Check {@link https://expressjs.com} for more info.
- * @param  {string} param - Searched param
- * @return {object} - The param value, it throws if it's not present
- */
-export function extractFromReq(req, param) {
-  let value = null
-
-  if (req.query[param]) {
-    value = req.query[param]
-  } else if (req.body[param]) {
-    value = req.body[param]
-  } else if (req.params[param]) {
-    value = req.params[param]
+    this.account = account
   }
 
-  if (req.headers['content-type'] === 'application/json') {
-    value = JSON.parse(value)
+  /**
+   * Connect to the Ethereum Wallet
+   * @abstract
+   */
+  async connect() {
+    throw new Error('Not implemented. Check wallet support')
   }
 
-  if (!value) {
-    throw new Error(`Could not get ${param} from request`)
+  disconnect() {
+    this.web3 = null
+    this.setAccount(null)
   }
 
-  return value
-}
+  /**
+   * Gets the appropiate Web3 provider for the given environment.
+   * Check each implementation for in detail information
+   * @abstract
+   * @param  {string} [providerURL] - URL for a provider.
+   * @return {object} The web3 provider
+   */
+  async getProvider(providerUrl) {
+    throw new Error('Not implemented. Check wallet support')
+  }
 
-function sendOk(data) {
-  return { ok: true, data }
-}
+  /**
+   * Return available accounts for the current wallet
+   * @abstract
+   * @return {Promise&lt;array&lt;string>>} accounts
+   */
+  async getAccounts() {
+    throw new Error('Not implemented. Check wallet support')
+  }
 
-function sendError(data, error) {
-  return { ok: false, data, error }
+  /**
+   * Creates a new contract instance with all its methods and events defined in its json interface object (abi).
+   * @param  {object} abi     - Application Binary Interface.
+   * @param  {string} address - Contract address
+   * @return {object} contract instance
+   */
+  createContractInstance(abi, address) {
+    return this.web3.eth.contract(abi).at(address)
+  }
+
+  /**
+   * Unlocks the current account with the given password
+   * @param  {string} password - Account password
+   * @return {boolean} Whether the operation was successfull or not
+   */
+  unlockAccount(password) {
+    return this.web3.personal.unlockAccount(this.account, password)
+  }
+
+  /**
+   * Signs data from the default account
+   * @abstract
+   * @param  {string} message - Message to sign, ussually in Hex
+   * @return {Promise&lt;string>} signature
+   */
+  async sign(message) {
+    throw new Error('Not implemented. Check wallet support')
+  }
+
+  /**
+   * Recovers the account that signed the data
+   * @abstract
+   * @param  {string} message   - Data that was signed
+   * @param  {string} signature
+   * @return {Promise&lt;string>} account
+   */
+  async recover(message, signature) {
+    throw new Error('Not implemented. Check wallet support')
+  }
 }
 </code></pre>
         </article>
