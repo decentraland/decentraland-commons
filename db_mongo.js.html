@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: db/mongo.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: db/mongo.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { MongoClient } from 'mongodb'
+
+import { Log } from '../log'
+import { promisify } from '../utils'
+
+const log = new Log('MongoDB')
+
+/**
+ * Client to query MongoDB. Uses `mongodb` behind the scenes. Check {@link https://docs.mongodb.com/getting-started/node/client/} for more info.
+ * IMPORTANT: To use this client with the `Model` class, it should be updated to follow the common API found on `postgres.js`
+ * @namespace
+ */
+export const mongo = {
+  client: null, // Defined on `.connect()`
+
+  /**
+   * Connect to the Mongo database
+   * @param  {number} port
+   * @param  {string} dbname
+   * @param  {string} [username]
+   * @param  {string} [password]
+   * @return {Promise} - Resolves on connection
+   */
+  connect: function(port, dbname, username, password) {
+    const url = `mongodb://localhost:${port}/${dbname}`
+
+    log.info(`Connecting to ${url}`)
+
+    return MongoClient.connect(url)
+      .then(async mongodb => {
+        log.info(`Connected to MongoDB ${dbname}`)
+
+        if (username) {
+          await promisify(mongodb.authenticate, mongodb)(username, password)
+        }
+
+        this.client = mongodb
+      })
+      .catch(error => {
+        error.connectionTimedOut = this.isConnectionTimedOut(error)
+
+        if (error.connectionTimedOut) {
+          log.warn(`Connection to MongoDB ${dbname} TIMED OUT`)
+        }
+
+        return Promise.reject(error)
+      })
+  },
+
+  isConnectionTimedOut: function(error) {
+    // Sadly as of this writing, there's no other way to check if a mongo connection timed out
+    return error.message.search(/timed out$/) !== -1
+  },
+
+  /**
+   * Forward to the MongoDB collection method
+   * @param  {string} collectionName - Collection name, check the [mongodb docs]{@link https://docs.mongodb.com/getting-started/node/client/} for more info.
+   * @return {object} - queriable collection
+   */
+  collection(collectionName) {
+    return this.client.collection(collectionName)
+  },
+
+  /**
+   * Upsert an object to the desired collection.
+   * It adds the `created_at` and `updated_at` properties by default
+   * @param  {string} collectionName - Collection name
+   * @param  {string} _id            - _id of the new object or of the one to update
+   * @param  {object} [row]          - properties to upsert
+   * @return {Promise&lt;object>}
+   */
+  async save(collectionName, _id, row = null) {
+    const collection = this.client.collection(collectionName)
+    const exists = await this.exists(collectionName, { _id })
+
+    if (exists &amp;&amp; !row) return // Nothing to do here
+
+    if (exists) {
+      row.updated_at = new Date()
+      return await collection.update({ _id }, { $set: row })
+    } else {
+      row = Object.assign({ _id, created_at: new Date() }, row)
+      return await collection.insertOne(row)
+    }
+  },
+
+  /**
+   * Checks if a certain `query` returns any result
+   * @param  {string} collectionName
+   * @param  {object} query - Query to forward to MongoDB
+   * @return {Promise&lt;boolean>}
+   */
+  async exists(collectionName, query = {}) {
+    const count = await this.client
+      .collection(collectionName)
+      .find(query)
+      .count()
+
+    return count > 0
+  },
+
+  /**
+   * Find objects on a collection
+   * @param  {string} collectionName
+   * @param  {object} query - Query to forward to MongoDB
+   * @return {Promise&lt;array&lt;object>>}
+   */
+  async find(collectionName, query) {
+    if (!this.client) {
+      throw new Error(
+        'Connection to database not found, have you called `.connect()` already?'
+      )
+    }
+
+    return await this.client
+      .collection(collectionName)
+      .find(query)
+      .toArray()
+  },
+
+  /**
+   * Find the first match for a query
+   * @param  {string} collectionName
+   * @param  {object} query - Query to forward to MongoDB
+   * @return {Promise&lt;object>}
+   */
+  async findOne(collectionName, query) {
+    if (!this.client) {
+      throw new Error(
+        'Connection to database not found, have you called `.connect()` already?'
+      )
+    }
+
+    return await this.client.collection(collectionName).findOne(query)
+  },
+
+  /**
+   * Forward aggregate to MongoDB
+   * @param  {string} collectionName
+   * @param  {object} query - Query to forward to MongoDB
+   * @return {Promise&lt;object>}
+   */
+  async aggregate(collectionName, query) {
+    if (!this.client) {
+      throw new Error(
+        'Connection to database not found, have you called `.connect()` already?'
+      )
+    }
+
+    return await this.client
+      .collection(collectionName)
+      .aggregate(query)
+      .toArray()
+  },
+
+  /**
+   * Close the db connection
+   */
+  close: function() {
+    if (this.client) {
+      this.client.close()
+    }
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Contract.html">Contract</a></li><li><a href="DecentralandVesting.html">DecentralandVesting</a></li><li><a href="ERC20Token.html">ERC20Token</a></li><li><a href="ERC721Token.html">ERC721Token</a></li><li><a href="Event.html">Event</a></li><li><a href="LANDRegistry.html">LANDRegistry</a></li><li><a href="MANAToken.html">MANAToken</a></li><li><a href="Marketplace.html">Marketplace</a></li><li><a href="ReturnMANA.html">ReturnMANA</a></li><li><a href="ServiceLocator.html">ServiceLocator</a></li><li><a href="SignedMessage.html">SignedMessage</a></li><li><a href="SMTP_SMTP.html">SMTP</a></li><li><a href="TerraformReserve.html">TerraformReserve</a></li></ul><h3>Namespaces</h3><ul><li><a href="eth.html">eth</a></li><li><a href="ethUtils.html">ethUtils</a></li><li><a href="mailchimp.html">mailchimp</a></li><li><a href="mongo.html">mongo</a></li><li><a href="postgres.html">postgres</a></li><li><a href="tunnel.html">tunnel</a></li><li><a href="txUtils.html">txUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#arrayToObject">arrayToObject</a></li><li><a href="global.html#confirm">confirm</a></li><li><a href="global.html#extractFromReq">extractFromReq</a></li><li><a href="global.html#handleRequest">handleRequest</a></li><li><a href="global.html#isEmptyObject">isEmptyObject</a></li><li><a href="global.html#mapOmit">mapOmit</a></li><li><a href="global.html#omit">omit</a></li><li><a href="global.html#pick">pick</a></li><li><a href="global.html#promisify">promisify</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#runProgram">runProgram</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useRollbar">useRollbar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Mar 26 2018 19:33:34 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

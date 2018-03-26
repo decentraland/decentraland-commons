@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: utils/index.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,101 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: utils/index.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Promisifies a node callback style function. Takes a second argument that is bound as `this`
+ * @param  {Function} fn - Node style callback, accepting (error, result)
+ * @return {Promise}
+ */
+export function promisify(fn) {
+  return (...args) =>
+    new Promise((resolve, reject) => {
+      fn(...args, (error, result) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(result)
+        }
+      })
+    })
+}
 
+/**
+ * Sleep for a certain amount of milliseconds
+ * @param {integer} ms - miliseconds to sleep
+ * @return {Promise} - Promise that resolves when the sleeping is done
+ */
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 
-    <h3> </h3>
+/**
+ * Check if an object has keys
+ * @param {object} obj
+ */
+export function isEmptyObject(obj) {
+  return obj &amp;&amp; Object.keys(obj).length === 0
+}
 
+/**
+ * Return a copy of the object, filtered to omit the blacklisted array of valid keys
+ * @param {object} obj
+ * @param {array} keys
+ */
+export function omit(obj, keys) {
+  const newKeys = Object.keys(obj).filter(key => !keys.includes(key))
+  return pick(obj, newKeys)
+}
 
+/**
+ * Returns a copy of the array of with the keys filtered on each object
+ * @param {array} array - array of objects
+ * @param {array} keys
+ */
+export function mapOmit(array, keys) {
+  return array.map(obj => omit(obj, keys))
+}
 
+/**
+ * Return a copy of the object, filtered to only have values for the whitelisted array of valid keys
+ * @param {object} obj
+ * @param {array} keys
+ */
+export function pick(obj, keys) {
+  const result = {}
 
+  for (const key of keys) {
+    if (obj.hasOwnProperty(key)) {
+      result[key] = obj[key]
+    }
+  }
 
+  return result
+}
 
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Return a an object using a field as key out of an array of objects
+ * @param {array} arr
+ * @param {string} key
+ * @param {string} (optional) value - use only one field of object as value
+ */
+export function arrayToObject(arr, key, value) {
+  return arr.reduce((map, obj) => {
+    map[obj[key]] = value != null ? obj[value] : obj
+    return map
+  }, {})
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: email/SMTP.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: email/SMTP.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import nodemailer from 'nodemailer'
+
+import { Log } from '../log'
+
+const log = new Log('SMTP')
+
+const EMAIL_COOLDOWN = 60 * 1000 // 1 minute = 60 seconds = 60 * 1000 miliseconds
+
+export class SMTP {
+  /**
+   * SMTP interface uses `nodemailer` behind the scenes. Check {@link https://github.com/nodemailer/nodemailer} for more info.
+   * @param  {string} options.hostname    - Mailer host name
+   * @param  {string|number} options.port - String or number representing the port of the mailer
+   * @param  {string} [options.username]  - Username to perform auth.
+   * @param  {string} [options.password]  - Password to perform auth.
+   * @param  {object} [templates={}]      - A mapping of `name` => `func` describing the templates to use. {@link SMPT#setTemplate}
+   * @return {STMP}
+   */
+  constructor({ hostname, port, username, password }, templates = {}) {
+    this.transport = this.getTransport(hostname, port, username, password)
+    this.templates = templates
+  }
+
+  /**
+   * Sets a new template to use later.
+   * @example &lt;caption>A the template should look like this:&lt;/caption>
+   * opts => ({
+   *   from: `The Decentraland Team &lt;${opts.sender}>`, // sender address
+   *   to: opts.email,
+   *   subject: "[TEST]",
+   *   text: "Thanks, The Decentraland Team",
+   *   html: "&lt;p>Thanks,&lt;/p>&lt;p>The Decentraland Team&lt;/p>"
+   * })
+   * @param {string}   name - Name of the template, to be referenced on {@link SMTP#sendMail}
+   * @param {Function} fn   - A function accepting `opts` as an argument, which will be forwarded by {@link SMTP#sendMail}
+   */
+  setTemplate(name, fn) {
+    this.templates[name] = fn
+  }
+
+  /**
+   * Sends an email using one of the defined templates. If the sending fails, it will retry until it succeeds.
+   * @param  {string} email     - Receiver email
+   * @param  {string} template  - Name of the template to use, the keys can be found on the `templates` property
+   * @param  {object} [opts={}] - Object with properties forwarded to the template
+   * @return {Promise&lt;string>}  - A promise which resolved to the send response from the server (after retries, if any)
+   */
+  sendMail(email, template, opts = {}) {
+    if (!email) {
+      throw new Error('You need to supply an email to send to')
+    }
+    if (!this.templates[template]) {
+      throw new Error(`Invalid template ${template}`)
+    }
+
+    let content = this.templates[template](opts)
+
+    return new Promise(resolve =>
+      this._sendMailWithRetry(email, content, resolve)
+    )
+  }
+
+  // internal
+  _sendMailWithRetry(email, opts, callback) {
+    this.transport.sendMail(opts, (error, info) => {
+      if (error) {
+        log.error(
+          `Error sending email to ${email}, retrying in ${EMAIL_COOLDOWN /
+            1000}seconds`
+        )
+        log.error(error, error.stack)
+
+        return setTimeout(
+          () => this._sendMailWithRetry(email, opts, callback),
+          EMAIL_COOLDOWN
+        )
+      }
+      log.info(`Email ${info.messageId} sent: ${info.response}`)
+      callback(info.response)
+    })
+  }
+
+  /**
+   * Creates a nodemailer transport. It uses ENV variables (prefixed with MAIL_) to configure the object
+   * @param  {string} hostname    - Mailer host name
+   * @param  {string|number} port - String or number representing the port of the mailer
+   * @param  {string} [username]  - Username to perform auth.
+   * @param  {string} [password]  - Password to perform auth.
+   * @return {object} - transport, see @{link https://nodemailer.com/usage/}
+   */
+  getTransport(hostname, port, username, password) {
+    port = parseInt(port, 10)
+
+    const options = {
+      host: hostname,
+      port: port,
+      secure: port === 465
+    }
+
+    if (username || password) {
+      options.auth = {
+        user: username,
+        pass: password
+      }
+    }
+
+    this.transport = nodemailer.createTransport(options)
+
+    return this.transport
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Contract.html">Contract</a></li><li><a href="DecentralandVesting.html">DecentralandVesting</a></li><li><a href="ERC20Token.html">ERC20Token</a></li><li><a href="ERC721Token.html">ERC721Token</a></li><li><a href="Event.html">Event</a></li><li><a href="LANDRegistry.html">LANDRegistry</a></li><li><a href="MANAToken.html">MANAToken</a></li><li><a href="Marketplace.html">Marketplace</a></li><li><a href="ReturnMANA.html">ReturnMANA</a></li><li><a href="ServiceLocator.html">ServiceLocator</a></li><li><a href="SignedMessage.html">SignedMessage</a></li><li><a href="SMTP_SMTP.html">SMTP</a></li><li><a href="TerraformReserve.html">TerraformReserve</a></li></ul><h3>Namespaces</h3><ul><li><a href="eth.html">eth</a></li><li><a href="ethUtils.html">ethUtils</a></li><li><a href="mailchimp.html">mailchimp</a></li><li><a href="mongo.html">mongo</a></li><li><a href="postgres.html">postgres</a></li><li><a href="tunnel.html">tunnel</a></li><li><a href="txUtils.html">txUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#arrayToObject">arrayToObject</a></li><li><a href="global.html#confirm">confirm</a></li><li><a href="global.html#extractFromReq">extractFromReq</a></li><li><a href="global.html#handleRequest">handleRequest</a></li><li><a href="global.html#isEmptyObject">isEmptyObject</a></li><li><a href="global.html#mapOmit">mapOmit</a></li><li><a href="global.html#omit">omit</a></li><li><a href="global.html#pick">pick</a></li><li><a href="global.html#promisify">promisify</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#runProgram">runProgram</a></li><li><a href="global.html#sleep">sleep</a></li><li><a href="global.html#useRollbar">useRollbar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Mar 26 2018 19:33:34 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
