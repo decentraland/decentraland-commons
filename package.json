@@ -8,7 +8,7 @@
     "./dist/index.js": "./dist/browser.js"
   },
   "scripts": {
-    "docs": "npx jsdoc -c conf.json -r src/**/*.js",
+    "docs": "npx jsdoc -c conf.json -r src/**/*",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
     "init": "mkdir -p dist",

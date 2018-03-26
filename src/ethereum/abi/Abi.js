@@ -72,6 +72,7 @@ const abi = {
   }
 }
 
+/** Abi decorator, extends abi objects with useful methods */
 export const Abi = {
   new(abiObject) {
     const newAbi = Object.create(abiObject)

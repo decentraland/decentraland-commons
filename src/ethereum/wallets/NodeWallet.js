@@ -3,6 +3,10 @@ import Web3 from 'web3'
 import { Wallet } from './Wallet'
 import { Contract } from '../Contract'
 
+/**
+ * Node Wallet class
+ * @extends Wallet
+ */
 export class NodeWallet extends Wallet {
   static type = 'node'
 

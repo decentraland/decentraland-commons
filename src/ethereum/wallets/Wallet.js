@@ -1,4 +1,6 @@
-// Interface
+/**
+ * Wallet class
+ */
 export class Wallet {
   static type = ''
 
@@ -27,6 +29,10 @@ export class Wallet {
     this.account = account
   }
 
+  /**
+   * Connect to the Ethereum Wallet
+   * @abstract
+   */
   async connect() {
     throw new Error('Not implemented. Check wallet support')
   }
@@ -39,6 +45,7 @@ export class Wallet {
   /**
    * Gets the appropiate Web3 provider for the given environment.
    * Check each implementation for in detail information
+   * @abstract
    * @param  {string} [providerURL] - URL for a provider.
    * @return {object} The web3 provider
    */
@@ -48,6 +55,7 @@ export class Wallet {
 
   /**
    * Return available accounts for the current wallet
+   * @abstract
    * @return {Promise<array<string>>} accounts
    */
   async getAccounts() {
@@ -58,7 +66,7 @@ export class Wallet {
    * Creates a new contract instance with all its methods and events defined in its json interface object (abi).
    * @param  {object} abi     - Application Binary Interface.
    * @param  {string} address - Contract address
-   * @return {object} instance
+   * @return {object} contract instance
    */
   createContractInstance(abi, address) {
     return this.web3.eth.contract(abi).at(address)
@@ -75,6 +83,7 @@ export class Wallet {
 
   /**
    * Signs data from the default account
+   * @abstract
    * @param  {string} message - Message to sign, ussually in Hex
    * @return {Promise<string>} signature
    */
@@ -84,6 +93,7 @@ export class Wallet {
 
   /**
    * Recovers the account that signed the data
+   * @abstract
    * @param  {string} message   - Data that was signed
    * @param  {string} signature
    * @return {Promise<string>} account
