@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: ethereum/wallets/LedgerWallet.js</title>
+    <title>JSDoc: Source: ethereum/wallets/TrezorWallet.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: ethereum/wallets/LedgerWallet.js</h1>
+    <h1 class="page-title">Source: ethereum/wallets/TrezorWallet.js</h1>
 
     
 
@@ -28,54 +28,48 @@
         <article>
             <pre class="prettyprint source linenums"><code>import Web3 from 'web3'
 
-import TransportU2F from '@ledgerhq/hw-transport-u2f'
-import Eth from '@ledgerhq/hw-app-eth'
-
 import ProviderEngine from 'web3-provider-engine'
-import RpcSubprovider from 'web3-provider-engine/subproviders/rpc'
-import LedgerWalletSubprovider from 'ledger-wallet-provider'
+import Web3Subprovider from 'web3-provider-engine/subproviders/web3'
 
 import { Wallet } from './Wallet'
-import { sleep } from '../../utils'
+
+let TrezorConnect = null
+
+if (typeof window !== 'undefined') {
+  TrezorConnect = window.TrezorConnect
+}
 
 /**
- * Ledger Wallet class
+ * Trezor Wallet class
+ * WARN: Web ONLY
  * @extends Wallet
  */
-export class LedgerWallet extends Wallet {
+export class TrezorWallet extends Wallet {
   // eslint-disable-next-line
   static derivationPath = "44'/60'/0'/0"
-  static type = 'ledger'
+  static type = 'trezor'
 
   static async isSupported() {
-    const devices = await TransportU2F.list()
-    return devices.length > 0
+    return false
   }
 
   constructor(account, derivationPath) {
     super(account)
-    this.ledger = null
+
+    if (!TrezorConnect) {
+      throw new Error('WONT WORK, add https://connect.trezor.io/4/connect.js')
+    }
+
     this.engine = null
-    this.derivationPath = derivationPath || LedgerWallet.derivationPath
+    this.derivationPath = derivationPath || TrezorWallet.derivationPath
   }
 
-  async connect(providerUrl, networkId) {
-    const transport = await TransportU2F.open(null, 2)
-    const ledger = new Eth(transport)
-
-    this.ledger = ledger
-
-    // FireFox hangs on indefinetly on `getAccounts`, so the second promise acts as a timeout
-    const accounts = await Promise.race([
-      this.getAccounts(),
-      sleep(2000).then(() =>
-        Promise.reject({ message: 'Timed out trying to connect to ledger' })
-      )
-    ])
+  async connect(providerUrl) {
+    const accounts = await this.getAccounts()
 
     this.engine = new ProviderEngine()
+    const provider = await this.getProvider(providerUrl)
 
-    const provider = await this.getProvider(providerUrl, networkId)
     this.web3 = new Web3(provider)
 
     if (!this.account) {
@@ -95,23 +89,14 @@ export class LedgerWallet extends Wallet {
   /**
    * It'll create a new provider using the providerUrl param for RPC calls
    * @param  {string} [providerURL="https://mainnet.infura.io/"] - URL for an HTTP provider
-   * @param  {string} [networkId="1"] - The id of the network we're connecting to. 1 means mainnet, check {@link eth#getNetworks}
    * @return {object} The web3 provider
    */
-  async getProvider(
-    providerUrl = 'https://mainnet.infura.io/',
-    networkId = '1'
-  ) {
-    let ledgerWalletSubProvider = await LedgerWalletSubprovider(
-      () => networkId,
-      this.derivationPath
-    )
+  async getProvider(providerUrl) {
+    let trezorWalletProvider = new TrezorWalletProvider(this.derivationPath)
 
-    this.engine.addProvider(ledgerWalletSubProvider)
+    this.engine.addProvider(trezorWalletProvider)
     this.engine.addProvider(
-      new RpcSubprovider({
-        rpcUrl: providerUrl
-      })
+      new Web3Subprovider(new Web3.providers.HttpProvider(providerUrl))
     )
     this.engine.start()
 
@@ -119,22 +104,21 @@ export class LedgerWallet extends Wallet {
   }
 
   async getAccounts() {
-    const defaultAccount = await this.ledger.getAddress(
-      LedgerWallet.derivationPath
-    )
-    return [defaultAccount.address] // follow the Wallet interface
+    return new Promise((resolve, reject) => {
+      TrezorConnect.ethereumGetAddress(this.derivationPath, function(result) {
+        if (result.success) {
+          resolve(['0x' + result.address])
+        } else {
+          reject(result.error)
+        }
+      })
+    })
   }
+}
 
-  async sign(message) {
-    let { v, r, s } = await this.ledger.signPersonalMessage(
-      LedgerWallet.derivationPath,
-      message.substring(2)
-    )
-
-    v = (v - 27).toString(16)
-    if (v.length &lt; 2) v = '0' + v
-
-    return '0x' + r + s + v
+class TrezorWalletProvider {
+  constructor(derivationPath) {
+    this.derivationPath = derivationPath
   }
 }
 </code></pre>
