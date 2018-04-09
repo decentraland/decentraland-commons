@@ -47,18 +47,7 @@
     "web3": "^0.20.6",
     "web3-provider-engine": "https://github.com/decentraland/provider-engine.git#releases"
   },
-  "peerDependencies": {
-    "babel-polyfill": "^6.26.0",
-    "commander": "^2.13.0",
-    "dotenv": "^5.0.1",
-    "inquirer": "^5.1.0",
-    "mailchimp-api-v3": "^1.7.1",
-    "mongodb": "^2.2.31",
-    "nodemailer": "^4.1.3",
-    "pg": "^7.3.0",
-    "rollbar": "^2.3.9",
-    "tunnel-ssh": "^4.1.4"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
@@ -68,17 +57,24 @@
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
+    "commander": "^2.13.0",
+    "dotenv": "^5.0.1",
     "eslint": "^4.11.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-prettier": "^2.3.1",
     "husky": "^0.14.3",
+    "inquirer": "^5.1.0",
     "jsdoc": "^3.5.5",
+    "mailchimp-api-v3": "^1.7.1",
     "mocha": "^4.0.1",
     "mongodb": "^3.0.5",
+    "nodemailer": "^4.1.3",
     "npx": "^9.7.1",
     "pg": "^7.4.1",
     "prettier": "^1.8.2",
+    "rollbar": "^2.3.9",
     "semantic-release": "^12.2.5",
+    "tunnel-ssh": "^4.1.4",
     "validate-commit-msg": "^2.14.0"
   }
 }
