@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: env/NodeEnv.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,38 +17,42 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: env/NodeEnv.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>Server</h1><p>Utility functions for managing a simple server interface. Designed to work with <a href="https://expressjs.com">Express</a></p>
-<p>The convention for server responses is:</p>
-<h3>Success</h3><pre class="prettyprint source lang-json"><code>{ ok: true, data: object }</code></pre><h3>Error</h3><pre class="prettyprint source lang-json"><code>{ ok: false, data: object, error: string }</code></pre></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>import fs from 'fs'
+import { Env } from './Env'
+import { isEmptyObject } from '../utils'
+
+export class NodeEnv extends Env {
+  /**
+   * Sets the `loaded` variable to true enabling the rest of the ENV variables to be accessed.
+   * If we're on a node environment ensure that this method it's called first, as it parses the .env file and adds all variables to the environment.
+   * See {@link https://github.com/motdotla/dotenv#faq} for more info on dotenv.
+   * @param {object} [config] - Configuration for .env
+   * @param {string} [config.path='./.env'] - Path to the .env file
+   * @param {object} [config.values={}] - Object defining the environment.
+   */
+  load({ path = './.env', values = {} } = {}) {
+    if (isEmptyObject(values) &amp;&amp; fs.existsSync(path)) {
+      const envString = fs.readFileSync(path).toString()
+      values = this.parse(envString)
+    }
+
+    Object.assign(process.env, values)
+
+    this.loaded = true
+  }
+}
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
