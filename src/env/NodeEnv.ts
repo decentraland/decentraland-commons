@@ -1,6 +1,6 @@
-import fs from 'fs'
-import { Env } from './Env'
+import * as fs from 'fs'
 import { isEmptyObject } from '../utils'
+import { Env } from './Env'
 
 export class NodeEnv extends Env {
   /**

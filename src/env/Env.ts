@@ -15,7 +15,8 @@ export class Env {
     return Env.get('NODE_ENV')
   }
 
-  static get(name, fallback) {
+  static get<T>(name: string, fallback?: T): string | T
+  static get(name: string, fallback?: (name: string) => any): string | any {
     let value = process.env[name]
 
     if (value === undefined) {
@@ -29,6 +30,8 @@ export class Env {
     return value
   }
 
+  protected loaded: boolean
+
   constructor() {
     this.loaded = false
   }
@@ -37,7 +40,7 @@ export class Env {
     return this.loaded
   }
 
-  load() {}
+  load(options?: { path?: string; values?: any }): void {}
 
   isDevelopment() {
     return Env.isDevelopment()
@@ -57,7 +60,8 @@ export class Env {
    * @param  {function|object} [fallback] - Value to use if `name` is not found. If it's a function, it'll execute it with `name` as argument
    * @return {string} - Result of getting the `name` ENV or fallback
    */
-  get(name, fallback) {
+  get<T>(name: string, fallback?: T): string | T
+  get(name: string, fallback?: (name: string) => any): string | any {
     if (!this.isLoaded()) {
       this.load()
     }
@@ -70,7 +74,7 @@ export class Env {
    * @param  {string} envString
    * @return {object} result - Each key represents the name of the var
    */
-  parse(envString) {
+  parse(envString: string): { [env: string]: string } {
     const envRegex = /\s*(\S*)=("|')?([^"'\s]*)("|')?\s*/gm
     const env = {}
     let match
