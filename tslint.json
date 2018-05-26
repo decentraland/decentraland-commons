@@ -1,0 +1,6 @@
+{
+  "extends": ["dcl-tslint-config-standard", "tslint-plugin-prettier"],
+  "rules": {
+    "prettier": [true, { "printWidth": 80, "singleQuote": true, "semi": false }]
+  }
+}

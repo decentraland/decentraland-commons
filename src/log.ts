@@ -1,5 +1,13 @@
 import { Env } from './env'
 
+export interface LogLevels {
+  trace: boolean
+  debug: boolean
+  warn: boolean
+  log: boolean
+  error: boolean
+}
+
 /**
  * Log singleton class. A single instance is exported by default from this module
  * Logs objects depending on the environment.
@@ -7,6 +15,9 @@ import { Env } from './env'
  *    log.info('something')
  */
 export class Log {
+  name: string
+  protected logLevels: LogLevels
+
   /**
    * @param  {string} [name=''] - A name prepended to each log
    * @param  {object} [logLevels={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
@@ -15,36 +26,35 @@ export class Log {
    * @param  {boolean} [logLevels.warn=false]  - Should you log for the 'warn' level
    * @param  {boolean} [logLevels.log=false]   - Should you log for the 'log' level
    * @param  {boolean} [logLevels.error=false] - Should you log for the 'error' level
-
    */
-  constructor(name = '', logLevels = {}) {
+  constructor(name: string = '', logLevels?: LogLevels) {
     this.name = name
     this.logLevels = this.getLogLevels(logLevels)
   }
 
   debug(...args) {
-    return this.msg('debug', ...args)
+    this.msg('debug', ...args)
   }
 
   warn(...args) {
-    return this.msg('warn', ...args)
+    this.msg('warn', ...args)
   }
 
   info(...args) {
-    return this.msg('log', ...args)
+    this.msg('log', ...args)
   }
 
   error(...args) {
-    return this.msg('error', ...args)
+    this.msg('error', ...args)
   }
 
   trace(...args) {
     if (this.logLevels.trace) {
-      return console.trace(...args)
+      console.trace(...args)
     }
   }
 
-  msg(priority, message, ...extras) {
+  msg(priority: keyof LogLevels, message?: any, ...extras: any[]) {
     if (!(priority in this.logLevels)) {
       throw new Error(`Invalid log message priority: ${priority}`)
     }
@@ -57,11 +67,9 @@ export class Log {
         ...extras
       )
     }
-
-    return message
   }
 
-  getLogLevels(overrides) {
+  getLogLevels(overrides: LogLevels): LogLevels {
     const inDev = Env.isDevelopment()
 
     return Object.assign(
@@ -77,7 +85,12 @@ export class Log {
   }
 }
 
-function consoleOutput(priority, prefix = '', message, ...extras) {
+function consoleOutput(
+  priority: string,
+  prefix = '',
+  message?: any,
+  ...extras: any[]
+): void {
   if (typeof message === 'function') {
     message = message(...extras)
     extras = []

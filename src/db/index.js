@@ -1,1 +1,0 @@
-export { postgres } from './postgres'
