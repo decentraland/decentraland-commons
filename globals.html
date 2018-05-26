@@ -63,38 +63,30 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<p><img src="https://raw.githubusercontent.com/decentraland/web/gh-pages/img/decentraland.ico" alt=""></p>
-				<h1 id="commons-semantic-release">Commons <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release"></a></h1>
-				<p>Set of common functionality accross Decentraland projects.</p>
-				<h3 id="scripts">Scripts</h3>
-				<p><strong>build</strong></p>
-				<p>Build the lib for use</p>
-				<p><strong>lint</strong></p>
-				<p>Lint js files with <code>tslint</code></p>
-				<p><strong>docs</strong></p>
-				<p>Builds an static page with the JSDoc documentation</p>
-				<p><strong>test</strong></p>
-				<p>Run tests using mocha and chai</p>
-				<h3 id="release">Release</h3>
-				<p>We use <a href="https://github.com/semantic-release/semantic-release">semantic-release</a> to automate the release process of this package. Every time we merge to <code>master</code>, the CI will run <code>semantic-release</code> and it will publish a new version of the package. It will determine the next version of the package and it will generate release notes from the commit messages. That&#39;s why we enforce the following format for commit messages:</p>
-				<pre><code><span class="hljs-keyword">type</span>: <span class="hljs-keyword">message</span>
-</code></pre><p>or</p>
-				<pre><code><span class="hljs-keyword">type</span>(scope): messages
-</code></pre><p>for example</p>
-				<pre><code><span class="hljs-function"><span class="hljs-title">feature</span><span class="hljs-params">(Map)</span></span>: added zoom levels
-</code></pre><p>We use <a href="https://github.com/typicode/husky">husky</a> and <a href="https://www.npmjs.com/package/validate-commit-msg">validate-commit-msg</a> to enforce this format on every commit.</p>
-				<h3 id="continuous-deployment">Continuous Deployment</h3>
-				<p>If you have commons as a dependency and you&#39;re deploying to a Linux system, you might run into an error like this one: <a href="https://circleci.com/gh/decentraland/commons/186?utm_campaign=vcs-integration-link&amp;utm_medium=referral&amp;utm_source=github-build-link">commit 2dd8319 on CircleCI</a>.</p>
-				<p>The error comes from the installation of <a href="https://github.com/node-hid/node-hid"><code>node-hid</code></a>, you need to have <code>libusb</code> available for it to work, and it&#39;s not present in all Linux systems.</p>
-				<p>You can see an example of a fix in this repos <a href="https://github.com/decentraland/commons/blob/master/.circleci/config.yml"><code>config.yml</code></a> file.</p>
-				<p><a href="https://github.com/node-hid/node-hid"><code>node-hid</code></a> is a dependency of <a href="https://github.com/LedgerHQ/ledgerjs"><code>ledgerco</code></a>, which in turn is a dependency of <a href="https://github.com/Neufund/ledger-wallet-provider"><code>ledger-wallet-provider</code></a>, used by this lib.</p>
-			</div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>External modules</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_env_browserenv_.html" class="tsd-kind-icon">"env/<wbr>Browser<wbr>Env"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_env_env_.html" class="tsd-kind-icon">"env/<wbr>Env"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_env_nodeenv_.html" class="tsd-kind-icon">"env/<wbr>Node<wbr>Env"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_env_index_.html" class="tsd-kind-icon">"env/index"</a></li>
+								<li class="tsd-kind-external-module"><a href="modules/_index_.html" class="tsd-kind-icon">"index"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_log_.html" class="tsd-kind-icon">"log"</a></li>
+								<li class="tsd-kind-external-module tsd-is-external"><a href="modules/_utils_index_.html" class="tsd-kind-icon">"utils/index"</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
+					<li class="globals current ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class="label tsd-is-external">
