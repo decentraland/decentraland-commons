@@ -68,16 +68,3 @@ export function pick(obj, keys) {
 
   return result
 }
-
-/**
- * Return a an object using a field as key out of an array of objects
- * @param {array} arr
- * @param {string} key
- * @param {string} (optional) value - use only one field of object as value
- */
-export function arrayToObject(arr, key, value) {
-  return arr.reduce((map, obj) => {
-    map[obj[key]] = value != null ? obj[value] : obj
-    return map
-  }, {})
-}

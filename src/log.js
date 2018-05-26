@@ -1,7 +1,4 @@
-import { env } from './env'
-
-// Re-define console.debug which no longer logs (but still exists for some reason) as console.log
-console.debug = console.log.bind(console)
+import { Env } from './env'
 
 /**
  * Log singleton class. A single instance is exported by default from this module
@@ -12,23 +9,17 @@ console.debug = console.log.bind(console)
 export class Log {
   /**
    * @param  {string} [name=''] - A name prepended to each log
-   * @param  {object} [shouldLog={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
+   * @param  {object} [logLevels={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
+   * @param  {boolean} [logLevels.trace=inDev] - Should you log for the 'trace' level
+   * @param  {boolean} [logLevels.debug=inDev] - Should you log for the 'debug' level
+   * @param  {boolean} [logLevels.warn=false]  - Should you log for the 'warn' level
+   * @param  {boolean} [logLevels.log=false]   - Should you log for the 'log' level
+   * @param  {boolean} [logLevels.error=false] - Should you log for the 'error' level
+
    */
-  constructor(name = '', shouldLog = {}) {
+  constructor(name = '', logLevels = {}) {
     this.name = name
-    this.shouldLog = shouldLog
-    this.logLevels = null
-    this.outputs = [consoleOutput]
-  }
-
-  addOutput(fn) {
-    if (!this.outputs.includes(fn)) {
-      this.outputs.push(fn)
-    }
-  }
-
-  removeOutput(fn) {
-    this.outputs = this.outputs.filter(e => e !== fn)
+    this.logLevels = this.getLogLevels(logLevels)
   }
 
   debug(...args) {
@@ -48,48 +39,41 @@ export class Log {
   }
 
   trace(...args) {
-    if (this.getLogLevels().trace) {
+    if (this.logLevels.trace) {
       return console.trace(...args)
     }
   }
 
   msg(priority, message, ...extras) {
-    const logLevels = this.getLogLevels()
-
-    if (!(priority in logLevels)) {
+    if (!(priority in this.logLevels)) {
       throw new Error(`Invalid log message priority: ${priority}`)
     }
 
-    if (this.time) {
-      extras.unshift(new Date().toISOString())
-    }
-
-    if (logLevels[priority]) {
-      for (let output of this.outputs) {
-        output(priority, this.name ? `[${this.name}]` : '', message, ...extras)
-      }
+    if (this.logLevels[priority]) {
+      consoleOutput(
+        priority,
+        this.name ? `[${this.name}]` : '',
+        message,
+        ...extras
+      )
     }
 
     return message
   }
 
-  getLogLevels() {
-    if (!this.logLevels) {
-      const inDev = env.isDevelopment()
+  getLogLevels(overrides) {
+    const inDev = Env.isDevelopment()
 
-      this.logLevels = Object.assign(
-        {
-          trace: inDev,
-          debug: inDev,
-          warn: true,
-          log: true,
-          error: true
-        },
-        this.shouldLog
-      )
-    }
-
-    return this.logLevels
+    return Object.assign(
+      {
+        trace: inDev,
+        debug: inDev,
+        warn: true,
+        log: true,
+        error: true
+      },
+      overrides
+    )
   }
 }
 

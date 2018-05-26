@@ -1,4 +1,0 @@
-
-# SSH
-
-Leverages SSH connections

@@ -1,12 +1,12 @@
 import * as cli from './cli'
 import * as db from './db'
-import * as email from './email'
 import * as server from './server'
-import * as ssh from './ssh'
 import * as utils from './utils'
+import { NodeEnv } from './env'
 
 export { Log } from './log'
 export { Model } from './Model'
-export { env } from './env'
+export { NodeEnv, Env } from './env'
 
-export { cli, db, email, server, ssh, utils }
+export { cli, db, server, utils }
+export const env = new NodeEnv()
