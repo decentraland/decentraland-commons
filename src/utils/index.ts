@@ -25,7 +25,7 @@ export function promisify<T>(fn): (...args: any[]) => Promise<T> {
  * @param {integer} ms - miliseconds to sleep
  * @return {Promise} - Promise that resolves when the sleeping is done
  */
-export function sleep(ms: number): Promise<void> {
+export function sleep(ms: number): Promise<number> {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
@@ -42,6 +42,7 @@ export function isEmptyObject(obj: any): boolean {
  * @param {object} obj
  * @param {array} keys
  */
+export function omit<T>(obj: KeyedObject, keys: string[]): T
 export function omit(obj: KeyedObject, keys: string[]): KeyedObject {
   const newKeys = Object.keys(obj).filter(key => !keys.includes(key))
   return pick(obj, newKeys)
@@ -52,6 +53,7 @@ export function omit(obj: KeyedObject, keys: string[]): KeyedObject {
  * @param {array} array - array of objects
  * @param {array} keys
  */
+export function mapOmit<T>(array: KeyedObject[], keys: string[]): T[]
 export function mapOmit(array: KeyedObject[], keys: string[]): KeyedObject[] {
   return array.map(obj => omit(obj, keys))
 }
@@ -61,6 +63,7 @@ export function mapOmit(array: KeyedObject[], keys: string[]): KeyedObject[] {
  * @param {object} obj
  * @param {array} keys
  */
+export function pick<T>(obj: KeyedObject, keys: string[]): T
 export function pick(obj: KeyedObject, keys: string[]): KeyedObject {
   const result = {}
 
