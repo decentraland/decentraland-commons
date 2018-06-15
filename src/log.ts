@@ -19,13 +19,13 @@ export class Log {
   protected logLevels: LogLevels
 
   /**
-   * @param  {string} [name=''] - A name prepended to each log
-   * @param  {object} [logLevels={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
-   * @param  {boolean} [logLevels.trace=inDev] - Should you log for the 'trace' level
-   * @param  {boolean} [logLevels.debug=inDev] - Should you log for the 'debug' level
-   * @param  {boolean} [logLevels.warn=false]  - Should you log for the 'warn' level
-   * @param  {boolean} [logLevels.log=false]   - Should you log for the 'log' level
-   * @param  {boolean} [logLevels.error=false] - Should you log for the 'error' level
+   * @param [name=''] - A name prepended to each log
+   * @param [logLevels={}] - An object with a Boolean property for each log type which dictates if it's active or not. If left empty, all levels are available
+   * @param [logLevels.trace=inDev] - Should you log for the 'trace' level
+   * @param [logLevels.debug=inDev] - Should you log for the 'debug' level
+   * @param [logLevels.warn=false]  - Should you log for the 'warn' level
+   * @param [logLevels.log=false]   - Should you log for the 'log' level
+   * @param [logLevels.error=false] - Should you log for the 'error' level
    */
   constructor(name: string = '', logLevels?: LogLevels) {
     this.name = name

@@ -4,8 +4,7 @@ export interface KeyedObject {
 
 /**
  * Promisifies a node callback style function. Takes a second argument that is bound as `this`
- * @param  {Function} fn - Node style callback, accepting (error, result)
- * @return {Promise}
+ * @param fn - Node style callback, accepting (error, result)
  */
 export function promisify<T>(fn): (...args: any[]) => Promise<T> {
   return (...args) =>
@@ -22,8 +21,8 @@ export function promisify<T>(fn): (...args: any[]) => Promise<T> {
 
 /**
  * Sleep for a certain amount of milliseconds
- * @param {integer} ms - miliseconds to sleep
- * @return {Promise} - Promise that resolves when the sleeping is done
+ * @param ms - miliseconds to sleep
+ * @return Promise that resolves when the sleeping is done
  */
 export function sleep(ms: number): Promise<number> {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -31,7 +30,7 @@ export function sleep(ms: number): Promise<number> {
 
 /**
  * Check if an object has keys
- * @param {object} obj
+ * @param obj
  */
 export function isEmptyObject(obj: any): boolean {
   return obj && Object.keys(obj).length === 0
@@ -39,8 +38,8 @@ export function isEmptyObject(obj: any): boolean {
 
 /**
  * Return a copy of the object, filtered to omit the blacklisted array of valid keys
- * @param {object} obj
- * @param {array} keys
+ * @param obj
+ * @param keys
  */
 export function omit<T>(obj: KeyedObject, keys: string[]): T
 export function omit(obj: KeyedObject, keys: string[]): KeyedObject {
@@ -50,8 +49,8 @@ export function omit(obj: KeyedObject, keys: string[]): KeyedObject {
 
 /**
  * Returns a copy of the array of with the keys filtered on each object
- * @param {array} array - array of objects
- * @param {array} keys
+ * @param array - array of objects
+ * @param keys
  */
 export function mapOmit<T>(array: KeyedObject[], keys: string[]): T[]
 export function mapOmit(array: KeyedObject[], keys: string[]): KeyedObject[] {
@@ -60,8 +59,8 @@ export function mapOmit(array: KeyedObject[], keys: string[]): KeyedObject[] {
 
 /**
  * Return a copy of the object, filtered to only have values for the whitelisted array of valid keys
- * @param {object} obj
- * @param {array} keys
+ * @param obj
+ * @param keys
  */
 export function pick<T>(obj: KeyedObject, keys: string[]): T
 export function pick(obj: KeyedObject, keys: string[]): KeyedObject {
